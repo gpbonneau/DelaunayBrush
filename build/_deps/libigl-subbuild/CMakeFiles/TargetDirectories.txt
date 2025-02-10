@@ -1,0 +1,3 @@
+/Users/anandhu/Documents/proxy/normal-ribbon/build/_deps/libigl-subbuild/CMakeFiles/libigl-populate.dir
+/Users/anandhu/Documents/proxy/normal-ribbon/build/_deps/libigl-subbuild/CMakeFiles/edit_cache.dir
+/Users/anandhu/Documents/proxy/normal-ribbon/build/_deps/libigl-subbuild/CMakeFiles/rebuild_cache.dir
