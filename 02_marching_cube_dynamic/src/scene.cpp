@@ -300,7 +300,7 @@ void scene_structure::filter_valid_circumspheres() {
             unused_vertices.push_back(i);
         }
     }
-	save_combined_spheres(circumspheres, output_file);
+	// save_combined_spheres(circumspheres, output_file);
 
 
     // return valid_spheres;

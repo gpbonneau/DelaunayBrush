@@ -68,16 +68,16 @@ void implicit_surface_structure::update_field(field_function_structure const& fi
 	grid_3D<float>& field = field_param.field;
 	grid_3D<vec3>& gradient = field_param.gradient;
 	spatial_domain_grid_3D& domain = field_param.domain;
-
+	std::cout<<"update_field"<<std::endl;
 	// Compute the scalar field
 	field = compute_discrete_scalar_field(domain, field_function);
-
+	std::cout<<"computed discreete"<<std::endl;
 	// Compute the gradient of the scalar field
 	gradient = compute_gradient(field);
-
+	std::cout<<"computed gradient"<<std::endl;
 	// Recompute the marching cube
 	update_marching_cube(isovalue);
-
+	std::cout<<"updated_marching_cube"<<std::endl;
 	// Reset the domain visualization (lightweight - can be cleared at each call)
 	drawable_param.domain_box.clear();
 	drawable_param.domain_box.initialize_data_on_gpu(domain.export_segments_for_drawable_border());
