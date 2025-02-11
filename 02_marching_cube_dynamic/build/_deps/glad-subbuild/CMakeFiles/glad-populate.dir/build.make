@@ -53,10 +53,10 @@ RM = /opt/homebrew/Cellar/cmake/3.28.3/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /Users/anandhu/Documents/proxy/normal-ribbon/02_marching_cube_dynamic/build/_deps/glad-subbuild
+CMAKE_SOURCE_DIR = /Users/anandhu/Documents/proxy/DelaunayBrush/02_marching_cube_dynamic/build/_deps/glad-subbuild
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /Users/anandhu/Documents/proxy/normal-ribbon/02_marching_cube_dynamic/build/_deps/glad-subbuild
+CMAKE_BINARY_DIR = /Users/anandhu/Documents/proxy/DelaunayBrush/02_marching_cube_dynamic/build/_deps/glad-subbuild
 
 # Utility rule file for glad-populate.
 
@@ -77,60 +77,60 @@ CMakeFiles/glad-populate-complete: glad-populate-prefix/src/glad-populate-stamp/
 CMakeFiles/glad-populate-complete: glad-populate-prefix/src/glad-populate-stamp/glad-populate-build
 CMakeFiles/glad-populate-complete: glad-populate-prefix/src/glad-populate-stamp/glad-populate-install
 CMakeFiles/glad-populate-complete: glad-populate-prefix/src/glad-populate-stamp/glad-populate-test
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --blue --bold --progress-dir=/Users/anandhu/Documents/proxy/normal-ribbon/02_marching_cube_dynamic/build/_deps/glad-subbuild/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Completed 'glad-populate'"
-	/opt/homebrew/Cellar/cmake/3.28.3/bin/cmake -E make_directory /Users/anandhu/Documents/proxy/normal-ribbon/02_marching_cube_dynamic/build/_deps/glad-subbuild/CMakeFiles
-	/opt/homebrew/Cellar/cmake/3.28.3/bin/cmake -E touch /Users/anandhu/Documents/proxy/normal-ribbon/02_marching_cube_dynamic/build/_deps/glad-subbuild/CMakeFiles/glad-populate-complete
-	/opt/homebrew/Cellar/cmake/3.28.3/bin/cmake -E touch /Users/anandhu/Documents/proxy/normal-ribbon/02_marching_cube_dynamic/build/_deps/glad-subbuild/glad-populate-prefix/src/glad-populate-stamp/glad-populate-done
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --blue --bold --progress-dir=/Users/anandhu/Documents/proxy/DelaunayBrush/02_marching_cube_dynamic/build/_deps/glad-subbuild/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Completed 'glad-populate'"
+	/opt/homebrew/Cellar/cmake/3.28.3/bin/cmake -E make_directory /Users/anandhu/Documents/proxy/DelaunayBrush/02_marching_cube_dynamic/build/_deps/glad-subbuild/CMakeFiles
+	/opt/homebrew/Cellar/cmake/3.28.3/bin/cmake -E touch /Users/anandhu/Documents/proxy/DelaunayBrush/02_marching_cube_dynamic/build/_deps/glad-subbuild/CMakeFiles/glad-populate-complete
+	/opt/homebrew/Cellar/cmake/3.28.3/bin/cmake -E touch /Users/anandhu/Documents/proxy/DelaunayBrush/02_marching_cube_dynamic/build/_deps/glad-subbuild/glad-populate-prefix/src/glad-populate-stamp/glad-populate-done
 
 glad-populate-prefix/src/glad-populate-stamp/glad-populate-update:
 .PHONY : glad-populate-prefix/src/glad-populate-stamp/glad-populate-update
 
 glad-populate-prefix/src/glad-populate-stamp/glad-populate-build: glad-populate-prefix/src/glad-populate-stamp/glad-populate-configure
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --blue --bold --progress-dir=/Users/anandhu/Documents/proxy/normal-ribbon/02_marching_cube_dynamic/build/_deps/glad-subbuild/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "No build step for 'glad-populate'"
-	cd /Users/anandhu/Documents/proxy/normal-ribbon/02_marching_cube_dynamic/build/_deps/glad-build && /opt/homebrew/Cellar/cmake/3.28.3/bin/cmake -E echo_append
-	cd /Users/anandhu/Documents/proxy/normal-ribbon/02_marching_cube_dynamic/build/_deps/glad-build && /opt/homebrew/Cellar/cmake/3.28.3/bin/cmake -E touch /Users/anandhu/Documents/proxy/normal-ribbon/02_marching_cube_dynamic/build/_deps/glad-subbuild/glad-populate-prefix/src/glad-populate-stamp/glad-populate-build
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --blue --bold --progress-dir=/Users/anandhu/Documents/proxy/DelaunayBrush/02_marching_cube_dynamic/build/_deps/glad-subbuild/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "No build step for 'glad-populate'"
+	cd /Users/anandhu/Documents/proxy/DelaunayBrush/02_marching_cube_dynamic/build/_deps/glad-build && /opt/homebrew/Cellar/cmake/3.28.3/bin/cmake -E echo_append
+	cd /Users/anandhu/Documents/proxy/DelaunayBrush/02_marching_cube_dynamic/build/_deps/glad-build && /opt/homebrew/Cellar/cmake/3.28.3/bin/cmake -E touch /Users/anandhu/Documents/proxy/DelaunayBrush/02_marching_cube_dynamic/build/_deps/glad-subbuild/glad-populate-prefix/src/glad-populate-stamp/glad-populate-build
 
 glad-populate-prefix/src/glad-populate-stamp/glad-populate-configure: glad-populate-prefix/tmp/glad-populate-cfgcmd.txt
 glad-populate-prefix/src/glad-populate-stamp/glad-populate-configure: glad-populate-prefix/src/glad-populate-stamp/glad-populate-patch
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --blue --bold --progress-dir=/Users/anandhu/Documents/proxy/normal-ribbon/02_marching_cube_dynamic/build/_deps/glad-subbuild/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "No configure step for 'glad-populate'"
-	cd /Users/anandhu/Documents/proxy/normal-ribbon/02_marching_cube_dynamic/build/_deps/glad-build && /opt/homebrew/Cellar/cmake/3.28.3/bin/cmake -E echo_append
-	cd /Users/anandhu/Documents/proxy/normal-ribbon/02_marching_cube_dynamic/build/_deps/glad-build && /opt/homebrew/Cellar/cmake/3.28.3/bin/cmake -E touch /Users/anandhu/Documents/proxy/normal-ribbon/02_marching_cube_dynamic/build/_deps/glad-subbuild/glad-populate-prefix/src/glad-populate-stamp/glad-populate-configure
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --blue --bold --progress-dir=/Users/anandhu/Documents/proxy/DelaunayBrush/02_marching_cube_dynamic/build/_deps/glad-subbuild/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "No configure step for 'glad-populate'"
+	cd /Users/anandhu/Documents/proxy/DelaunayBrush/02_marching_cube_dynamic/build/_deps/glad-build && /opt/homebrew/Cellar/cmake/3.28.3/bin/cmake -E echo_append
+	cd /Users/anandhu/Documents/proxy/DelaunayBrush/02_marching_cube_dynamic/build/_deps/glad-build && /opt/homebrew/Cellar/cmake/3.28.3/bin/cmake -E touch /Users/anandhu/Documents/proxy/DelaunayBrush/02_marching_cube_dynamic/build/_deps/glad-subbuild/glad-populate-prefix/src/glad-populate-stamp/glad-populate-configure
 
 glad-populate-prefix/src/glad-populate-stamp/glad-populate-download: glad-populate-prefix/src/glad-populate-stamp/glad-populate-gitinfo.txt
 glad-populate-prefix/src/glad-populate-stamp/glad-populate-download: glad-populate-prefix/src/glad-populate-stamp/glad-populate-mkdir
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --blue --bold --progress-dir=/Users/anandhu/Documents/proxy/normal-ribbon/02_marching_cube_dynamic/build/_deps/glad-subbuild/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Performing download step (git clone) for 'glad-populate'"
-	cd /Users/anandhu/Documents/proxy/normal-ribbon/02_marching_cube_dynamic/build/_deps && /opt/homebrew/Cellar/cmake/3.28.3/bin/cmake -P /Users/anandhu/Documents/proxy/normal-ribbon/02_marching_cube_dynamic/build/_deps/glad-subbuild/glad-populate-prefix/tmp/glad-populate-gitclone.cmake
-	cd /Users/anandhu/Documents/proxy/normal-ribbon/02_marching_cube_dynamic/build/_deps && /opt/homebrew/Cellar/cmake/3.28.3/bin/cmake -E touch /Users/anandhu/Documents/proxy/normal-ribbon/02_marching_cube_dynamic/build/_deps/glad-subbuild/glad-populate-prefix/src/glad-populate-stamp/glad-populate-download
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --blue --bold --progress-dir=/Users/anandhu/Documents/proxy/DelaunayBrush/02_marching_cube_dynamic/build/_deps/glad-subbuild/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Performing download step (git clone) for 'glad-populate'"
+	cd /Users/anandhu/Documents/proxy/DelaunayBrush/02_marching_cube_dynamic/build/_deps && /opt/homebrew/Cellar/cmake/3.28.3/bin/cmake -P /Users/anandhu/Documents/proxy/DelaunayBrush/02_marching_cube_dynamic/build/_deps/glad-subbuild/glad-populate-prefix/tmp/glad-populate-gitclone.cmake
+	cd /Users/anandhu/Documents/proxy/DelaunayBrush/02_marching_cube_dynamic/build/_deps && /opt/homebrew/Cellar/cmake/3.28.3/bin/cmake -E touch /Users/anandhu/Documents/proxy/DelaunayBrush/02_marching_cube_dynamic/build/_deps/glad-subbuild/glad-populate-prefix/src/glad-populate-stamp/glad-populate-download
 
 glad-populate-prefix/src/glad-populate-stamp/glad-populate-install: glad-populate-prefix/src/glad-populate-stamp/glad-populate-build
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --blue --bold --progress-dir=/Users/anandhu/Documents/proxy/normal-ribbon/02_marching_cube_dynamic/build/_deps/glad-subbuild/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "No install step for 'glad-populate'"
-	cd /Users/anandhu/Documents/proxy/normal-ribbon/02_marching_cube_dynamic/build/_deps/glad-build && /opt/homebrew/Cellar/cmake/3.28.3/bin/cmake -E echo_append
-	cd /Users/anandhu/Documents/proxy/normal-ribbon/02_marching_cube_dynamic/build/_deps/glad-build && /opt/homebrew/Cellar/cmake/3.28.3/bin/cmake -E touch /Users/anandhu/Documents/proxy/normal-ribbon/02_marching_cube_dynamic/build/_deps/glad-subbuild/glad-populate-prefix/src/glad-populate-stamp/glad-populate-install
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --blue --bold --progress-dir=/Users/anandhu/Documents/proxy/DelaunayBrush/02_marching_cube_dynamic/build/_deps/glad-subbuild/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "No install step for 'glad-populate'"
+	cd /Users/anandhu/Documents/proxy/DelaunayBrush/02_marching_cube_dynamic/build/_deps/glad-build && /opt/homebrew/Cellar/cmake/3.28.3/bin/cmake -E echo_append
+	cd /Users/anandhu/Documents/proxy/DelaunayBrush/02_marching_cube_dynamic/build/_deps/glad-build && /opt/homebrew/Cellar/cmake/3.28.3/bin/cmake -E touch /Users/anandhu/Documents/proxy/DelaunayBrush/02_marching_cube_dynamic/build/_deps/glad-subbuild/glad-populate-prefix/src/glad-populate-stamp/glad-populate-install
 
 glad-populate-prefix/src/glad-populate-stamp/glad-populate-mkdir:
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --blue --bold --progress-dir=/Users/anandhu/Documents/proxy/normal-ribbon/02_marching_cube_dynamic/build/_deps/glad-subbuild/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Creating directories for 'glad-populate'"
-	/opt/homebrew/Cellar/cmake/3.28.3/bin/cmake -Dcfgdir= -P /Users/anandhu/Documents/proxy/normal-ribbon/02_marching_cube_dynamic/build/_deps/glad-subbuild/glad-populate-prefix/tmp/glad-populate-mkdirs.cmake
-	/opt/homebrew/Cellar/cmake/3.28.3/bin/cmake -E touch /Users/anandhu/Documents/proxy/normal-ribbon/02_marching_cube_dynamic/build/_deps/glad-subbuild/glad-populate-prefix/src/glad-populate-stamp/glad-populate-mkdir
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --blue --bold --progress-dir=/Users/anandhu/Documents/proxy/DelaunayBrush/02_marching_cube_dynamic/build/_deps/glad-subbuild/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Creating directories for 'glad-populate'"
+	/opt/homebrew/Cellar/cmake/3.28.3/bin/cmake -Dcfgdir= -P /Users/anandhu/Documents/proxy/DelaunayBrush/02_marching_cube_dynamic/build/_deps/glad-subbuild/glad-populate-prefix/tmp/glad-populate-mkdirs.cmake
+	/opt/homebrew/Cellar/cmake/3.28.3/bin/cmake -E touch /Users/anandhu/Documents/proxy/DelaunayBrush/02_marching_cube_dynamic/build/_deps/glad-subbuild/glad-populate-prefix/src/glad-populate-stamp/glad-populate-mkdir
 
 glad-populate-prefix/src/glad-populate-stamp/glad-populate-patch: glad-populate-prefix/src/glad-populate-stamp/glad-populate-patch-info.txt
 glad-populate-prefix/src/glad-populate-stamp/glad-populate-patch: glad-populate-prefix/src/glad-populate-stamp/glad-populate-update
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --blue --bold --progress-dir=/Users/anandhu/Documents/proxy/normal-ribbon/02_marching_cube_dynamic/build/_deps/glad-subbuild/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "No patch step for 'glad-populate'"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --blue --bold --progress-dir=/Users/anandhu/Documents/proxy/DelaunayBrush/02_marching_cube_dynamic/build/_deps/glad-subbuild/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "No patch step for 'glad-populate'"
 	/opt/homebrew/Cellar/cmake/3.28.3/bin/cmake -E echo_append
-	/opt/homebrew/Cellar/cmake/3.28.3/bin/cmake -E touch /Users/anandhu/Documents/proxy/normal-ribbon/02_marching_cube_dynamic/build/_deps/glad-subbuild/glad-populate-prefix/src/glad-populate-stamp/glad-populate-patch
+	/opt/homebrew/Cellar/cmake/3.28.3/bin/cmake -E touch /Users/anandhu/Documents/proxy/DelaunayBrush/02_marching_cube_dynamic/build/_deps/glad-subbuild/glad-populate-prefix/src/glad-populate-stamp/glad-populate-patch
 
 glad-populate-prefix/src/glad-populate-stamp/glad-populate-update:
 .PHONY : glad-populate-prefix/src/glad-populate-stamp/glad-populate-update
 
 glad-populate-prefix/src/glad-populate-stamp/glad-populate-test: glad-populate-prefix/src/glad-populate-stamp/glad-populate-install
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --blue --bold --progress-dir=/Users/anandhu/Documents/proxy/normal-ribbon/02_marching_cube_dynamic/build/_deps/glad-subbuild/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "No test step for 'glad-populate'"
-	cd /Users/anandhu/Documents/proxy/normal-ribbon/02_marching_cube_dynamic/build/_deps/glad-build && /opt/homebrew/Cellar/cmake/3.28.3/bin/cmake -E echo_append
-	cd /Users/anandhu/Documents/proxy/normal-ribbon/02_marching_cube_dynamic/build/_deps/glad-build && /opt/homebrew/Cellar/cmake/3.28.3/bin/cmake -E touch /Users/anandhu/Documents/proxy/normal-ribbon/02_marching_cube_dynamic/build/_deps/glad-subbuild/glad-populate-prefix/src/glad-populate-stamp/glad-populate-test
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --blue --bold --progress-dir=/Users/anandhu/Documents/proxy/DelaunayBrush/02_marching_cube_dynamic/build/_deps/glad-subbuild/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "No test step for 'glad-populate'"
+	cd /Users/anandhu/Documents/proxy/DelaunayBrush/02_marching_cube_dynamic/build/_deps/glad-build && /opt/homebrew/Cellar/cmake/3.28.3/bin/cmake -E echo_append
+	cd /Users/anandhu/Documents/proxy/DelaunayBrush/02_marching_cube_dynamic/build/_deps/glad-build && /opt/homebrew/Cellar/cmake/3.28.3/bin/cmake -E touch /Users/anandhu/Documents/proxy/DelaunayBrush/02_marching_cube_dynamic/build/_deps/glad-subbuild/glad-populate-prefix/src/glad-populate-stamp/glad-populate-test
 
 glad-populate-prefix/src/glad-populate-stamp/glad-populate-update: glad-populate-prefix/tmp/glad-populate-gitupdate.cmake
 glad-populate-prefix/src/glad-populate-stamp/glad-populate-update: glad-populate-prefix/src/glad-populate-stamp/glad-populate-update-info.txt
 glad-populate-prefix/src/glad-populate-stamp/glad-populate-update: glad-populate-prefix/src/glad-populate-stamp/glad-populate-download
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --blue --bold --progress-dir=/Users/anandhu/Documents/proxy/normal-ribbon/02_marching_cube_dynamic/build/_deps/glad-subbuild/CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Performing update step for 'glad-populate'"
-	cd /Users/anandhu/Documents/proxy/normal-ribbon/02_marching_cube_dynamic/build/_deps/glad-src && /opt/homebrew/Cellar/cmake/3.28.3/bin/cmake -Dcan_fetch=YES -P /Users/anandhu/Documents/proxy/normal-ribbon/02_marching_cube_dynamic/build/_deps/glad-subbuild/glad-populate-prefix/tmp/glad-populate-gitupdate.cmake
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --blue --bold --progress-dir=/Users/anandhu/Documents/proxy/DelaunayBrush/02_marching_cube_dynamic/build/_deps/glad-subbuild/CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Performing update step for 'glad-populate'"
+	cd /Users/anandhu/Documents/proxy/DelaunayBrush/02_marching_cube_dynamic/build/_deps/glad-src && /opt/homebrew/Cellar/cmake/3.28.3/bin/cmake -Dcan_fetch=YES -P /Users/anandhu/Documents/proxy/DelaunayBrush/02_marching_cube_dynamic/build/_deps/glad-subbuild/glad-populate-prefix/tmp/glad-populate-gitupdate.cmake
 
 glad-populate: CMakeFiles/glad-populate
 glad-populate: CMakeFiles/glad-populate-complete
@@ -154,6 +154,6 @@ CMakeFiles/glad-populate.dir/clean:
 .PHONY : CMakeFiles/glad-populate.dir/clean
 
 CMakeFiles/glad-populate.dir/depend:
-	cd /Users/anandhu/Documents/proxy/normal-ribbon/02_marching_cube_dynamic/build/_deps/glad-subbuild && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /Users/anandhu/Documents/proxy/normal-ribbon/02_marching_cube_dynamic/build/_deps/glad-subbuild /Users/anandhu/Documents/proxy/normal-ribbon/02_marching_cube_dynamic/build/_deps/glad-subbuild /Users/anandhu/Documents/proxy/normal-ribbon/02_marching_cube_dynamic/build/_deps/glad-subbuild /Users/anandhu/Documents/proxy/normal-ribbon/02_marching_cube_dynamic/build/_deps/glad-subbuild /Users/anandhu/Documents/proxy/normal-ribbon/02_marching_cube_dynamic/build/_deps/glad-subbuild/CMakeFiles/glad-populate.dir/DependInfo.cmake "--color=$(COLOR)"
+	cd /Users/anandhu/Documents/proxy/DelaunayBrush/02_marching_cube_dynamic/build/_deps/glad-subbuild && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /Users/anandhu/Documents/proxy/DelaunayBrush/02_marching_cube_dynamic/build/_deps/glad-subbuild /Users/anandhu/Documents/proxy/DelaunayBrush/02_marching_cube_dynamic/build/_deps/glad-subbuild /Users/anandhu/Documents/proxy/DelaunayBrush/02_marching_cube_dynamic/build/_deps/glad-subbuild /Users/anandhu/Documents/proxy/DelaunayBrush/02_marching_cube_dynamic/build/_deps/glad-subbuild /Users/anandhu/Documents/proxy/DelaunayBrush/02_marching_cube_dynamic/build/_deps/glad-subbuild/CMakeFiles/glad-populate.dir/DependInfo.cmake "--color=$(COLOR)"
 .PHONY : CMakeFiles/glad-populate.dir/depend
 

@@ -4,19 +4,19 @@
 cmake_minimum_required(VERSION 3.5)
 
 file(MAKE_DIRECTORY
-  "/Users/anandhu/Documents/proxy/normal-ribbon/02_marching_cube_dynamic/build/_deps/libigl-src"
-  "/Users/anandhu/Documents/proxy/normal-ribbon/02_marching_cube_dynamic/build/_deps/libigl-build"
-  "/Users/anandhu/Documents/proxy/normal-ribbon/02_marching_cube_dynamic/build/_deps/libigl-subbuild/libigl-populate-prefix"
-  "/Users/anandhu/Documents/proxy/normal-ribbon/02_marching_cube_dynamic/build/_deps/libigl-subbuild/libigl-populate-prefix/tmp"
-  "/Users/anandhu/Documents/proxy/normal-ribbon/02_marching_cube_dynamic/build/_deps/libigl-subbuild/libigl-populate-prefix/src/libigl-populate-stamp"
-  "/Users/anandhu/Documents/proxy/normal-ribbon/02_marching_cube_dynamic/build/_deps/libigl-subbuild/libigl-populate-prefix/src"
-  "/Users/anandhu/Documents/proxy/normal-ribbon/02_marching_cube_dynamic/build/_deps/libigl-subbuild/libigl-populate-prefix/src/libigl-populate-stamp"
+  "/Users/anandhu/Documents/proxy/DelaunayBrush/02_marching_cube_dynamic/build/_deps/libigl-src"
+  "/Users/anandhu/Documents/proxy/DelaunayBrush/02_marching_cube_dynamic/build/_deps/libigl-build"
+  "/Users/anandhu/Documents/proxy/DelaunayBrush/02_marching_cube_dynamic/build/_deps/libigl-subbuild/libigl-populate-prefix"
+  "/Users/anandhu/Documents/proxy/DelaunayBrush/02_marching_cube_dynamic/build/_deps/libigl-subbuild/libigl-populate-prefix/tmp"
+  "/Users/anandhu/Documents/proxy/DelaunayBrush/02_marching_cube_dynamic/build/_deps/libigl-subbuild/libigl-populate-prefix/src/libigl-populate-stamp"
+  "/Users/anandhu/Documents/proxy/DelaunayBrush/02_marching_cube_dynamic/build/_deps/libigl-subbuild/libigl-populate-prefix/src"
+  "/Users/anandhu/Documents/proxy/DelaunayBrush/02_marching_cube_dynamic/build/_deps/libigl-subbuild/libigl-populate-prefix/src/libigl-populate-stamp"
 )
 
 set(configSubDirs )
 foreach(subDir IN LISTS configSubDirs)
-    file(MAKE_DIRECTORY "/Users/anandhu/Documents/proxy/normal-ribbon/02_marching_cube_dynamic/build/_deps/libigl-subbuild/libigl-populate-prefix/src/libigl-populate-stamp/${subDir}")
+    file(MAKE_DIRECTORY "/Users/anandhu/Documents/proxy/DelaunayBrush/02_marching_cube_dynamic/build/_deps/libigl-subbuild/libigl-populate-prefix/src/libigl-populate-stamp/${subDir}")
 endforeach()
 if(cfgdir)
-  file(MAKE_DIRECTORY "/Users/anandhu/Documents/proxy/normal-ribbon/02_marching_cube_dynamic/build/_deps/libigl-subbuild/libigl-populate-prefix/src/libigl-populate-stamp${cfgdir}") # cfgdir has leading slash
+  file(MAKE_DIRECTORY "/Users/anandhu/Documents/proxy/DelaunayBrush/02_marching_cube_dynamic/build/_deps/libigl-subbuild/libigl-populate-prefix/src/libigl-populate-stamp${cfgdir}") # cfgdir has leading slash
 endif()

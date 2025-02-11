@@ -4,7 +4,7 @@
 # compile C with /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc
 C_DEFINES = -D_GLFW_USE_CONFIG_H
 
-C_INCLUDES = -I/Users/anandhu/Documents/proxy/normal-ribbon/02_marching_cube_dynamic/src -I/Users/anandhu/Documents/proxy/normal-ribbon/cgp/library -I/Users/anandhu/Documents/proxy/normal-ribbon/02_marching_cube_dynamic/build/_deps/glfw-src/include -I/Users/anandhu/Documents/proxy/normal-ribbon/02_marching_cube_dynamic/build/_deps/glfw-src/src -I/Users/anandhu/Documents/proxy/normal-ribbon/02_marching_cube_dynamic/build/_deps/glfw-build/src
+C_INCLUDES = -I/Users/anandhu/Documents/proxy/DelaunayBrush/02_marching_cube_dynamic/src -I/Users/anandhu/Documents/proxy/DelaunayBrush/cgp/library -I/Users/anandhu/Documents/proxy/DelaunayBrush/02_marching_cube_dynamic/build/_deps/glfw-src/include -I/Users/anandhu/Documents/proxy/DelaunayBrush/02_marching_cube_dynamic/build/_deps/glfw-src/src -I/Users/anandhu/Documents/proxy/DelaunayBrush/02_marching_cube_dynamic/build/_deps/glfw-build/src
 
 C_FLAGSarm64 = -O2 -g -DNDEBUG -std=c99 -arch arm64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk -fPIC -Wall -Wno-missing-field-initializers -Wno-objc-multiple-method-names
 

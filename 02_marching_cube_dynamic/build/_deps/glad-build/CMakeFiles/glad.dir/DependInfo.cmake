@@ -8,7 +8,7 @@ set(CMAKE_DEPENDS_LANGUAGES
 
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
-  "/Users/anandhu/Documents/proxy/normal-ribbon/02_marching_cube_dynamic/build/_deps/glad-src/src/glad.c" "_deps/glad-build/CMakeFiles/glad.dir/src/glad.c.o" "gcc" "_deps/glad-build/CMakeFiles/glad.dir/src/glad.c.o.d"
+  "/Users/anandhu/Documents/proxy/DelaunayBrush/02_marching_cube_dynamic/build/_deps/glad-src/src/glad.c" "_deps/glad-build/CMakeFiles/glad.dir/src/glad.c.o" "gcc" "_deps/glad-build/CMakeFiles/glad.dir/src/glad.c.o.d"
   )
 
 # Targets to which this target links which contain Fortran sources.

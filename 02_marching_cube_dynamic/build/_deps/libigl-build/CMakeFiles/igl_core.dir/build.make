@@ -53,10 +53,10 @@ RM = /opt/homebrew/Cellar/cmake/3.28.3/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /Users/anandhu/Documents/proxy/normal-ribbon/02_marching_cube_dynamic
+CMAKE_SOURCE_DIR = /Users/anandhu/Documents/proxy/DelaunayBrush/02_marching_cube_dynamic
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /Users/anandhu/Documents/proxy/normal-ribbon/02_marching_cube_dynamic/build
+CMAKE_BINARY_DIR = /Users/anandhu/Documents/proxy/DelaunayBrush/02_marching_cube_dynamic/build
 
 # Utility rule file for igl_core.
 
@@ -74,10 +74,10 @@ _deps/libigl-build/CMakeFiles/igl_core.dir/build: igl_core
 .PHONY : _deps/libigl-build/CMakeFiles/igl_core.dir/build
 
 _deps/libigl-build/CMakeFiles/igl_core.dir/clean:
-	cd /Users/anandhu/Documents/proxy/normal-ribbon/02_marching_cube_dynamic/build/_deps/libigl-build && $(CMAKE_COMMAND) -P CMakeFiles/igl_core.dir/cmake_clean.cmake
+	cd /Users/anandhu/Documents/proxy/DelaunayBrush/02_marching_cube_dynamic/build/_deps/libigl-build && $(CMAKE_COMMAND) -P CMakeFiles/igl_core.dir/cmake_clean.cmake
 .PHONY : _deps/libigl-build/CMakeFiles/igl_core.dir/clean
 
 _deps/libigl-build/CMakeFiles/igl_core.dir/depend:
-	cd /Users/anandhu/Documents/proxy/normal-ribbon/02_marching_cube_dynamic/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /Users/anandhu/Documents/proxy/normal-ribbon/02_marching_cube_dynamic /Users/anandhu/Documents/proxy/normal-ribbon/02_marching_cube_dynamic/build/_deps/libigl-src /Users/anandhu/Documents/proxy/normal-ribbon/02_marching_cube_dynamic/build /Users/anandhu/Documents/proxy/normal-ribbon/02_marching_cube_dynamic/build/_deps/libigl-build /Users/anandhu/Documents/proxy/normal-ribbon/02_marching_cube_dynamic/build/_deps/libigl-build/CMakeFiles/igl_core.dir/DependInfo.cmake "--color=$(COLOR)"
+	cd /Users/anandhu/Documents/proxy/DelaunayBrush/02_marching_cube_dynamic/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /Users/anandhu/Documents/proxy/DelaunayBrush/02_marching_cube_dynamic /Users/anandhu/Documents/proxy/DelaunayBrush/02_marching_cube_dynamic/build/_deps/libigl-src /Users/anandhu/Documents/proxy/DelaunayBrush/02_marching_cube_dynamic/build /Users/anandhu/Documents/proxy/DelaunayBrush/02_marching_cube_dynamic/build/_deps/libigl-build /Users/anandhu/Documents/proxy/DelaunayBrush/02_marching_cube_dynamic/build/_deps/libigl-build/CMakeFiles/igl_core.dir/DependInfo.cmake "--color=$(COLOR)"
 .PHONY : _deps/libigl-build/CMakeFiles/igl_core.dir/depend
 

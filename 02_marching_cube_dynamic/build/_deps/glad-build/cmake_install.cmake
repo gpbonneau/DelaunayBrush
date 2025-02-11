@@ -1,4 +1,4 @@
-# Install script for directory: /Users/anandhu/Documents/proxy/normal-ribbon/02_marching_cube_dynamic/build/_deps/glad-src
+# Install script for directory: /Users/anandhu/Documents/proxy/DelaunayBrush/02_marching_cube_dynamic/build/_deps/glad-src
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)

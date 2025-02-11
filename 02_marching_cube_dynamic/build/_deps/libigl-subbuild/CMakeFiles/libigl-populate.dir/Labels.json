@@ -2,37 +2,37 @@
 	"sources" : 
 	[
 		{
-			"file" : "/Users/anandhu/Documents/proxy/normal-ribbon/02_marching_cube_dynamic/build/_deps/libigl-subbuild/CMakeFiles/libigl-populate"
+			"file" : "/Users/anandhu/Documents/proxy/DelaunayBrush/02_marching_cube_dynamic/build/_deps/libigl-subbuild/CMakeFiles/libigl-populate"
 		},
 		{
-			"file" : "/Users/anandhu/Documents/proxy/normal-ribbon/02_marching_cube_dynamic/build/_deps/libigl-subbuild/CMakeFiles/libigl-populate.rule"
+			"file" : "/Users/anandhu/Documents/proxy/DelaunayBrush/02_marching_cube_dynamic/build/_deps/libigl-subbuild/CMakeFiles/libigl-populate.rule"
 		},
 		{
-			"file" : "/Users/anandhu/Documents/proxy/normal-ribbon/02_marching_cube_dynamic/build/_deps/libigl-subbuild/CMakeFiles/libigl-populate-complete.rule"
+			"file" : "/Users/anandhu/Documents/proxy/DelaunayBrush/02_marching_cube_dynamic/build/_deps/libigl-subbuild/CMakeFiles/libigl-populate-complete.rule"
 		},
 		{
-			"file" : "/Users/anandhu/Documents/proxy/normal-ribbon/02_marching_cube_dynamic/build/_deps/libigl-subbuild/libigl-populate-prefix/src/libigl-populate-stamp/libigl-populate-build.rule"
+			"file" : "/Users/anandhu/Documents/proxy/DelaunayBrush/02_marching_cube_dynamic/build/_deps/libigl-subbuild/libigl-populate-prefix/src/libigl-populate-stamp/libigl-populate-build.rule"
 		},
 		{
-			"file" : "/Users/anandhu/Documents/proxy/normal-ribbon/02_marching_cube_dynamic/build/_deps/libigl-subbuild/libigl-populate-prefix/src/libigl-populate-stamp/libigl-populate-configure.rule"
+			"file" : "/Users/anandhu/Documents/proxy/DelaunayBrush/02_marching_cube_dynamic/build/_deps/libigl-subbuild/libigl-populate-prefix/src/libigl-populate-stamp/libigl-populate-configure.rule"
 		},
 		{
-			"file" : "/Users/anandhu/Documents/proxy/normal-ribbon/02_marching_cube_dynamic/build/_deps/libigl-subbuild/libigl-populate-prefix/src/libigl-populate-stamp/libigl-populate-download.rule"
+			"file" : "/Users/anandhu/Documents/proxy/DelaunayBrush/02_marching_cube_dynamic/build/_deps/libigl-subbuild/libigl-populate-prefix/src/libigl-populate-stamp/libigl-populate-download.rule"
 		},
 		{
-			"file" : "/Users/anandhu/Documents/proxy/normal-ribbon/02_marching_cube_dynamic/build/_deps/libigl-subbuild/libigl-populate-prefix/src/libigl-populate-stamp/libigl-populate-install.rule"
+			"file" : "/Users/anandhu/Documents/proxy/DelaunayBrush/02_marching_cube_dynamic/build/_deps/libigl-subbuild/libigl-populate-prefix/src/libigl-populate-stamp/libigl-populate-install.rule"
 		},
 		{
-			"file" : "/Users/anandhu/Documents/proxy/normal-ribbon/02_marching_cube_dynamic/build/_deps/libigl-subbuild/libigl-populate-prefix/src/libigl-populate-stamp/libigl-populate-mkdir.rule"
+			"file" : "/Users/anandhu/Documents/proxy/DelaunayBrush/02_marching_cube_dynamic/build/_deps/libigl-subbuild/libigl-populate-prefix/src/libigl-populate-stamp/libigl-populate-mkdir.rule"
 		},
 		{
-			"file" : "/Users/anandhu/Documents/proxy/normal-ribbon/02_marching_cube_dynamic/build/_deps/libigl-subbuild/libigl-populate-prefix/src/libigl-populate-stamp/libigl-populate-patch.rule"
+			"file" : "/Users/anandhu/Documents/proxy/DelaunayBrush/02_marching_cube_dynamic/build/_deps/libigl-subbuild/libigl-populate-prefix/src/libigl-populate-stamp/libigl-populate-patch.rule"
 		},
 		{
-			"file" : "/Users/anandhu/Documents/proxy/normal-ribbon/02_marching_cube_dynamic/build/_deps/libigl-subbuild/libigl-populate-prefix/src/libigl-populate-stamp/libigl-populate-test.rule"
+			"file" : "/Users/anandhu/Documents/proxy/DelaunayBrush/02_marching_cube_dynamic/build/_deps/libigl-subbuild/libigl-populate-prefix/src/libigl-populate-stamp/libigl-populate-test.rule"
 		},
 		{
-			"file" : "/Users/anandhu/Documents/proxy/normal-ribbon/02_marching_cube_dynamic/build/_deps/libigl-subbuild/libigl-populate-prefix/src/libigl-populate-stamp/libigl-populate-update.rule"
+			"file" : "/Users/anandhu/Documents/proxy/DelaunayBrush/02_marching_cube_dynamic/build/_deps/libigl-subbuild/libigl-populate-prefix/src/libigl-populate-stamp/libigl-populate-update.rule"
 		}
 	],
 	"target" : 

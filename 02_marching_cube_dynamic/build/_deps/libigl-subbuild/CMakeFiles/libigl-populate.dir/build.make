@@ -53,10 +53,10 @@ RM = /opt/homebrew/Cellar/cmake/3.28.3/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /Users/anandhu/Documents/proxy/normal-ribbon/02_marching_cube_dynamic/build/_deps/libigl-subbuild
+CMAKE_SOURCE_DIR = /Users/anandhu/Documents/proxy/DelaunayBrush/02_marching_cube_dynamic/build/_deps/libigl-subbuild
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /Users/anandhu/Documents/proxy/normal-ribbon/02_marching_cube_dynamic/build/_deps/libigl-subbuild
+CMAKE_BINARY_DIR = /Users/anandhu/Documents/proxy/DelaunayBrush/02_marching_cube_dynamic/build/_deps/libigl-subbuild
 
 # Utility rule file for libigl-populate.
 
@@ -77,60 +77,60 @@ CMakeFiles/libigl-populate-complete: libigl-populate-prefix/src/libigl-populate-
 CMakeFiles/libigl-populate-complete: libigl-populate-prefix/src/libigl-populate-stamp/libigl-populate-build
 CMakeFiles/libigl-populate-complete: libigl-populate-prefix/src/libigl-populate-stamp/libigl-populate-install
 CMakeFiles/libigl-populate-complete: libigl-populate-prefix/src/libigl-populate-stamp/libigl-populate-test
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --blue --bold --progress-dir=/Users/anandhu/Documents/proxy/normal-ribbon/02_marching_cube_dynamic/build/_deps/libigl-subbuild/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Completed 'libigl-populate'"
-	/opt/homebrew/Cellar/cmake/3.28.3/bin/cmake -E make_directory /Users/anandhu/Documents/proxy/normal-ribbon/02_marching_cube_dynamic/build/_deps/libigl-subbuild/CMakeFiles
-	/opt/homebrew/Cellar/cmake/3.28.3/bin/cmake -E touch /Users/anandhu/Documents/proxy/normal-ribbon/02_marching_cube_dynamic/build/_deps/libigl-subbuild/CMakeFiles/libigl-populate-complete
-	/opt/homebrew/Cellar/cmake/3.28.3/bin/cmake -E touch /Users/anandhu/Documents/proxy/normal-ribbon/02_marching_cube_dynamic/build/_deps/libigl-subbuild/libigl-populate-prefix/src/libigl-populate-stamp/libigl-populate-done
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --blue --bold --progress-dir=/Users/anandhu/Documents/proxy/DelaunayBrush/02_marching_cube_dynamic/build/_deps/libigl-subbuild/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Completed 'libigl-populate'"
+	/opt/homebrew/Cellar/cmake/3.28.3/bin/cmake -E make_directory /Users/anandhu/Documents/proxy/DelaunayBrush/02_marching_cube_dynamic/build/_deps/libigl-subbuild/CMakeFiles
+	/opt/homebrew/Cellar/cmake/3.28.3/bin/cmake -E touch /Users/anandhu/Documents/proxy/DelaunayBrush/02_marching_cube_dynamic/build/_deps/libigl-subbuild/CMakeFiles/libigl-populate-complete
+	/opt/homebrew/Cellar/cmake/3.28.3/bin/cmake -E touch /Users/anandhu/Documents/proxy/DelaunayBrush/02_marching_cube_dynamic/build/_deps/libigl-subbuild/libigl-populate-prefix/src/libigl-populate-stamp/libigl-populate-done
 
 libigl-populate-prefix/src/libigl-populate-stamp/libigl-populate-update:
 .PHONY : libigl-populate-prefix/src/libigl-populate-stamp/libigl-populate-update
 
 libigl-populate-prefix/src/libigl-populate-stamp/libigl-populate-build: libigl-populate-prefix/src/libigl-populate-stamp/libigl-populate-configure
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --blue --bold --progress-dir=/Users/anandhu/Documents/proxy/normal-ribbon/02_marching_cube_dynamic/build/_deps/libigl-subbuild/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "No build step for 'libigl-populate'"
-	cd /Users/anandhu/Documents/proxy/normal-ribbon/02_marching_cube_dynamic/build/_deps/libigl-build && /opt/homebrew/Cellar/cmake/3.28.3/bin/cmake -E echo_append
-	cd /Users/anandhu/Documents/proxy/normal-ribbon/02_marching_cube_dynamic/build/_deps/libigl-build && /opt/homebrew/Cellar/cmake/3.28.3/bin/cmake -E touch /Users/anandhu/Documents/proxy/normal-ribbon/02_marching_cube_dynamic/build/_deps/libigl-subbuild/libigl-populate-prefix/src/libigl-populate-stamp/libigl-populate-build
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --blue --bold --progress-dir=/Users/anandhu/Documents/proxy/DelaunayBrush/02_marching_cube_dynamic/build/_deps/libigl-subbuild/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "No build step for 'libigl-populate'"
+	cd /Users/anandhu/Documents/proxy/DelaunayBrush/02_marching_cube_dynamic/build/_deps/libigl-build && /opt/homebrew/Cellar/cmake/3.28.3/bin/cmake -E echo_append
+	cd /Users/anandhu/Documents/proxy/DelaunayBrush/02_marching_cube_dynamic/build/_deps/libigl-build && /opt/homebrew/Cellar/cmake/3.28.3/bin/cmake -E touch /Users/anandhu/Documents/proxy/DelaunayBrush/02_marching_cube_dynamic/build/_deps/libigl-subbuild/libigl-populate-prefix/src/libigl-populate-stamp/libigl-populate-build
 
 libigl-populate-prefix/src/libigl-populate-stamp/libigl-populate-configure: libigl-populate-prefix/tmp/libigl-populate-cfgcmd.txt
 libigl-populate-prefix/src/libigl-populate-stamp/libigl-populate-configure: libigl-populate-prefix/src/libigl-populate-stamp/libigl-populate-patch
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --blue --bold --progress-dir=/Users/anandhu/Documents/proxy/normal-ribbon/02_marching_cube_dynamic/build/_deps/libigl-subbuild/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "No configure step for 'libigl-populate'"
-	cd /Users/anandhu/Documents/proxy/normal-ribbon/02_marching_cube_dynamic/build/_deps/libigl-build && /opt/homebrew/Cellar/cmake/3.28.3/bin/cmake -E echo_append
-	cd /Users/anandhu/Documents/proxy/normal-ribbon/02_marching_cube_dynamic/build/_deps/libigl-build && /opt/homebrew/Cellar/cmake/3.28.3/bin/cmake -E touch /Users/anandhu/Documents/proxy/normal-ribbon/02_marching_cube_dynamic/build/_deps/libigl-subbuild/libigl-populate-prefix/src/libigl-populate-stamp/libigl-populate-configure
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --blue --bold --progress-dir=/Users/anandhu/Documents/proxy/DelaunayBrush/02_marching_cube_dynamic/build/_deps/libigl-subbuild/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "No configure step for 'libigl-populate'"
+	cd /Users/anandhu/Documents/proxy/DelaunayBrush/02_marching_cube_dynamic/build/_deps/libigl-build && /opt/homebrew/Cellar/cmake/3.28.3/bin/cmake -E echo_append
+	cd /Users/anandhu/Documents/proxy/DelaunayBrush/02_marching_cube_dynamic/build/_deps/libigl-build && /opt/homebrew/Cellar/cmake/3.28.3/bin/cmake -E touch /Users/anandhu/Documents/proxy/DelaunayBrush/02_marching_cube_dynamic/build/_deps/libigl-subbuild/libigl-populate-prefix/src/libigl-populate-stamp/libigl-populate-configure
 
 libigl-populate-prefix/src/libigl-populate-stamp/libigl-populate-download: libigl-populate-prefix/src/libigl-populate-stamp/libigl-populate-gitinfo.txt
 libigl-populate-prefix/src/libigl-populate-stamp/libigl-populate-download: libigl-populate-prefix/src/libigl-populate-stamp/libigl-populate-mkdir
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --blue --bold --progress-dir=/Users/anandhu/Documents/proxy/normal-ribbon/02_marching_cube_dynamic/build/_deps/libigl-subbuild/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Performing download step (git clone) for 'libigl-populate'"
-	cd /Users/anandhu/Documents/proxy/normal-ribbon/02_marching_cube_dynamic/build/_deps && /opt/homebrew/Cellar/cmake/3.28.3/bin/cmake -P /Users/anandhu/Documents/proxy/normal-ribbon/02_marching_cube_dynamic/build/_deps/libigl-subbuild/libigl-populate-prefix/tmp/libigl-populate-gitclone.cmake
-	cd /Users/anandhu/Documents/proxy/normal-ribbon/02_marching_cube_dynamic/build/_deps && /opt/homebrew/Cellar/cmake/3.28.3/bin/cmake -E touch /Users/anandhu/Documents/proxy/normal-ribbon/02_marching_cube_dynamic/build/_deps/libigl-subbuild/libigl-populate-prefix/src/libigl-populate-stamp/libigl-populate-download
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --blue --bold --progress-dir=/Users/anandhu/Documents/proxy/DelaunayBrush/02_marching_cube_dynamic/build/_deps/libigl-subbuild/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Performing download step (git clone) for 'libigl-populate'"
+	cd /Users/anandhu/Documents/proxy/DelaunayBrush/02_marching_cube_dynamic/build/_deps && /opt/homebrew/Cellar/cmake/3.28.3/bin/cmake -P /Users/anandhu/Documents/proxy/DelaunayBrush/02_marching_cube_dynamic/build/_deps/libigl-subbuild/libigl-populate-prefix/tmp/libigl-populate-gitclone.cmake
+	cd /Users/anandhu/Documents/proxy/DelaunayBrush/02_marching_cube_dynamic/build/_deps && /opt/homebrew/Cellar/cmake/3.28.3/bin/cmake -E touch /Users/anandhu/Documents/proxy/DelaunayBrush/02_marching_cube_dynamic/build/_deps/libigl-subbuild/libigl-populate-prefix/src/libigl-populate-stamp/libigl-populate-download
 
 libigl-populate-prefix/src/libigl-populate-stamp/libigl-populate-install: libigl-populate-prefix/src/libigl-populate-stamp/libigl-populate-build
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --blue --bold --progress-dir=/Users/anandhu/Documents/proxy/normal-ribbon/02_marching_cube_dynamic/build/_deps/libigl-subbuild/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "No install step for 'libigl-populate'"
-	cd /Users/anandhu/Documents/proxy/normal-ribbon/02_marching_cube_dynamic/build/_deps/libigl-build && /opt/homebrew/Cellar/cmake/3.28.3/bin/cmake -E echo_append
-	cd /Users/anandhu/Documents/proxy/normal-ribbon/02_marching_cube_dynamic/build/_deps/libigl-build && /opt/homebrew/Cellar/cmake/3.28.3/bin/cmake -E touch /Users/anandhu/Documents/proxy/normal-ribbon/02_marching_cube_dynamic/build/_deps/libigl-subbuild/libigl-populate-prefix/src/libigl-populate-stamp/libigl-populate-install
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --blue --bold --progress-dir=/Users/anandhu/Documents/proxy/DelaunayBrush/02_marching_cube_dynamic/build/_deps/libigl-subbuild/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "No install step for 'libigl-populate'"
+	cd /Users/anandhu/Documents/proxy/DelaunayBrush/02_marching_cube_dynamic/build/_deps/libigl-build && /opt/homebrew/Cellar/cmake/3.28.3/bin/cmake -E echo_append
+	cd /Users/anandhu/Documents/proxy/DelaunayBrush/02_marching_cube_dynamic/build/_deps/libigl-build && /opt/homebrew/Cellar/cmake/3.28.3/bin/cmake -E touch /Users/anandhu/Documents/proxy/DelaunayBrush/02_marching_cube_dynamic/build/_deps/libigl-subbuild/libigl-populate-prefix/src/libigl-populate-stamp/libigl-populate-install
 
 libigl-populate-prefix/src/libigl-populate-stamp/libigl-populate-mkdir:
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --blue --bold --progress-dir=/Users/anandhu/Documents/proxy/normal-ribbon/02_marching_cube_dynamic/build/_deps/libigl-subbuild/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Creating directories for 'libigl-populate'"
-	/opt/homebrew/Cellar/cmake/3.28.3/bin/cmake -Dcfgdir= -P /Users/anandhu/Documents/proxy/normal-ribbon/02_marching_cube_dynamic/build/_deps/libigl-subbuild/libigl-populate-prefix/tmp/libigl-populate-mkdirs.cmake
-	/opt/homebrew/Cellar/cmake/3.28.3/bin/cmake -E touch /Users/anandhu/Documents/proxy/normal-ribbon/02_marching_cube_dynamic/build/_deps/libigl-subbuild/libigl-populate-prefix/src/libigl-populate-stamp/libigl-populate-mkdir
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --blue --bold --progress-dir=/Users/anandhu/Documents/proxy/DelaunayBrush/02_marching_cube_dynamic/build/_deps/libigl-subbuild/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Creating directories for 'libigl-populate'"
+	/opt/homebrew/Cellar/cmake/3.28.3/bin/cmake -Dcfgdir= -P /Users/anandhu/Documents/proxy/DelaunayBrush/02_marching_cube_dynamic/build/_deps/libigl-subbuild/libigl-populate-prefix/tmp/libigl-populate-mkdirs.cmake
+	/opt/homebrew/Cellar/cmake/3.28.3/bin/cmake -E touch /Users/anandhu/Documents/proxy/DelaunayBrush/02_marching_cube_dynamic/build/_deps/libigl-subbuild/libigl-populate-prefix/src/libigl-populate-stamp/libigl-populate-mkdir
 
 libigl-populate-prefix/src/libigl-populate-stamp/libigl-populate-patch: libigl-populate-prefix/src/libigl-populate-stamp/libigl-populate-patch-info.txt
 libigl-populate-prefix/src/libigl-populate-stamp/libigl-populate-patch: libigl-populate-prefix/src/libigl-populate-stamp/libigl-populate-update
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --blue --bold --progress-dir=/Users/anandhu/Documents/proxy/normal-ribbon/02_marching_cube_dynamic/build/_deps/libigl-subbuild/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "No patch step for 'libigl-populate'"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --blue --bold --progress-dir=/Users/anandhu/Documents/proxy/DelaunayBrush/02_marching_cube_dynamic/build/_deps/libigl-subbuild/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "No patch step for 'libigl-populate'"
 	/opt/homebrew/Cellar/cmake/3.28.3/bin/cmake -E echo_append
-	/opt/homebrew/Cellar/cmake/3.28.3/bin/cmake -E touch /Users/anandhu/Documents/proxy/normal-ribbon/02_marching_cube_dynamic/build/_deps/libigl-subbuild/libigl-populate-prefix/src/libigl-populate-stamp/libigl-populate-patch
+	/opt/homebrew/Cellar/cmake/3.28.3/bin/cmake -E touch /Users/anandhu/Documents/proxy/DelaunayBrush/02_marching_cube_dynamic/build/_deps/libigl-subbuild/libigl-populate-prefix/src/libigl-populate-stamp/libigl-populate-patch
 
 libigl-populate-prefix/src/libigl-populate-stamp/libigl-populate-update:
 .PHONY : libigl-populate-prefix/src/libigl-populate-stamp/libigl-populate-update
 
 libigl-populate-prefix/src/libigl-populate-stamp/libigl-populate-test: libigl-populate-prefix/src/libigl-populate-stamp/libigl-populate-install
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --blue --bold --progress-dir=/Users/anandhu/Documents/proxy/normal-ribbon/02_marching_cube_dynamic/build/_deps/libigl-subbuild/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "No test step for 'libigl-populate'"
-	cd /Users/anandhu/Documents/proxy/normal-ribbon/02_marching_cube_dynamic/build/_deps/libigl-build && /opt/homebrew/Cellar/cmake/3.28.3/bin/cmake -E echo_append
-	cd /Users/anandhu/Documents/proxy/normal-ribbon/02_marching_cube_dynamic/build/_deps/libigl-build && /opt/homebrew/Cellar/cmake/3.28.3/bin/cmake -E touch /Users/anandhu/Documents/proxy/normal-ribbon/02_marching_cube_dynamic/build/_deps/libigl-subbuild/libigl-populate-prefix/src/libigl-populate-stamp/libigl-populate-test
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --blue --bold --progress-dir=/Users/anandhu/Documents/proxy/DelaunayBrush/02_marching_cube_dynamic/build/_deps/libigl-subbuild/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "No test step for 'libigl-populate'"
+	cd /Users/anandhu/Documents/proxy/DelaunayBrush/02_marching_cube_dynamic/build/_deps/libigl-build && /opt/homebrew/Cellar/cmake/3.28.3/bin/cmake -E echo_append
+	cd /Users/anandhu/Documents/proxy/DelaunayBrush/02_marching_cube_dynamic/build/_deps/libigl-build && /opt/homebrew/Cellar/cmake/3.28.3/bin/cmake -E touch /Users/anandhu/Documents/proxy/DelaunayBrush/02_marching_cube_dynamic/build/_deps/libigl-subbuild/libigl-populate-prefix/src/libigl-populate-stamp/libigl-populate-test
 
 libigl-populate-prefix/src/libigl-populate-stamp/libigl-populate-update: libigl-populate-prefix/tmp/libigl-populate-gitupdate.cmake
 libigl-populate-prefix/src/libigl-populate-stamp/libigl-populate-update: libigl-populate-prefix/src/libigl-populate-stamp/libigl-populate-update-info.txt
 libigl-populate-prefix/src/libigl-populate-stamp/libigl-populate-update: libigl-populate-prefix/src/libigl-populate-stamp/libigl-populate-download
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --blue --bold --progress-dir=/Users/anandhu/Documents/proxy/normal-ribbon/02_marching_cube_dynamic/build/_deps/libigl-subbuild/CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Performing update step for 'libigl-populate'"
-	cd /Users/anandhu/Documents/proxy/normal-ribbon/02_marching_cube_dynamic/build/_deps/libigl-src && /opt/homebrew/Cellar/cmake/3.28.3/bin/cmake -Dcan_fetch=YES -P /Users/anandhu/Documents/proxy/normal-ribbon/02_marching_cube_dynamic/build/_deps/libigl-subbuild/libigl-populate-prefix/tmp/libigl-populate-gitupdate.cmake
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --blue --bold --progress-dir=/Users/anandhu/Documents/proxy/DelaunayBrush/02_marching_cube_dynamic/build/_deps/libigl-subbuild/CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Performing update step for 'libigl-populate'"
+	cd /Users/anandhu/Documents/proxy/DelaunayBrush/02_marching_cube_dynamic/build/_deps/libigl-src && /opt/homebrew/Cellar/cmake/3.28.3/bin/cmake -Dcan_fetch=YES -P /Users/anandhu/Documents/proxy/DelaunayBrush/02_marching_cube_dynamic/build/_deps/libigl-subbuild/libigl-populate-prefix/tmp/libigl-populate-gitupdate.cmake
 
 libigl-populate: CMakeFiles/libigl-populate
 libigl-populate: CMakeFiles/libigl-populate-complete
@@ -154,6 +154,6 @@ CMakeFiles/libigl-populate.dir/clean:
 .PHONY : CMakeFiles/libigl-populate.dir/clean
 
 CMakeFiles/libigl-populate.dir/depend:
-	cd /Users/anandhu/Documents/proxy/normal-ribbon/02_marching_cube_dynamic/build/_deps/libigl-subbuild && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /Users/anandhu/Documents/proxy/normal-ribbon/02_marching_cube_dynamic/build/_deps/libigl-subbuild /Users/anandhu/Documents/proxy/normal-ribbon/02_marching_cube_dynamic/build/_deps/libigl-subbuild /Users/anandhu/Documents/proxy/normal-ribbon/02_marching_cube_dynamic/build/_deps/libigl-subbuild /Users/anandhu/Documents/proxy/normal-ribbon/02_marching_cube_dynamic/build/_deps/libigl-subbuild /Users/anandhu/Documents/proxy/normal-ribbon/02_marching_cube_dynamic/build/_deps/libigl-subbuild/CMakeFiles/libigl-populate.dir/DependInfo.cmake "--color=$(COLOR)"
+	cd /Users/anandhu/Documents/proxy/DelaunayBrush/02_marching_cube_dynamic/build/_deps/libigl-subbuild && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /Users/anandhu/Documents/proxy/DelaunayBrush/02_marching_cube_dynamic/build/_deps/libigl-subbuild /Users/anandhu/Documents/proxy/DelaunayBrush/02_marching_cube_dynamic/build/_deps/libigl-subbuild /Users/anandhu/Documents/proxy/DelaunayBrush/02_marching_cube_dynamic/build/_deps/libigl-subbuild /Users/anandhu/Documents/proxy/DelaunayBrush/02_marching_cube_dynamic/build/_deps/libigl-subbuild /Users/anandhu/Documents/proxy/DelaunayBrush/02_marching_cube_dynamic/build/_deps/libigl-subbuild/CMakeFiles/libigl-populate.dir/DependInfo.cmake "--color=$(COLOR)"
 .PHONY : CMakeFiles/libigl-populate.dir/depend
 
