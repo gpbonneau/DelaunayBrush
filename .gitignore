@@ -1,4 +1,4 @@
 Inputs_and_Results/
 02_marching_cube_dynamic/build
-build
+build/
 build/_deps/

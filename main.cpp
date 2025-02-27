@@ -8,6 +8,7 @@
 #include <igl/writePLY.h>
 #include <igl/copyleft/cgal/convex_hull.h>
 #include <igl/opengl/glfw/Viewer.h>
+#include <chrono>
 
 
 // Define CGAL types
@@ -218,6 +219,8 @@ int main(int argc, char** argv) {
         return 1;
     }
 
+    auto start = std::chrono::high_resolution_clock::now();
+
    // Read the point cloud from the PLY file using libigl
     Eigen::MatrixXd V; // Points (vertices)
     Eigen::MatrixXi F; // Faces (not needed in this case, but required by libigl read function)
@@ -365,6 +368,13 @@ int main(int argc, char** argv) {
 //         viewer.data().set_mesh(V_translated, F_base);
 //         viewer.data().set_colors(Eigen::RowVector3d(1,1,0));
 // }
+// End time
+    auto end = std::chrono::high_resolution_clock::now();
+
+    // Compute execution time in milliseconds
+    std::chrono::duration<double, std::milli> duration = end - start;
+
+    std::cout << "Execution time: " << duration.count() << " ms" << std::endl;
     std::cout << "Writing circumspheres to 'circumspheres.obj'" << std::endl;
     save_combined_spheres(circumspheres,viewer, output_file);
 
