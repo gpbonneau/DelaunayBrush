@@ -54,10 +54,10 @@ RM = /opt/homebrew/Cellar/cmake/3.28.3/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /Users/anandhu/Documents/proxy/normal-ribbon/build/_deps/libigl-subbuild
+CMAKE_SOURCE_DIR = /Users/anandhu/Documents/proxy/DelaunayBrush/build/_deps/libigl-subbuild
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /Users/anandhu/Documents/proxy/normal-ribbon/build/_deps/libigl-subbuild
+CMAKE_BINARY_DIR = /Users/anandhu/Documents/proxy/DelaunayBrush/build/_deps/libigl-subbuild
 
 #=============================================================================
 # Directory level rules for the build root directory
@@ -81,14 +81,14 @@ clean: CMakeFiles/libigl-populate.dir/clean
 CMakeFiles/libigl-populate.dir/all:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/libigl-populate.dir/build.make CMakeFiles/libigl-populate.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/libigl-populate.dir/build.make CMakeFiles/libigl-populate.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/Users/anandhu/Documents/proxy/normal-ribbon/build/_deps/libigl-subbuild/CMakeFiles --progress-num=1,2,3,4,5,6,7,8,9 "Built target libigl-populate"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/Users/anandhu/Documents/proxy/DelaunayBrush/build/_deps/libigl-subbuild/CMakeFiles --progress-num=1,2,3,4,5,6,7,8,9 "Built target libigl-populate"
 .PHONY : CMakeFiles/libigl-populate.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/libigl-populate.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /Users/anandhu/Documents/proxy/normal-ribbon/build/_deps/libigl-subbuild/CMakeFiles 9
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/anandhu/Documents/proxy/DelaunayBrush/build/_deps/libigl-subbuild/CMakeFiles 9
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/libigl-populate.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /Users/anandhu/Documents/proxy/normal-ribbon/build/_deps/libigl-subbuild/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/anandhu/Documents/proxy/DelaunayBrush/build/_deps/libigl-subbuild/CMakeFiles 0
 .PHONY : CMakeFiles/libigl-populate.dir/rule
 
 # Convenience name for target.

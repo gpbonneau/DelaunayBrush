@@ -1,8 +1,8 @@
 _deps/glfw-build/src/CMakeFiles/glfw.dir/cocoa_time.c.o: \
-  /Users/anandhu/Documents/proxy/normal-ribbon/build/_deps/glfw-src/src/cocoa_time.c \
-  /Users/anandhu/Documents/proxy/normal-ribbon/build/_deps/glfw-src/src/internal.h \
-  /Users/anandhu/Documents/proxy/normal-ribbon/build/_deps/glfw-build/src/glfw_config.h \
-  /Users/anandhu/Documents/proxy/normal-ribbon/build/_deps/glfw-src/src/../include/GLFW/glfw3.h \
+  /Users/anandhu/Documents/proxy/DelaunayBrush/build/_deps/glfw-src/src/cocoa_time.c \
+  /Users/anandhu/Documents/proxy/DelaunayBrush/build/_deps/glfw-src/src/internal.h \
+  /Users/anandhu/Documents/proxy/DelaunayBrush/build/_deps/glfw-build/src/glfw_config.h \
+  /Users/anandhu/Documents/proxy/DelaunayBrush/build/_deps/glfw-src/src/../include/GLFW/glfw3.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/15.0.0/include/stddef.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/15.0.0/include/stdint.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk/usr/include/stdint.h \
@@ -31,7 +31,7 @@ _deps/glfw-build/src/CMakeFiles/glfw.dir/cocoa_time.c.o: \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk/usr/include/sys/_types/_uintptr_t.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk/usr/include/_types/_intmax_t.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk/usr/include/_types/_uintmax_t.h \
-  /Users/anandhu/Documents/proxy/normal-ribbon/build/_deps/glfw-src/src/cocoa_platform.h \
+  /Users/anandhu/Documents/proxy/DelaunayBrush/build/_deps/glfw-src/src/cocoa_platform.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk/usr/include/dlfcn.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/15.0.0/include/stdbool.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk/usr/include/Availability.h \
@@ -769,12 +769,12 @@ _deps/glfw-build/src/CMakeFiles/glfw.dir/cocoa_time.c.o: \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk/System/Library/Frameworks/Carbon.framework/Frameworks/SecurityHI.framework/Headers/SecCertificateSupport.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk/System/Library/Frameworks/Carbon.framework/Frameworks/Help.framework/Headers/Help.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk/System/Library/Frameworks/Carbon.framework/Frameworks/Help.framework/Headers/AppleHelp.h \
-  /Users/anandhu/Documents/proxy/normal-ribbon/build/_deps/glfw-src/src/posix_thread.h \
+  /Users/anandhu/Documents/proxy/DelaunayBrush/build/_deps/glfw-src/src/posix_thread.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk/usr/include/pthread.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk/usr/include/pthread/sched.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk/usr/include/pthread/pthread_impl.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk/usr/include/pthread/qos.h \
-  /Users/anandhu/Documents/proxy/normal-ribbon/build/_deps/glfw-src/src/cocoa_joystick.h \
+  /Users/anandhu/Documents/proxy/DelaunayBrush/build/_deps/glfw-src/src/cocoa_joystick.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk/System/Library/Frameworks/IOKit.framework/Headers/IOCFPlugIn.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk/System/Library/Frameworks/CoreFoundation.framework/Headers/CFPlugInCOM.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk/System/Library/Frameworks/IOKit.framework/Headers/hid/IOHIDLib.h \
@@ -794,8 +794,8 @@ _deps/glfw-build/src/CMakeFiles/glfw.dir/cocoa_time.c.o: \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk/System/Library/Frameworks/IOKit.framework/Headers/hid/IOHIDUsageTables.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk/System/Library/Frameworks/IOKit.framework/Headers/hid/IOHIDValue.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk/System/Library/Frameworks/IOKit.framework/Headers/hid/IOHIDTransaction.h \
-  /Users/anandhu/Documents/proxy/normal-ribbon/build/_deps/glfw-src/src/nsgl_context.h \
+  /Users/anandhu/Documents/proxy/DelaunayBrush/build/_deps/glfw-src/src/nsgl_context.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/15.0.0/include/stdatomic.h \
-  /Users/anandhu/Documents/proxy/normal-ribbon/build/_deps/glfw-src/src/egl_context.h \
-  /Users/anandhu/Documents/proxy/normal-ribbon/build/_deps/glfw-src/src/osmesa_context.h \
+  /Users/anandhu/Documents/proxy/DelaunayBrush/build/_deps/glfw-src/src/egl_context.h \
+  /Users/anandhu/Documents/proxy/DelaunayBrush/build/_deps/glfw-src/src/osmesa_context.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk/usr/include/mach/mach_time.h

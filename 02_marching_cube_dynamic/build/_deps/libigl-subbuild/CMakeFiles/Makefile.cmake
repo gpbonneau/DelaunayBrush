@@ -10,10 +10,8 @@ set(CMAKE_MAKEFILE_DEPENDS
   "CMakeFiles/3.28.3/CMakeSystem.cmake"
   "CMakeLists.txt"
   "libigl-populate-prefix/tmp/libigl-populate-mkdirs.cmake"
-  "/opt/homebrew/Cellar/cmake/3.28.3/share/cmake/Modules/CMakeDetermineSystem.cmake"
   "/opt/homebrew/Cellar/cmake/3.28.3/share/cmake/Modules/CMakeGenericSystem.cmake"
   "/opt/homebrew/Cellar/cmake/3.28.3/share/cmake/Modules/CMakeInitializeConfigs.cmake"
-  "/opt/homebrew/Cellar/cmake/3.28.3/share/cmake/Modules/CMakeSystem.cmake.in"
   "/opt/homebrew/Cellar/cmake/3.28.3/share/cmake/Modules/CMakeSystemSpecificInformation.cmake"
   "/opt/homebrew/Cellar/cmake/3.28.3/share/cmake/Modules/CMakeSystemSpecificInitialize.cmake"
   "/opt/homebrew/Cellar/cmake/3.28.3/share/cmake/Modules/ExternalProject.cmake"
@@ -38,7 +36,6 @@ set(CMAKE_MAKEFILE_OUTPUTS
 
 # Byproducts of CMake generate step:
 set(CMAKE_MAKEFILE_PRODUCTS
-  "CMakeFiles/3.28.3/CMakeSystem.cmake"
   "libigl-populate-prefix/tmp/libigl-populate-mkdirs.cmake"
   "libigl-populate-prefix/tmp/libigl-populate-gitclone.cmake"
   "libigl-populate-prefix/src/libigl-populate-stamp/libigl-populate-gitinfo.txt"

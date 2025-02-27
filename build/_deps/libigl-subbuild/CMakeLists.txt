@@ -28,8 +28,8 @@ set_property(GLOBAL PROPERTY _CMAKE_FindGit_GIT_EXECUTABLE_VERSION
 include(ExternalProject)
 ExternalProject_Add(libigl-populate
                      "UPDATE_DISCONNECTED" "False" "GIT_REPOSITORY" "https://github.com/libigl/libigl.git" "EXTERNALPROJECT_INTERNAL_ARGUMENT_SEPARATOR" "GIT_TAG" "v2.5.0"
-                    SOURCE_DIR          "/Users/anandhu/Documents/proxy/normal-ribbon/build/_deps/libigl-src"
-                    BINARY_DIR          "/Users/anandhu/Documents/proxy/normal-ribbon/build/_deps/libigl-build"
+                    SOURCE_DIR          "/Users/anandhu/Documents/proxy/DelaunayBrush/build/_deps/libigl-src"
+                    BINARY_DIR          "/Users/anandhu/Documents/proxy/DelaunayBrush/build/_deps/libigl-build"
                     CONFIGURE_COMMAND   ""
                     BUILD_COMMAND       ""
                     INSTALL_COMMAND     ""

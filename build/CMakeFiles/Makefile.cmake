@@ -7,7 +7,7 @@ set(CMAKE_DEPENDS_GENERATOR "Unix Makefiles")
 # The top level Makefile was generated from the following files:
 set(CMAKE_MAKEFILE_DEPENDS
   "CMakeCache.txt"
-  "/Users/anandhu/Documents/proxy/normal-ribbon/CMakeLists.txt"
+  "/Users/anandhu/Documents/proxy/DelaunayBrush/CMakeLists.txt"
   "CMakeFiles/3.28.3/CMakeCCompiler.cmake"
   "CMakeFiles/3.28.3/CMakeCXXCompiler.cmake"
   "CMakeFiles/3.28.3/CMakeSystem.cmake"
@@ -33,7 +33,7 @@ set(CMAKE_MAKEFILE_DEPENDS
   "_deps/libigl-src/cmake/recipes/external/eigen.cmake"
   "_deps/libigl-src/cmake/recipes/external/glad.cmake"
   "_deps/libigl-src/cmake/recipes/external/glfw.cmake"
-  "/Users/anandhu/Documents/proxy/normal-ribbon/cmake/libigl.cmake"
+  "/Users/anandhu/Documents/proxy/DelaunayBrush/cmake/libigl.cmake"
   "/opt/homebrew/Cellar/cmake/3.28.3/share/cmake/Modules/BasicConfigVersion-SameMajorVersion.cmake.in"
   "/opt/homebrew/Cellar/cmake/3.28.3/share/cmake/Modules/CMakeCCompiler.cmake.in"
   "/opt/homebrew/Cellar/cmake/3.28.3/share/cmake/Modules/CMakeCCompilerABI.c"

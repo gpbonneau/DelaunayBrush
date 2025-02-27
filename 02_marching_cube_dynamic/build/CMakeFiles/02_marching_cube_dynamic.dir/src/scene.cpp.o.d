@@ -1074,6 +1074,7 @@ CMakeFiles/02_marching_cube_dynamic.dir/src/scene.cpp.o: \
   /Users/anandhu/Documents/proxy/DelaunayBrush/02_marching_cube_dynamic/src/implicit_surface/implicit_surface.hpp \
   /Users/anandhu/Documents/proxy/DelaunayBrush/02_marching_cube_dynamic/src/implicit_surface/field_function.hpp \
   /Users/anandhu/Documents/proxy/DelaunayBrush/02_marching_cube_dynamic/src/implicit_surface/gui_helper.hpp \
+  /Users/anandhu/Documents/proxy/DelaunayBrush/02_marching_cube_dynamic/src/happly.h \
   /opt/homebrew/include/CGAL/Exact_predicates_inexact_constructions_kernel.h \
   /opt/homebrew/include/CGAL/Simple_cartesian.h \
   /opt/homebrew/include/CGAL/Cartesian/Cartesian_base.h \

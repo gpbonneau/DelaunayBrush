@@ -1,4 +1,4 @@
-# Install script for directory: /Users/anandhu/Documents/proxy/normal-ribbon
+# Install script for directory: /Users/anandhu/Documents/proxy/DelaunayBrush
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -39,17 +39,17 @@ endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
-  include("/Users/anandhu/Documents/proxy/normal-ribbon/build/_deps/libigl-build/cmake_install.cmake")
+  include("/Users/anandhu/Documents/proxy/DelaunayBrush/build/_deps/libigl-build/cmake_install.cmake")
 endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
-  include("/Users/anandhu/Documents/proxy/normal-ribbon/build/_deps/glfw-build/cmake_install.cmake")
+  include("/Users/anandhu/Documents/proxy/DelaunayBrush/build/_deps/glfw-build/cmake_install.cmake")
 endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
-  include("/Users/anandhu/Documents/proxy/normal-ribbon/build/_deps/glad-build/cmake_install.cmake")
+  include("/Users/anandhu/Documents/proxy/DelaunayBrush/build/_deps/glad-build/cmake_install.cmake")
 endif()
 
 if(CMAKE_INSTALL_COMPONENT)
@@ -60,5 +60,5 @@ endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-file(WRITE "/Users/anandhu/Documents/proxy/normal-ribbon/build/${CMAKE_INSTALL_MANIFEST}"
+file(WRITE "/Users/anandhu/Documents/proxy/DelaunayBrush/build/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")

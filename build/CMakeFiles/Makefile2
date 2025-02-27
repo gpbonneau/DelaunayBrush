@@ -54,10 +54,10 @@ RM = /opt/homebrew/Cellar/cmake/3.28.3/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /Users/anandhu/Documents/proxy/normal-ribbon
+CMAKE_SOURCE_DIR = /Users/anandhu/Documents/proxy/DelaunayBrush
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /Users/anandhu/Documents/proxy/normal-ribbon/build
+CMAKE_BINARY_DIR = /Users/anandhu/Documents/proxy/DelaunayBrush/build
 
 #=============================================================================
 # Directory level rules for the build root directory
@@ -153,14 +153,14 @@ _deps/libigl-build/clean: _deps/libigl-build/CMakeFiles/igl_core.dir/clean
 CMakeFiles/igl_glfw.dir/all:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/igl_glfw.dir/build.make CMakeFiles/igl_glfw.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/igl_glfw.dir/build.make CMakeFiles/igl_glfw.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/Users/anandhu/Documents/proxy/normal-ribbon/build/CMakeFiles --progress-num= "Built target igl_glfw"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/Users/anandhu/Documents/proxy/DelaunayBrush/build/CMakeFiles --progress-num= "Built target igl_glfw"
 .PHONY : CMakeFiles/igl_glfw.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/igl_glfw.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /Users/anandhu/Documents/proxy/normal-ribbon/build/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/anandhu/Documents/proxy/DelaunayBrush/build/CMakeFiles 0
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/igl_glfw.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /Users/anandhu/Documents/proxy/normal-ribbon/build/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/anandhu/Documents/proxy/DelaunayBrush/build/CMakeFiles 0
 .PHONY : CMakeFiles/igl_glfw.dir/rule
 
 # Convenience name for target.
@@ -179,14 +179,14 @@ CMakeFiles/igl_glfw.dir/clean:
 CMakeFiles/igl_opengl.dir/all:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/igl_opengl.dir/build.make CMakeFiles/igl_opengl.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/igl_opengl.dir/build.make CMakeFiles/igl_opengl.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/Users/anandhu/Documents/proxy/normal-ribbon/build/CMakeFiles --progress-num= "Built target igl_opengl"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/Users/anandhu/Documents/proxy/DelaunayBrush/build/CMakeFiles --progress-num= "Built target igl_opengl"
 .PHONY : CMakeFiles/igl_opengl.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/igl_opengl.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /Users/anandhu/Documents/proxy/normal-ribbon/build/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/anandhu/Documents/proxy/DelaunayBrush/build/CMakeFiles 0
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/igl_opengl.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /Users/anandhu/Documents/proxy/normal-ribbon/build/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/anandhu/Documents/proxy/DelaunayBrush/build/CMakeFiles 0
 .PHONY : CMakeFiles/igl_opengl.dir/rule
 
 # Convenience name for target.
@@ -209,14 +209,14 @@ CMakeFiles/example.dir/all: _deps/glfw-build/src/CMakeFiles/glfw.dir/all
 CMakeFiles/example.dir/all: _deps/glad-build/CMakeFiles/glad.dir/all
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/example.dir/build.make CMakeFiles/example.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/example.dir/build.make CMakeFiles/example.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/Users/anandhu/Documents/proxy/normal-ribbon/build/CMakeFiles --progress-num=1,2 "Built target example"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/Users/anandhu/Documents/proxy/DelaunayBrush/build/CMakeFiles --progress-num=1,2,3 "Built target example"
 .PHONY : CMakeFiles/example.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/example.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /Users/anandhu/Documents/proxy/normal-ribbon/build/CMakeFiles 20
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/anandhu/Documents/proxy/DelaunayBrush/build/CMakeFiles 21
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/example.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /Users/anandhu/Documents/proxy/normal-ribbon/build/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/anandhu/Documents/proxy/DelaunayBrush/build/CMakeFiles 0
 .PHONY : CMakeFiles/example.dir/rule
 
 # Convenience name for target.
@@ -235,14 +235,14 @@ CMakeFiles/example.dir/clean:
 _deps/libigl-build/CMakeFiles/igl_core.dir/all:
 	$(MAKE) $(MAKESILENT) -f _deps/libigl-build/CMakeFiles/igl_core.dir/build.make _deps/libigl-build/CMakeFiles/igl_core.dir/depend
 	$(MAKE) $(MAKESILENT) -f _deps/libigl-build/CMakeFiles/igl_core.dir/build.make _deps/libigl-build/CMakeFiles/igl_core.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/Users/anandhu/Documents/proxy/normal-ribbon/build/CMakeFiles --progress-num= "Built target igl_core"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/Users/anandhu/Documents/proxy/DelaunayBrush/build/CMakeFiles --progress-num= "Built target igl_core"
 .PHONY : _deps/libigl-build/CMakeFiles/igl_core.dir/all
 
 # Build rule for subdir invocation for target.
 _deps/libigl-build/CMakeFiles/igl_core.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /Users/anandhu/Documents/proxy/normal-ribbon/build/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/anandhu/Documents/proxy/DelaunayBrush/build/CMakeFiles 0
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 _deps/libigl-build/CMakeFiles/igl_core.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /Users/anandhu/Documents/proxy/normal-ribbon/build/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/anandhu/Documents/proxy/DelaunayBrush/build/CMakeFiles 0
 .PHONY : _deps/libigl-build/CMakeFiles/igl_core.dir/rule
 
 # Convenience name for target.
@@ -261,14 +261,14 @@ _deps/libigl-build/CMakeFiles/igl_core.dir/clean:
 _deps/glfw-build/src/CMakeFiles/glfw.dir/all:
 	$(MAKE) $(MAKESILENT) -f _deps/glfw-build/src/CMakeFiles/glfw.dir/build.make _deps/glfw-build/src/CMakeFiles/glfw.dir/depend
 	$(MAKE) $(MAKESILENT) -f _deps/glfw-build/src/CMakeFiles/glfw.dir/build.make _deps/glfw-build/src/CMakeFiles/glfw.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/Users/anandhu/Documents/proxy/normal-ribbon/build/CMakeFiles --progress-num=5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20 "Built target glfw"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/Users/anandhu/Documents/proxy/DelaunayBrush/build/CMakeFiles --progress-num=6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21 "Built target glfw"
 .PHONY : _deps/glfw-build/src/CMakeFiles/glfw.dir/all
 
 # Build rule for subdir invocation for target.
 _deps/glfw-build/src/CMakeFiles/glfw.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /Users/anandhu/Documents/proxy/normal-ribbon/build/CMakeFiles 16
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/anandhu/Documents/proxy/DelaunayBrush/build/CMakeFiles 16
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 _deps/glfw-build/src/CMakeFiles/glfw.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /Users/anandhu/Documents/proxy/normal-ribbon/build/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/anandhu/Documents/proxy/DelaunayBrush/build/CMakeFiles 0
 .PHONY : _deps/glfw-build/src/CMakeFiles/glfw.dir/rule
 
 # Convenience name for target.
@@ -287,14 +287,14 @@ _deps/glfw-build/src/CMakeFiles/glfw.dir/clean:
 _deps/glad-build/CMakeFiles/glad.dir/all:
 	$(MAKE) $(MAKESILENT) -f _deps/glad-build/CMakeFiles/glad.dir/build.make _deps/glad-build/CMakeFiles/glad.dir/depend
 	$(MAKE) $(MAKESILENT) -f _deps/glad-build/CMakeFiles/glad.dir/build.make _deps/glad-build/CMakeFiles/glad.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/Users/anandhu/Documents/proxy/normal-ribbon/build/CMakeFiles --progress-num=3,4 "Built target glad"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/Users/anandhu/Documents/proxy/DelaunayBrush/build/CMakeFiles --progress-num=4,5 "Built target glad"
 .PHONY : _deps/glad-build/CMakeFiles/glad.dir/all
 
 # Build rule for subdir invocation for target.
 _deps/glad-build/CMakeFiles/glad.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /Users/anandhu/Documents/proxy/normal-ribbon/build/CMakeFiles 2
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/anandhu/Documents/proxy/DelaunayBrush/build/CMakeFiles 2
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 _deps/glad-build/CMakeFiles/glad.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /Users/anandhu/Documents/proxy/normal-ribbon/build/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/anandhu/Documents/proxy/DelaunayBrush/build/CMakeFiles 0
 .PHONY : _deps/glad-build/CMakeFiles/glad.dir/rule
 
 # Convenience name for target.

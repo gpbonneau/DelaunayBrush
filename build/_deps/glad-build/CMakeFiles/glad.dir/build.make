@@ -53,10 +53,10 @@ RM = /opt/homebrew/Cellar/cmake/3.28.3/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /Users/anandhu/Documents/proxy/normal-ribbon
+CMAKE_SOURCE_DIR = /Users/anandhu/Documents/proxy/DelaunayBrush
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /Users/anandhu/Documents/proxy/normal-ribbon/build
+CMAKE_BINARY_DIR = /Users/anandhu/Documents/proxy/DelaunayBrush/build
 
 # Include any dependencies generated for this target.
 include _deps/glad-build/CMakeFiles/glad.dir/depend.make
@@ -72,16 +72,16 @@ include _deps/glad-build/CMakeFiles/glad.dir/flags.make
 _deps/glad-build/CMakeFiles/glad.dir/src/glad.c.o: _deps/glad-build/CMakeFiles/glad.dir/flags.make
 _deps/glad-build/CMakeFiles/glad.dir/src/glad.c.o: _deps/glad-src/src/glad.c
 _deps/glad-build/CMakeFiles/glad.dir/src/glad.c.o: _deps/glad-build/CMakeFiles/glad.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/anandhu/Documents/proxy/normal-ribbon/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building C object _deps/glad-build/CMakeFiles/glad.dir/src/glad.c.o"
-	cd /Users/anandhu/Documents/proxy/normal-ribbon/build/_deps/glad-build && /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT _deps/glad-build/CMakeFiles/glad.dir/src/glad.c.o -MF CMakeFiles/glad.dir/src/glad.c.o.d -o CMakeFiles/glad.dir/src/glad.c.o -c /Users/anandhu/Documents/proxy/normal-ribbon/build/_deps/glad-src/src/glad.c
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/anandhu/Documents/proxy/DelaunayBrush/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building C object _deps/glad-build/CMakeFiles/glad.dir/src/glad.c.o"
+	cd /Users/anandhu/Documents/proxy/DelaunayBrush/build/_deps/glad-build && /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT _deps/glad-build/CMakeFiles/glad.dir/src/glad.c.o -MF CMakeFiles/glad.dir/src/glad.c.o.d -o CMakeFiles/glad.dir/src/glad.c.o -c /Users/anandhu/Documents/proxy/DelaunayBrush/build/_deps/glad-src/src/glad.c
 
 _deps/glad-build/CMakeFiles/glad.dir/src/glad.c.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing C source to CMakeFiles/glad.dir/src/glad.c.i"
-	cd /Users/anandhu/Documents/proxy/normal-ribbon/build/_deps/glad-build && /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /Users/anandhu/Documents/proxy/normal-ribbon/build/_deps/glad-src/src/glad.c > CMakeFiles/glad.dir/src/glad.c.i
+	cd /Users/anandhu/Documents/proxy/DelaunayBrush/build/_deps/glad-build && /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /Users/anandhu/Documents/proxy/DelaunayBrush/build/_deps/glad-src/src/glad.c > CMakeFiles/glad.dir/src/glad.c.i
 
 _deps/glad-build/CMakeFiles/glad.dir/src/glad.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling C source to assembly CMakeFiles/glad.dir/src/glad.c.s"
-	cd /Users/anandhu/Documents/proxy/normal-ribbon/build/_deps/glad-build && /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /Users/anandhu/Documents/proxy/normal-ribbon/build/_deps/glad-src/src/glad.c -o CMakeFiles/glad.dir/src/glad.c.s
+	cd /Users/anandhu/Documents/proxy/DelaunayBrush/build/_deps/glad-build && /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /Users/anandhu/Documents/proxy/DelaunayBrush/build/_deps/glad-src/src/glad.c -o CMakeFiles/glad.dir/src/glad.c.s
 
 # Object files for target glad
 glad_OBJECTS = \
@@ -93,19 +93,19 @@ glad_EXTERNAL_OBJECTS =
 _deps/glad-build/libglad.a: _deps/glad-build/CMakeFiles/glad.dir/src/glad.c.o
 _deps/glad-build/libglad.a: _deps/glad-build/CMakeFiles/glad.dir/build.make
 _deps/glad-build/libglad.a: _deps/glad-build/CMakeFiles/glad.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/Users/anandhu/Documents/proxy/normal-ribbon/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Linking C static library libglad.a"
-	cd /Users/anandhu/Documents/proxy/normal-ribbon/build/_deps/glad-build && $(CMAKE_COMMAND) -P CMakeFiles/glad.dir/cmake_clean_target.cmake
-	cd /Users/anandhu/Documents/proxy/normal-ribbon/build/_deps/glad-build && $(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/glad.dir/link.txt --verbose=$(VERBOSE)
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/Users/anandhu/Documents/proxy/DelaunayBrush/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Linking C static library libglad.a"
+	cd /Users/anandhu/Documents/proxy/DelaunayBrush/build/_deps/glad-build && $(CMAKE_COMMAND) -P CMakeFiles/glad.dir/cmake_clean_target.cmake
+	cd /Users/anandhu/Documents/proxy/DelaunayBrush/build/_deps/glad-build && $(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/glad.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
 _deps/glad-build/CMakeFiles/glad.dir/build: _deps/glad-build/libglad.a
 .PHONY : _deps/glad-build/CMakeFiles/glad.dir/build
 
 _deps/glad-build/CMakeFiles/glad.dir/clean:
-	cd /Users/anandhu/Documents/proxy/normal-ribbon/build/_deps/glad-build && $(CMAKE_COMMAND) -P CMakeFiles/glad.dir/cmake_clean.cmake
+	cd /Users/anandhu/Documents/proxy/DelaunayBrush/build/_deps/glad-build && $(CMAKE_COMMAND) -P CMakeFiles/glad.dir/cmake_clean.cmake
 .PHONY : _deps/glad-build/CMakeFiles/glad.dir/clean
 
 _deps/glad-build/CMakeFiles/glad.dir/depend:
-	cd /Users/anandhu/Documents/proxy/normal-ribbon/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /Users/anandhu/Documents/proxy/normal-ribbon /Users/anandhu/Documents/proxy/normal-ribbon/build/_deps/glad-src /Users/anandhu/Documents/proxy/normal-ribbon/build /Users/anandhu/Documents/proxy/normal-ribbon/build/_deps/glad-build /Users/anandhu/Documents/proxy/normal-ribbon/build/_deps/glad-build/CMakeFiles/glad.dir/DependInfo.cmake "--color=$(COLOR)"
+	cd /Users/anandhu/Documents/proxy/DelaunayBrush/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /Users/anandhu/Documents/proxy/DelaunayBrush /Users/anandhu/Documents/proxy/DelaunayBrush/build/_deps/glad-src /Users/anandhu/Documents/proxy/DelaunayBrush/build /Users/anandhu/Documents/proxy/DelaunayBrush/build/_deps/glad-build /Users/anandhu/Documents/proxy/DelaunayBrush/build/_deps/glad-build/CMakeFiles/glad.dir/DependInfo.cmake "--color=$(COLOR)"
 .PHONY : _deps/glad-build/CMakeFiles/glad.dir/depend
 

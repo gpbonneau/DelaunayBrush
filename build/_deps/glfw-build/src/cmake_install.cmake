@@ -1,4 +1,4 @@
-# Install script for directory: /Users/anandhu/Documents/proxy/normal-ribbon/build/_deps/glfw-src/src
+# Install script for directory: /Users/anandhu/Documents/proxy/DelaunayBrush/build/_deps/glfw-src/src
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)

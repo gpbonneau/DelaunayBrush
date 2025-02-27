@@ -8,7 +8,8 @@ set(CMAKE_DEPENDS_LANGUAGES
 
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
-  "/Users/anandhu/Documents/proxy/normal-ribbon/main.cpp" "CMakeFiles/example.dir/main.cpp.o" "gcc" "CMakeFiles/example.dir/main.cpp.o.d"
+  "/Users/anandhu/Documents/proxy/DelaunayBrush/main.cpp" "CMakeFiles/example.dir/main.cpp.o" "gcc" "CMakeFiles/example.dir/main.cpp.o.d"
+  "/Users/anandhu/Documents/proxy/DelaunayBrush/main copy.cpp" "CMakeFiles/example.dir/main_copy.cpp.o" "gcc" "CMakeFiles/example.dir/main_copy.cpp.o.d"
   )
 
 # Targets to which this target links which contain Fortran sources.

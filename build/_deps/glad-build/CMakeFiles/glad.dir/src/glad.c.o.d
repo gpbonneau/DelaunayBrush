@@ -1,5 +1,5 @@
 _deps/glad-build/CMakeFiles/glad.dir/src/glad.c.o: \
-  /Users/anandhu/Documents/proxy/normal-ribbon/build/_deps/glad-src/src/glad.c \
+  /Users/anandhu/Documents/proxy/DelaunayBrush/build/_deps/glad-src/src/glad.c \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk/usr/include/stdio.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk/usr/include/_stdio.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk/usr/include/sys/cdefs.h \
@@ -84,7 +84,7 @@ _deps/glad-build/CMakeFiles/glad.dir/src/glad.c.o: \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk/usr/include/strings.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk/usr/include/secure/_strings.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk/usr/include/secure/_string.h \
-  /Users/anandhu/Documents/proxy/normal-ribbon/build/_deps/glad-src/include/glad/glad.h \
-  /Users/anandhu/Documents/proxy/normal-ribbon/build/_deps/glad-src/include/KHR/khrplatform.h \
+  /Users/anandhu/Documents/proxy/DelaunayBrush/build/_deps/glad-src/include/glad/glad.h \
+  /Users/anandhu/Documents/proxy/DelaunayBrush/build/_deps/glad-src/include/KHR/khrplatform.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk/usr/include/dlfcn.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/15.0.0/include/stdbool.h

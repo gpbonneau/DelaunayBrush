@@ -4,19 +4,19 @@
 cmake_minimum_required(VERSION 3.5)
 
 file(MAKE_DIRECTORY
-  "/Users/anandhu/Documents/proxy/normal-ribbon/build/_deps/eigen-src"
-  "/Users/anandhu/Documents/proxy/normal-ribbon/build/_deps/eigen-build"
-  "/Users/anandhu/Documents/proxy/normal-ribbon/build/_deps/eigen-subbuild/eigen-populate-prefix"
-  "/Users/anandhu/Documents/proxy/normal-ribbon/build/_deps/eigen-subbuild/eigen-populate-prefix/tmp"
-  "/Users/anandhu/Documents/proxy/normal-ribbon/build/_deps/eigen-subbuild/eigen-populate-prefix/src/eigen-populate-stamp"
-  "/Users/anandhu/Documents/proxy/normal-ribbon/build/_deps/eigen-subbuild/eigen-populate-prefix/src"
-  "/Users/anandhu/Documents/proxy/normal-ribbon/build/_deps/eigen-subbuild/eigen-populate-prefix/src/eigen-populate-stamp"
+  "/Users/anandhu/Documents/proxy/DelaunayBrush/build/_deps/eigen-src"
+  "/Users/anandhu/Documents/proxy/DelaunayBrush/build/_deps/eigen-build"
+  "/Users/anandhu/Documents/proxy/DelaunayBrush/build/_deps/eigen-subbuild/eigen-populate-prefix"
+  "/Users/anandhu/Documents/proxy/DelaunayBrush/build/_deps/eigen-subbuild/eigen-populate-prefix/tmp"
+  "/Users/anandhu/Documents/proxy/DelaunayBrush/build/_deps/eigen-subbuild/eigen-populate-prefix/src/eigen-populate-stamp"
+  "/Users/anandhu/Documents/proxy/DelaunayBrush/build/_deps/eigen-subbuild/eigen-populate-prefix/src"
+  "/Users/anandhu/Documents/proxy/DelaunayBrush/build/_deps/eigen-subbuild/eigen-populate-prefix/src/eigen-populate-stamp"
 )
 
 set(configSubDirs )
 foreach(subDir IN LISTS configSubDirs)
-    file(MAKE_DIRECTORY "/Users/anandhu/Documents/proxy/normal-ribbon/build/_deps/eigen-subbuild/eigen-populate-prefix/src/eigen-populate-stamp/${subDir}")
+    file(MAKE_DIRECTORY "/Users/anandhu/Documents/proxy/DelaunayBrush/build/_deps/eigen-subbuild/eigen-populate-prefix/src/eigen-populate-stamp/${subDir}")
 endforeach()
 if(cfgdir)
-  file(MAKE_DIRECTORY "/Users/anandhu/Documents/proxy/normal-ribbon/build/_deps/eigen-subbuild/eigen-populate-prefix/src/eigen-populate-stamp${cfgdir}") # cfgdir has leading slash
+  file(MAKE_DIRECTORY "/Users/anandhu/Documents/proxy/DelaunayBrush/build/_deps/eigen-subbuild/eigen-populate-prefix/src/eigen-populate-stamp${cfgdir}") # cfgdir has leading slash
 endif()

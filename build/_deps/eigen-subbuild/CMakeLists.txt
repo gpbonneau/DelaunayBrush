@@ -28,8 +28,8 @@ set_property(GLOBAL PROPERTY _CMAKE_FindGit_GIT_EXECUTABLE_VERSION
 include(ExternalProject)
 ExternalProject_Add(eigen-populate
                      "UPDATE_DISCONNECTED" "False" "GIT_REPOSITORY" "https://gitlab.com/libeigen/eigen.git" "EXTERNALPROJECT_INTERNAL_ARGUMENT_SEPARATOR" "GIT_TAG" "tags/3.4.0" "GIT_SHALLOW" "TRUE"
-                    SOURCE_DIR          "/Users/anandhu/Documents/proxy/normal-ribbon/build/_deps/eigen-src"
-                    BINARY_DIR          "/Users/anandhu/Documents/proxy/normal-ribbon/build/_deps/eigen-build"
+                    SOURCE_DIR          "/Users/anandhu/Documents/proxy/DelaunayBrush/build/_deps/eigen-src"
+                    BINARY_DIR          "/Users/anandhu/Documents/proxy/DelaunayBrush/build/_deps/eigen-build"
                     CONFIGURE_COMMAND   ""
                     BUILD_COMMAND       ""
                     INSTALL_COMMAND     ""

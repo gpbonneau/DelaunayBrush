@@ -57,10 +57,10 @@ RM = /opt/homebrew/Cellar/cmake/3.28.3/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /Users/anandhu/Documents/proxy/normal-ribbon
+CMAKE_SOURCE_DIR = /Users/anandhu/Documents/proxy/DelaunayBrush
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /Users/anandhu/Documents/proxy/normal-ribbon/build
+CMAKE_BINARY_DIR = /Users/anandhu/Documents/proxy/DelaunayBrush/build
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -132,14 +132,14 @@ install/strip/fast: preinstall/fast
 
 # The main all target
 all: cmake_check_build_system
-	cd /Users/anandhu/Documents/proxy/normal-ribbon/build && $(CMAKE_COMMAND) -E cmake_progress_start /Users/anandhu/Documents/proxy/normal-ribbon/build/CMakeFiles /Users/anandhu/Documents/proxy/normal-ribbon/build/_deps/libigl-build//CMakeFiles/progress.marks
-	cd /Users/anandhu/Documents/proxy/normal-ribbon/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 _deps/libigl-build/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /Users/anandhu/Documents/proxy/normal-ribbon/build/CMakeFiles 0
+	cd /Users/anandhu/Documents/proxy/DelaunayBrush/build && $(CMAKE_COMMAND) -E cmake_progress_start /Users/anandhu/Documents/proxy/DelaunayBrush/build/CMakeFiles /Users/anandhu/Documents/proxy/DelaunayBrush/build/_deps/libigl-build//CMakeFiles/progress.marks
+	cd /Users/anandhu/Documents/proxy/DelaunayBrush/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 _deps/libigl-build/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/anandhu/Documents/proxy/DelaunayBrush/build/CMakeFiles 0
 .PHONY : all
 
 # The main clean target
 clean:
-	cd /Users/anandhu/Documents/proxy/normal-ribbon/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 _deps/libigl-build/clean
+	cd /Users/anandhu/Documents/proxy/DelaunayBrush/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 _deps/libigl-build/clean
 .PHONY : clean
 
 # The main clean target
@@ -148,17 +148,17 @@ clean/fast: clean
 
 # Prepare targets for installation.
 preinstall: all
-	cd /Users/anandhu/Documents/proxy/normal-ribbon/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 _deps/libigl-build/preinstall
+	cd /Users/anandhu/Documents/proxy/DelaunayBrush/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 _deps/libigl-build/preinstall
 .PHONY : preinstall
 
 # Prepare targets for installation.
 preinstall/fast:
-	cd /Users/anandhu/Documents/proxy/normal-ribbon/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 _deps/libigl-build/preinstall
+	cd /Users/anandhu/Documents/proxy/DelaunayBrush/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 _deps/libigl-build/preinstall
 .PHONY : preinstall/fast
 
 # clear depends
 depend:
-	cd /Users/anandhu/Documents/proxy/normal-ribbon/build && $(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 1
+	cd /Users/anandhu/Documents/proxy/DelaunayBrush/build && $(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 1
 .PHONY : depend
 
 # Help Target
@@ -185,6 +185,6 @@ help:
 # No rule that depends on this can have commands that come from listfiles
 # because they might be regenerated.
 cmake_check_build_system:
-	cd /Users/anandhu/Documents/proxy/normal-ribbon/build && $(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 0
+	cd /Users/anandhu/Documents/proxy/DelaunayBrush/build && $(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 0
 .PHONY : cmake_check_build_system
 

@@ -1,4 +1,5 @@
 #include "scene.hpp"
+#include "happly.h"
 
 
 using namespace cgp;
@@ -72,6 +73,47 @@ void generate_sphere_mesh(
     for (size_t i = 0; i < faces.size(); ++i)
         F.row(i) = faces[i];
 }
+bool readPLYWithNormals(const std::string& ply_file, Eigen::MatrixXd& V, Eigen::MatrixXd& N) {
+    // Create a happly PLY data object
+    happly::PLYData plyIn(ply_file);
+
+    // Check if the file contains vertex data
+    // if (!plyIn.hasElement("vertex") || !plyIn.hasProperty("x") || !plyIn.hasProperty("y") || !plyIn.hasProperty("z")) {
+    //     std::cerr << "PLY file does not contain vertex data!" << std::endl;
+    //     return false;
+    // }
+
+    // Extract vertex positions
+    std::vector<float> x = plyIn.getElement("vertex").getProperty<float>("x");
+    std::vector<float> y = plyIn.getElement("vertex").getProperty<float>("y");
+    std::vector<float> z = plyIn.getElement("vertex").getProperty<float>("z");
+
+    // Resize and fill the vertex matrix V
+    V.resize(x.size(), 3);
+    for (size_t i = 0; i < x.size(); i++) {
+        V.row(i) << x[i], y[i], z[i];
+    }
+
+    // Extract vertex normals (if available)
+    if (plyIn.getElement("vertex").hasProperty("nx") &&
+        plyIn.getElement("vertex").hasProperty("ny") &&
+        plyIn.getElement("vertex").hasProperty("nz")) {
+        std::vector<float> nx = plyIn.getElement("vertex").getProperty<float>("nx");
+        std::vector<float> ny = plyIn.getElement("vertex").getProperty<float>("ny");
+        std::vector<float> nz = plyIn.getElement("vertex").getProperty<float>("nz");
+
+        // Resize and fill the normal matrix N
+        N.resize(nx.size(), 3);
+        for (size_t i = 0; i < nx.size(); i++) {
+            N.row(i) << nx[i], ny[i], nz[i];
+        }
+    } else {
+        std::cerr << "PLY file does not contain normal data!" << std::endl;
+        N.resize(0, 3); // Clear N if no normals are present
+    }
+
+    return true;
+}
 
 void save_combined_spheres(
     const std::vector<Sphere>& circumspheres, // List of circumspheres (center, radius)
@@ -132,6 +174,7 @@ void save_combined_spheres(
 
     // Save the final mesh to an OBJ file
     igl::writeOBJ(output_file, V_final, F_final);
+    std::cout << "Saved " << circumspheres.size() << " spheres to " << output_file << std::endl;
 }
 
 
@@ -203,6 +246,9 @@ void scene_structure::filter_valid_circumspheres() {
 
     if (!igl::readPLY(normals_file, N, F)) {
         std::cerr << "Couldn't read PLY file: " << normals_file << std::endl;
+        
+        readPLYWithNormals( ply_file,V, N) ;
+
     }
 
     std::cout << "Read " << V.rows() << " vertices and " << N.rows() << " Normals" << std::endl;
@@ -300,7 +346,7 @@ void scene_structure::filter_valid_circumspheres() {
             unused_vertices.push_back(i);
         }
     }
-	// save_combined_spheres(circumspheres, output_file);
+	save_combined_spheres(circumspheres, output_file);
 
 
     // return valid_spheres;

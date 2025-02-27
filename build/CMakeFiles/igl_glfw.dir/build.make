@@ -53,10 +53,10 @@ RM = /opt/homebrew/Cellar/cmake/3.28.3/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /Users/anandhu/Documents/proxy/normal-ribbon
+CMAKE_SOURCE_DIR = /Users/anandhu/Documents/proxy/DelaunayBrush
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /Users/anandhu/Documents/proxy/normal-ribbon/build
+CMAKE_BINARY_DIR = /Users/anandhu/Documents/proxy/DelaunayBrush/build
 
 # Utility rule file for igl_glfw.
 
@@ -78,6 +78,6 @@ CMakeFiles/igl_glfw.dir/clean:
 .PHONY : CMakeFiles/igl_glfw.dir/clean
 
 CMakeFiles/igl_glfw.dir/depend:
-	cd /Users/anandhu/Documents/proxy/normal-ribbon/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /Users/anandhu/Documents/proxy/normal-ribbon /Users/anandhu/Documents/proxy/normal-ribbon /Users/anandhu/Documents/proxy/normal-ribbon/build /Users/anandhu/Documents/proxy/normal-ribbon/build /Users/anandhu/Documents/proxy/normal-ribbon/build/CMakeFiles/igl_glfw.dir/DependInfo.cmake "--color=$(COLOR)"
+	cd /Users/anandhu/Documents/proxy/DelaunayBrush/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /Users/anandhu/Documents/proxy/DelaunayBrush /Users/anandhu/Documents/proxy/DelaunayBrush /Users/anandhu/Documents/proxy/DelaunayBrush/build /Users/anandhu/Documents/proxy/DelaunayBrush/build /Users/anandhu/Documents/proxy/DelaunayBrush/build/CMakeFiles/igl_glfw.dir/DependInfo.cmake "--color=$(COLOR)"
 .PHONY : CMakeFiles/igl_glfw.dir/depend
 

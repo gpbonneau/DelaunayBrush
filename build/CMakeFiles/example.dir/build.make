@@ -53,10 +53,10 @@ RM = /opt/homebrew/Cellar/cmake/3.28.3/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /Users/anandhu/Documents/proxy/normal-ribbon
+CMAKE_SOURCE_DIR = /Users/anandhu/Documents/proxy/DelaunayBrush
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /Users/anandhu/Documents/proxy/normal-ribbon/build
+CMAKE_BINARY_DIR = /Users/anandhu/Documents/proxy/DelaunayBrush/build
 
 # Include any dependencies generated for this target.
 include CMakeFiles/example.dir/depend.make
@@ -69,27 +69,43 @@ include CMakeFiles/example.dir/progress.make
 # Include the compile flags for this target's objects.
 include CMakeFiles/example.dir/flags.make
 
+CMakeFiles/example.dir/main_copy.cpp.o: CMakeFiles/example.dir/flags.make
+CMakeFiles/example.dir/main_copy.cpp.o: /Users/anandhu/Documents/proxy/DelaunayBrush/main\ copy.cpp
+CMakeFiles/example.dir/main_copy.cpp.o: CMakeFiles/example.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/anandhu/Documents/proxy/DelaunayBrush/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/example.dir/main_copy.cpp.o"
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/example.dir/main_copy.cpp.o -MF CMakeFiles/example.dir/main_copy.cpp.o.d -o CMakeFiles/example.dir/main_copy.cpp.o -c "/Users/anandhu/Documents/proxy/DelaunayBrush/main copy.cpp"
+
+CMakeFiles/example.dir/main_copy.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/example.dir/main_copy.cpp.i"
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E "/Users/anandhu/Documents/proxy/DelaunayBrush/main copy.cpp" > CMakeFiles/example.dir/main_copy.cpp.i
+
+CMakeFiles/example.dir/main_copy.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/example.dir/main_copy.cpp.s"
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S "/Users/anandhu/Documents/proxy/DelaunayBrush/main copy.cpp" -o CMakeFiles/example.dir/main_copy.cpp.s
+
 CMakeFiles/example.dir/main.cpp.o: CMakeFiles/example.dir/flags.make
-CMakeFiles/example.dir/main.cpp.o: /Users/anandhu/Documents/proxy/normal-ribbon/main.cpp
+CMakeFiles/example.dir/main.cpp.o: /Users/anandhu/Documents/proxy/DelaunayBrush/main.cpp
 CMakeFiles/example.dir/main.cpp.o: CMakeFiles/example.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/anandhu/Documents/proxy/normal-ribbon/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/example.dir/main.cpp.o"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/example.dir/main.cpp.o -MF CMakeFiles/example.dir/main.cpp.o.d -o CMakeFiles/example.dir/main.cpp.o -c /Users/anandhu/Documents/proxy/normal-ribbon/main.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/anandhu/Documents/proxy/DelaunayBrush/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/example.dir/main.cpp.o"
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/example.dir/main.cpp.o -MF CMakeFiles/example.dir/main.cpp.o.d -o CMakeFiles/example.dir/main.cpp.o -c /Users/anandhu/Documents/proxy/DelaunayBrush/main.cpp
 
 CMakeFiles/example.dir/main.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/example.dir/main.cpp.i"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/anandhu/Documents/proxy/normal-ribbon/main.cpp > CMakeFiles/example.dir/main.cpp.i
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/anandhu/Documents/proxy/DelaunayBrush/main.cpp > CMakeFiles/example.dir/main.cpp.i
 
 CMakeFiles/example.dir/main.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/example.dir/main.cpp.s"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/anandhu/Documents/proxy/normal-ribbon/main.cpp -o CMakeFiles/example.dir/main.cpp.s
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/anandhu/Documents/proxy/DelaunayBrush/main.cpp -o CMakeFiles/example.dir/main.cpp.s
 
 # Object files for target example
 example_OBJECTS = \
+"CMakeFiles/example.dir/main_copy.cpp.o" \
 "CMakeFiles/example.dir/main.cpp.o"
 
 # External object files for target example
 example_EXTERNAL_OBJECTS =
 
+example: CMakeFiles/example.dir/main_copy.cpp.o
 example: CMakeFiles/example.dir/main.cpp.o
 example: CMakeFiles/example.dir/build.make
 example: /opt/homebrew/lib/libopencv_gapi.4.11.0.dylib
@@ -155,7 +171,7 @@ example: /opt/homebrew/lib/libgmpxx.dylib
 example: /opt/homebrew/lib/libmpfr.dylib
 example: /opt/homebrew/lib/libgmp.dylib
 example: CMakeFiles/example.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/Users/anandhu/Documents/proxy/normal-ribbon/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Linking CXX executable example"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/Users/anandhu/Documents/proxy/DelaunayBrush/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Linking CXX executable example"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/example.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
@@ -167,6 +183,6 @@ CMakeFiles/example.dir/clean:
 .PHONY : CMakeFiles/example.dir/clean
 
 CMakeFiles/example.dir/depend:
-	cd /Users/anandhu/Documents/proxy/normal-ribbon/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /Users/anandhu/Documents/proxy/normal-ribbon /Users/anandhu/Documents/proxy/normal-ribbon /Users/anandhu/Documents/proxy/normal-ribbon/build /Users/anandhu/Documents/proxy/normal-ribbon/build /Users/anandhu/Documents/proxy/normal-ribbon/build/CMakeFiles/example.dir/DependInfo.cmake "--color=$(COLOR)"
+	cd /Users/anandhu/Documents/proxy/DelaunayBrush/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /Users/anandhu/Documents/proxy/DelaunayBrush /Users/anandhu/Documents/proxy/DelaunayBrush /Users/anandhu/Documents/proxy/DelaunayBrush/build /Users/anandhu/Documents/proxy/DelaunayBrush/build /Users/anandhu/Documents/proxy/DelaunayBrush/build/CMakeFiles/example.dir/DependInfo.cmake "--color=$(COLOR)"
 .PHONY : CMakeFiles/example.dir/depend
 
