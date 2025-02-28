@@ -17,6 +17,7 @@ using namespace cgp;
 #include <unordered_set>
 #include <unordered_map>
 #include <igl/writeOBJ.h>
+#include<chrono>
 
 // Define CGAL types
 typedef CGAL::Exact_predicates_inexact_constructions_kernel K;
@@ -223,6 +224,7 @@ double compute_angle(const Eigen::Vector3d& v1, const Eigen::Vector3d& v2) {
 
 // / Function to process the mesh from the filepath and filter valid circumspheres
 void scene_structure::filter_valid_circumspheres() {
+    auto start = std::chrono::high_resolution_clock::now();
     // Load the mesh
     Eigen::MatrixXd V;
     Eigen::MatrixXi F;
@@ -346,6 +348,10 @@ void scene_structure::filter_valid_circumspheres() {
             unused_vertices.push_back(i);
         }
     }
+    auto end = std::chrono::high_resolution_clock::now();
+    std::chrono::duration<double, std::milli> duration = end - start;
+    std::cout <<"spheres found"<<circumspheres.size()<< "Execution time: " << duration.count() << " ms" << std::endl;
+
 	save_combined_spheres(circumspheres, output_file);
 
 
