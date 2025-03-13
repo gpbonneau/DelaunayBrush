@@ -1,8 +1,15 @@
 cmake_minimum_required(VERSION 3.16)
-project(example)
+project(circumsphereDLL)
 
 list(PREPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
+set(CMAKE_TOOLCHAIN_FILE "C:/vcpkg/scripts/buildsystems/vcpkg.cmake" CACHE STRING "Vcpkg toolchain file")
+set(Boost_NO_BOOST_CMAKE OFF)
+set(Boost_USE_STATIC_LIBS OFF) 
+set(Boost_USE_MULTITHREADED ON)
+cmake_policy(SET CMP0167 NEW)  # Use the new method for finding Boost
 
+
+find_package(Boost REQUIRED)  # Make sure Boost is found
 
 find_package(CGAL REQUIRED)
 

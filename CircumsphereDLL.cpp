@@ -67,7 +67,9 @@ extern "C" DLL_EXPORT int computeCircumspheres(
         Tetrahedron tetra(it->vertex(0)->point(), it->vertex(1)->point(),
                           it->vertex(2)->point(), it->vertex(3)->point());
 
-        auto [circumcenter, circumradius] = compute_circumsphere(tetra);
+        std::pair<Point, double> cir = compute_circumsphere(tetra);
+        Point circumcenter = cir.first;
+        double circumradius = cir.second;
 
         bool all_valid = true;
         for (int i = 0; i < 4; ++i) {
