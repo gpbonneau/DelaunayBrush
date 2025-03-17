@@ -63,6 +63,7 @@
         "cfenv": "cpp",
         "condition_variable": "cpp",
         "unordered_set": "cpp",
-        "valarray": "cpp"
+        "valarray": "cpp",
+        "hash_map": "cpp"
     }
 }
