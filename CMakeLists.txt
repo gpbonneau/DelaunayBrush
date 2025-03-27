@@ -1,49 +1,62 @@
 cmake_minimum_required(VERSION 3.16)
 project(circumsphereDLL)
 
-list(PREPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
+# Set the CMake toolchain file for vcpkg
 set(CMAKE_TOOLCHAIN_FILE "C:/vcpkg/scripts/buildsystems/vcpkg.cmake" CACHE STRING "Vcpkg toolchain file")
-set(Boost_NO_BOOST_CMAKE OFF)
-set(Boost_USE_STATIC_LIBS OFF) 
-set(Boost_USE_MULTITHREADED ON)
-cmake_policy(SET CMP0167 NEW)  # Use the new method for finding Boost
 
+# Enable verbose output
+set(CMAKE_VERBOSE_MAKEFILE ON)
 
-find_package(Boost REQUIRED)  # Make sure Boost is found
+# Set required policies
+cmake_policy(SET CMP0167 NEW)  # Use new method for finding Boost
 
+set(BOOST_ROOT "C:/vcpkg/installed/x64-windows")
+set(BOOST_INCLUDEDIR "${BOOST_ROOT}/include")
+set(BOOST_LIBRARYDIR "${BOOST_ROOT}/lib")
+
+set(CMAKE_PREFIX_PATH ${BOOST_ROOT})
+
+# Find required packages
+find_package(Boost REQUIRED)
 find_package(CGAL REQUIRED)
 
-# Set Compiler for Unix system
+# Include GMP and MPFR
+set(GMP_INCLUDE_DIR "C:/vcpkg/installed/x64-windows/include")
+set(GMP_LIBRARY_RELEASE "C:/vcpkg/installed/x64-windows/debug/lib/gmp.lib")
+set(GMP_LIBRARY_DEBUG "C:/vcpkg/installed/x64-windows/debug/lib/gmp.lib")
+set(GMPXX_INCLUDE_DIR "C:/vcpkg/installed/x64-windows/include")
+set(GMPXX_LIBRARIES "C:/vcpkg/installed/x64-windows/debug/lib/gmpxx.lib")
+set(MPFR_INCLUDE_DIR "C:/vcpkg/installed/x64-windows/include")
+set(MPFR_LIBRARIES "C:/vcpkg/installed/x64-windows/debug/lib/mpfr.lib")
+
+# Add definitions for static linking of Boost with CGAL
+set(CGAL_Boost_USE_STATIC_LIBS ON)
+set(CGAL_ENABLE_TESTING ON)
+
+# Set Compiler for Unix systems
 if(UNIX)
-   set(CMAKE_CXX_COMPILER g++)                      # Can switch to clang++ if prefered
-   add_definitions(-g -O2 -std=c++14 -Wall -Wextra -Wfatal-errors -Wno-pragmas -Wno-unknown-warning-option) # Can adapt compiler flags if needed
-   add_definitions(-Wno-sign-compare -Wno-type-limits) # Remove some warnings
+   set(CMAKE_CXX_COMPILER g++)
+   add_definitions(-g -O2 -std=c++14 -Wall -Wextra -Wfatal-errors -Wno-pragmas -Wno-unknown-warning-option)
+   add_definitions(-Wno-sign-compare -Wno-type-limits)
 endif()
 
-
-# Set Compiler for Windows/Visual Studio
+# Set Compiler for Windows (MSVC)
 if(MSVC)
-   set_property( DIRECTORY PROPERTY VS_STARTUP_PROJECT  ${executable_name} ) # default project (avoids AllBuild)
-   set_target_properties( ${executable_name} PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}$<0:> ) # default output in root dir
-   set_target_properties( ${executable_name} PROPERTIES VS_DEBUGGER_WORKING_DIRECTORY ${CMAKE_SOURCE_DIR} ) # default debug execution in root dir
-   
-   # Avoids the warning /W3 overided by /W4 when using Ninja
-   if(CMAKE_CXX_FLAGS MATCHES "/W[0-4]")
-    string(REGEX REPLACE "/W[0-4]" "/W4" CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}")
-   else()
-      set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /W4")
-   endif()
+   add_definitions(/MP /wd4244 /wd4127 /wd4267 /wd4706 /wd4458 /wd4996 /wd26495 /openmp)
 
-    add_definitions(/MP /wd4244 /wd4127 /wd4267 /wd4706 /wd4458 /wd4996 /wd26495 /openmp)   # Parallel build (/MP) + disable some warnings
-    source_group(TREE ${CMAKE_SOURCE_DIR} FILES ${src_files})  #Allow to explore source directories as a tree in Visual Studio
+   # Override warning level to W4
+   if(CMAKE_CXX_FLAGS MATCHES "/W[0-4]")
+       string(REGEX REPLACE "/W[0-4]" "/W4" CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}")
+   else()
+       set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /W4")
+   endif()
 endif()
 
-# Add your project files
+# Source files
 file(GLOB SRC_FILES *.cpp)
-# add_executable(${PROJECT_NAME} ${SRC_FILES})
+
+# Define the shared library
 add_library(${PROJECT_NAME} SHARED ${SRC_FILES})
 
-target_link_libraries(${PROJECT_NAME}  PUBLIC CGAL::CGAL)
-
-
-
+# Link libraries
+target_link_libraries(${PROJECT_NAME} PUBLIC CGAL::CGAL ${GMPXX_LIBRARIES} ${GMP_LIBRARY_RELEASE} ${MPFR_LIBRARIES} ${Boost_LIBRARIES})
