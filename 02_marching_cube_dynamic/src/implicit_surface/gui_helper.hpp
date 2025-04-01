@@ -15,10 +15,10 @@ struct gui_parameters {
 
 	struct { // Elements of the domain
 		int samples = 200;
-		cgp::vec3 length = { 30,30,30 };
+		cgp::vec3 length = { 10,10,10 };
 	} domain;
 	// Isovalue used during the marching cube
-	float isovalue = 1.0f;
+	float isovalue = 0.0f;
 };
 
 

@@ -60,3 +60,5 @@ Thumbs.db
 *.log
 *.bin
 *.data
+*.obj
+*.json

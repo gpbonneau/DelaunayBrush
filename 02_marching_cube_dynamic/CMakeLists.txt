@@ -41,16 +41,9 @@ include_directories("src")
 
 # Add the lib directory
 include_directories(${ABS_PATH_TO_CGP})
-
-
 list(PREPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
-# Libigl
-include(libigl)
-
-# Enable the target igl::glfw
-igl_include(glfw)
 find_package(CGAL REQUIRED)
-
+# find_package(OpenMP REQUIRED)
 
 # Include files from the CGP library (as well as external dependencies)
 message(STATUS "Include CGP lib and external dependencies files from relative path")
@@ -66,8 +59,10 @@ add_definitions(-DCGP_OPENGL_3_3)   # for OpenGL 3.3
 # add_definitions(-DCGP_OPENGL_4_1) # for OpenGL 4.1
 # add_definitions(-DCGP_OPENGL_4_3) # for OpenGL 4.3
 # add_definitions(-DCGP_OPENGL_4_6) # for OpenGL 4.6
-
-
+# include_directories(${OpenMP_CXX_INCLUDE_DIRS})
+# link_directories(${OpenMP_CXX_LIBRARIES})
+include_directories(/opt/homebrew/opt/libomp/include)
+link_directories(/opt/homebrew/opt/libomp/lib)
 # Add all files to create executable
 #  @src_files: the local file for this project
 #  @src_files_cgp: all files of the cgp library
@@ -77,12 +72,10 @@ add_executable(${executable_name} ${src_files_cgp} ${src_files_third_party} ${sr
 
 # Set Compiler for Unix system
 if(UNIX)
-   # set(CMAKE_CXX_COMPILER g++)                      # Can switch to clang++ if prefered
-   # add_definitions(-g -O2 -std=c++14 -Wall -Wextra -Wfatal-errors -Wno-pragmas -Wno-unknown-warning-option) # Can adapt compiler flags if needed
-   # add_definitions(-Wno-sign-compare -Wno-type-limits) # Remove some warnings
    set(CMAKE_CXX_STANDARD 17)
-   set(CMAKE_CXX_STANDARD_REQUIRED ON)
-
+   set(CMAKE_CXX_STANDARD_REQUIRED ON)                    # Can switch to clang++ if prefered
+   add_definitions(-g -O2 -std=c++17 -Wall -Wextra -Wfatal-errors -Wno-pragmas -Wno-unknown-warning-option) # Can adapt compiler flags if needed
+   add_definitions(-Wno-sign-compare -Wno-type-limits) # Remove some warnings
 endif()
 
 
@@ -103,8 +96,9 @@ if(MSVC)
     source_group(TREE ${CMAKE_SOURCE_DIR} FILES ${src_files})  #Allow to explore source directories as a tree in Visual Studio
 endif()
 
-target_link_libraries(${PROJECT_NAME}  igl::glfw)
-target_link_libraries(${executable_name} PUBLIC ${OpenCV_LIBS} )  
+
+
+# target_link_libraries(${executable_name}  OpenMP::OpenMP)
 
 target_link_libraries(${executable_name}  CGAL::CGAL)
 

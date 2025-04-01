@@ -45,10 +45,10 @@ include_directories("src")
 
 list(PREPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 # Libigl
-# include(libigl)
+include(libigl)
 
 # Enable the target igl::glfw
-# igl_include(glfw)
+igl_include(glfw)
 find_package(CGAL REQUIRED)
 
 
@@ -110,7 +110,7 @@ if(MSVC)
     source_group(TREE ${CMAKE_SOURCE_DIR} FILES ${src_files})  #Allow to explore source directories as a tree in Visual Studio
 endif()
 
-# target_link_libraries(${PROJECT_NAME}  igl::glfw)
+target_link_libraries(${PROJECT_NAME}  igl::glfw)
 target_link_libraries(example PUBLIC ${OpenCV_LIBS} )  
 
 target_link_libraries(example  CGAL::CGAL)
@@ -118,7 +118,7 @@ target_link_libraries(example  CGAL::CGAL)
 #     target_link_libraries(example  OpenMP::OpenMP_CXX)
 # endif()
 # Link options for Unix
-# target_link_libraries(example ${GLFW_LIBRARIES})
+target_link_libraries(example ${GLFW_LIBRARIES})
 if(UNIX)
    target_link_libraries(example dl) #dlopen is required by Glad on Unix
 endif()

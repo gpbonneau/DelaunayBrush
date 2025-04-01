@@ -28,11 +28,11 @@ float field_function_structure::operator()(cgp::vec3 const& p) const
     float value = *std::min_element(distances.begin(), distances.end());
 
     // Optional: Add noise to the final result
-    if (noise_magnitude > 0) {
-        vec3 const offset = vec3{ noise_offset + 1000, 1000, 1000 };
-        vec3 const p_noise = noise_scale * p + offset;
-        value += noise_magnitude * noise_perlin(p_noise, noise_octave, noise_persistance);
-    }
+    // if (noise_magnitude > 0) {
+    //     vec3 const offset = vec3{ noise_offset + 1000, 1000, 1000 };
+    //     vec3 const p_noise = noise_scale * p + offset;
+    //     value += noise_magnitude * noise_perlin(p_noise, noise_octave, noise_persistance);
+    // }
 
     return value;
 }

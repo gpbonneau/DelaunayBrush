@@ -1,7 +1,15 @@
 #include "implicit_surface.hpp"
-
+#include <CGAL/Marching_cubes_3.h>
+#include <CGAL/Surface_mesh.h>
 
 using namespace cgp;
+using Mesh = CGAL::Surface_mesh<CGAL::Point_3<CGAL::Exact_predicates_inexact_constructions_kernel>>;
+
+// Grid resolution and bounds
+const int GRID_RES = 50;
+const vec3 BOUNDS_MIN(-2, -2, -2);
+const vec3 BOUNDS_MAX(2, 2, 2);
+
 
 
 
@@ -62,25 +70,89 @@ void implicit_surface_structure::update_marching_cube(float isovalue)
 
 
 
+// Generate a scalar field for Marching Cubes
+std::vector<float> generate_scalar_field(field_function_structure& field, int resolution, vec3 min_bound, vec3 max_bound) {
+    std::vector<float> field_values(resolution * resolution * resolution);
+    
+    for (int i = 0; i < resolution; ++i) {
+        for (int j = 0; j < resolution; ++j) {
+            for (int k = 0; k < resolution; ++k) {
+                vec3 p = min_bound + vec3(
+                    (max_bound.x - min_bound.x) * i / (resolution - 1),
+                    (max_bound.y - min_bound.y) * j / (resolution - 1),
+                    (max_bound.z - min_bound.z) * k / (resolution - 1)
+                );
+                field_values[i * resolution * resolution + j * resolution + k] = field(p);
+            }
+        }
+    }
+    return field_values;
+}
+
+// Extract mesh using Marching Cubes
+Mesh extract_mesh(field_function_structure& field) {
+    auto field_values = generate_scalar_field(field, GRID_RES, BOUNDS_MIN, BOUNDS_MAX);
+    Mesh mesh;
+    
+    CGAL::Marching_cubes_3<decltype(field_values.begin())> mc(
+        field_values.begin(), field_values.end(), GRID_RES, GRID_RES, GRID_RES,
+        BOUNDS_MIN.x, BOUNDS_MIN.y, BOUNDS_MIN.z,
+        BOUNDS_MAX.x, BOUNDS_MAX.y, BOUNDS_MAX.z,
+        &mesh
+    );
+    mc.run();
+    return mesh;
+}
+
+// Save the extracted mesh as an OBJ file
+void save_mesh_as_obj(const Mesh& mesh, const std::string& filename) {
+    std::ofstream out(filename);
+    if (!out) {
+        std::cerr << "Error: Could not open file " << filename << std::endl;
+        return;
+    }
+    
+    std::unordered_map<Mesh::Vertex_index, int> vertex_index;
+    int index = 1;
+    for (auto v : mesh.vertices()) {
+        auto p = mesh.point(v);
+        out << "v " << p.x() << " " << p.y() << " " << p.z() << "\n";
+        vertex_index[v] = index++;
+    }
+    
+    for (auto f : mesh.faces()) {
+        out << "f";
+        for (auto v : CGAL::vertices_around_face(mesh.halfedge(f), mesh)) {
+            out << " " << vertex_index[v];
+        }
+        out << "\n";
+    }
+    out.close();
+    std::cout << "Mesh saved to " << filename << std::endl;
+}
+
+
 void implicit_surface_structure::update_field(field_function_structure const& field_function, float isovalue)
 {
 	// Variable shortcut
-	grid_3D<float>& field = field_param.field;
-	grid_3D<vec3>& gradient = field_param.gradient;
-	spatial_domain_grid_3D& domain = field_param.domain;
-	std::cout<<"update_field"<<std::endl;
-	// Compute the scalar field
-	field = compute_discrete_scalar_field(domain, field_function);
-	std::cout<<"computed discreete"<<std::endl;
-	// Compute the gradient of the scalar field
-	gradient = compute_gradient(field);
-	std::cout<<"computed gradient"<<std::endl;
-	// Recompute the marching cube
-	update_marching_cube(isovalue);
-	std::cout<<"updated_marching_cube"<<std::endl;
-	// Reset the domain visualization (lightweight - can be cleared at each call)
-	drawable_param.domain_box.clear();
-	drawable_param.domain_box.initialize_data_on_gpu(domain.export_segments_for_drawable_border());
+	// grid_3D<float>& field = field_param.field;
+	// grid_3D<vec3>& gradient = field_param.gradient;
+	// spatial_domain_grid_3D& domain = field_param.domain;
+	// std::cout<<"update_field"<<std::endl;
+	// // Compute the scalar field
+	// field = compute_discrete_scalar_field(domain, field_function);
+	// std::cout<<"computed discreete"<<std::endl;
+	// // Compute the gradient of the scalar field
+	// gradient = compute_gradient(field);
+	// std::cout<<"computed gradient"<<std::endl;
+	// // Recompute the marching cube
+	// update_marching_cube(isovalue);
+	// std::cout<<"updated_marching_cube"<<std::endl;
+	// // Reset the domain visualization (lightweight - can be cleared at each call)
+	// drawable_param.domain_box.clear();
+	// drawable_param.domain_box.initialize_data_on_gpu(domain.export_segments_for_drawable_border());
+	Mesh mesh = extract_mesh(field);
+    save_mesh_as_obj(mesh, "output.obj");
 }
 
 void implicit_surface_structure::set_domain(int samples, cgp::vec3 const& length)
