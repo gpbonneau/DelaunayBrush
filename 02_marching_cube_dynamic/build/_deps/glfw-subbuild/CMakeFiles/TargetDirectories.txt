@@ -1,3 +1,0 @@
-/Users/anandhu/Documents/proxy/DelaunayBrush/02_marching_cube_dynamic/build/_deps/glfw-subbuild/CMakeFiles/glfw-populate.dir
-/Users/anandhu/Documents/proxy/DelaunayBrush/02_marching_cube_dynamic/build/_deps/glfw-subbuild/CMakeFiles/edit_cache.dir
-/Users/anandhu/Documents/proxy/DelaunayBrush/02_marching_cube_dynamic/build/_deps/glfw-subbuild/CMakeFiles/rebuild_cache.dir

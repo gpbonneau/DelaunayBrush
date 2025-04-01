@@ -1,3 +1,0 @@
-/Users/anandhu/Documents/proxy/DelaunayBrush/02_marching_cube_dynamic/build/_deps/glad-subbuild/CMakeFiles/glad-populate.dir
-/Users/anandhu/Documents/proxy/DelaunayBrush/02_marching_cube_dynamic/build/_deps/glad-subbuild/CMakeFiles/edit_cache.dir
-/Users/anandhu/Documents/proxy/DelaunayBrush/02_marching_cube_dynamic/build/_deps/glad-subbuild/CMakeFiles/rebuild_cache.dir

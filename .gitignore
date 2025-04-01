@@ -1,4 +1,62 @@
-Inputs_and_Results/
-02_marching_cube_dynamic/build
-build/*
-builds/*
+# --- Build Artifacts ---
+build/
+*/build/
+*.o
+*.a
+*.so
+*.dylib
+*.lib
+*.dll
+*.exe
+*.out
+*.app
+
+# --- IDE Specific ---
+# Visual Studio
+.vs/
+*.vcxproj*
+*.sln
+*.suo
+*.user
+*.filters
+
+# CLion
+.idea/
+cmake-build-*/
+
+# Xcode
+*.xcodeproj
+*.xcworkspace
+xcuserdata/
+
+# --- CMake ---
+CMakeCache.txt
+CMakeFiles/
+CMakeScripts/
+*.cmake
+install_manifest.txt
+Makefile
+cmake_install.cmake
+
+# --- CGAL Specific ---
+*.off
+*.xyz
+*.ply
+*.mesh
+*.vtk
+*.graph
+
+# --- Dependency Management ---
+_deps/       # CMake downloaded dependencies
+ThirdParty/  # Local third-party libs
+external/    # Common dependency folder
+
+# --- System Files ---
+.DS_Store
+Thumbs.db
+
+# --- Project Specific ---
+# Add any project-specific generated files here
+*.log
+*.bin
+*.data
