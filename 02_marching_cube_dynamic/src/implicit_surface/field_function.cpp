@@ -1,32 +1,38 @@
 #include "field_function.hpp"
+#include <algorithm> // For std::max_element
+#include <vector>    // For std::vector
 
 using namespace cgp;
 
-// Parameterization Gaussian centered at point p0 with radius sigma
-static float gaussian(vec3 const& p, vec3 const& p0, float sigma)
+// Parameterization of a sphere (using exact distance field)
+static float sphere_distance(vec3 const& p, vec3 const& center, float radius)
 {
-    float const d = norm(p - p0);
-    float const value = std::exp(-(d * d) / (sigma * sigma));
-    return value;
+    return norm(p - center) - radius; // Exact signed distance field
 }
 
-// Updated field function to use multiple sphere centers and radii
 float field_function_structure::operator()(cgp::vec3 const& p) const
 {
-    float value = 0.0f;
-    // std::cout << p << std::endl;
-    // Iterate over all sphere centers and radii
-    for (size_t i = 0; i < spheres.size(); ++i)
-    {
-        value += 1 * gaussian(p, spheres[i].center, spheres[i].radius/2);
+    if (spheres.empty()) {
+        return 1.0f; // Return background field if no spheres
     }
 
-    // Add noise contribution if enabled
-    // if (noise_magnitude > 0) {
-    //     vec3 const offset = vec3{ noise_offset + 1000, 1000, 1000 };
-    //     vec3 const p_noise = noise_scale * p + offset;
-    //     value += noise_magnitude * noise_perlin(p_noise, noise_octave, noise_persistance);
-    // }
+    // Compute distance to each sphere
+    std::vector<float> distances;
+    distances.reserve(spheres.size());
+    
+    for (const auto& sphere : spheres) {
+        distances.push_back(sphere_distance(p, sphere.center, sphere.radius));
+    }
+
+    // Boolean union operation (minimum of distances)
+    float value = *std::min_element(distances.begin(), distances.end());
+
+    // Optional: Add noise to the final result
+    if (noise_magnitude > 0) {
+        vec3 const offset = vec3{ noise_offset + 1000, 1000, 1000 };
+        vec3 const p_noise = noise_scale * p + offset;
+        value += noise_magnitude * noise_perlin(p_noise, noise_octave, noise_persistance);
+    }
 
     return value;
 }
