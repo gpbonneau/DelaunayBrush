@@ -4,6 +4,8 @@
 #include <CGAL/Triangulation_vertex_base_with_info_3.h>
 #include <CGAL/Tetrahedron_3.h>
 #include <vector>
+#include <unordered_set>
+#include <fstream>
 #include <cmath>
 
 // CGAL type definitions
@@ -31,6 +33,28 @@ double compute_angle(const Vector& v1, const Vector& v2) {
     return std::acos(dot_product / (magnitude_v1 * magnitude_v2));
 }
 
+// Export unique vertices to a point cloud file
+void export_vertices_to_ply(const std::unordered_set<Point>& unique_vertices, const std::string& filename) {
+    std::ofstream file(filename);
+    if (!file.is_open()) {
+        return;
+    }
+    
+    file << "ply\n";
+    file << "format ascii 1.0\n";
+    file << "element vertex " << unique_vertices.size() << "\n";
+    file << "property float x\n";
+    file << "property float y\n";
+    file << "property float z\n";
+    file << "end_header\n";
+    
+    for (const auto& point : unique_vertices) {
+        file << point.x() << " " << point.y() << " " << point.z() << "\n";
+    }
+    
+    file.close();
+}
+
 // Main DLL function to compute circumspheres
 extern "C" DLL_EXPORT int computeCircumspheres(
     const Point3D* points, const Point3D* normals, int numPoints,
@@ -40,12 +64,13 @@ extern "C" DLL_EXPORT int computeCircumspheres(
         return 0;
     }
 
-    // Convert input to CGAL types
     std::vector<Point> cgal_points;
     std::vector<Vector> cgal_normals;
+    std::unordered_set<Point> unique_vertices;
 
     for (int i = 0; i < numPoints; ++i) {
-        cgal_points.emplace_back(points[i].x, points[i].y, points[i].z);
+        Point p(points[i].x, points[i].y, points[i].z);
+        cgal_points.push_back(p);
         cgal_normals.emplace_back(normals[i].x, normals[i].y, normals[i].z);
     }
 
@@ -57,10 +82,7 @@ extern "C" DLL_EXPORT int computeCircumspheres(
     }
     dt.insert(points_with_info.begin(), points_with_info.end());
 
-    std::vector<std::pair<Point, double>> valid_spheres;
     int count = 0;
-
-    // Compute circumspheres 
     for (auto it = dt.finite_cells_begin(); it != dt.finite_cells_end(); ++it) {
         if (count >= maxOutputSize) break;
 
@@ -73,7 +95,7 @@ extern "C" DLL_EXPORT int computeCircumspheres(
         
         auto cell = dt.locate(circumcenter);
         if (dt.is_infinite(cell)) {
-            continue;  // Point is outside the convex hull
+            continue;
         }
 
         bool all_valid = true;
@@ -81,7 +103,7 @@ extern "C" DLL_EXPORT int computeCircumspheres(
             int vertex_idx = it->vertex(i)->info();
             Vector to_v = it->vertex(i)->point() - circumcenter;
             double angle = compute_angle(to_v, cgal_normals[vertex_idx]);
-            if (angle > 0.9) {  // Angle greater than 90 degrees
+            if (angle > 0.9) {
                 all_valid = false;
                 break;
             }
@@ -91,8 +113,15 @@ extern "C" DLL_EXPORT int computeCircumspheres(
             outCenters[count] = {circumcenter.x(), circumcenter.y(), circumcenter.z()};
             outRadii[count] = circumradius;
             count++;
+            for (int i = 0; i < 4; ++i) {
+                unique_vertices.insert(it->vertex(i)->point());
+            }
         }
-    }
 
+        
+    }
+    
+    export_vertices_to_ply(unique_vertices, "circumsphere_vertices.ply");
+    
     return count;
 }
