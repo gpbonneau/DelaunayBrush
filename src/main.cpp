@@ -497,23 +497,54 @@ int main(int argc, char** argv) {
 
         // return 0;
 
-
         clock_t start = clock();
-        Eigen::VectorXd S(res * res * res);
+        float voxel_size = findShortestDistance(input_points);
+        Eigen::VectorXd S = Eigen::VectorXd::Constant(res * res * res, std::numeric_limits<double>::max());
         Eigen::MatrixXd GV(res * res * res, 3);
-        float mesh_size = 6.0;
-        // Compute scalar field
-        int index = 0;
+        double mesh_size = 6.0;
+        double step = mesh_size / static_cast<double>(res);
+        int N = res * res * res;
+
+        // Precompute voxel positions
         for (int i = 0; i < res; ++i) {
             for (int j = 0; j < res; ++j) {
                 for (int k = 0; k < res; ++k) {
-                    Eigen::Vector3d p(i * mesh_size / res - 1, j * mesh_size/ res - 1, k * mesh_size/ res - 1);
+                    int index = i * res * res + j * res + k;
+                    Eigen::Vector3d p(i * step - 1.0, j * step - 1.0, k * step - 1.0);
                     GV.row(index) = p;
-                    S(index) = union_of_spheres(p, outCenters, outRadii);
-                    index++;
                 }
             }
         }
+
+        // Per-sphere iteration
+        for (int s = 0; s < outCenters.size(); ++s) {
+            Eigen::Vector3d center(outCenters[s].x, outCenters[s].y, outCenters[s].z);
+
+            double radius = outRadii[s];
+
+            Eigen::Vector3d min_bb = (center - Eigen::Vector3d::Constant(radius) + Eigen::Vector3d::Ones()) * res / mesh_size;
+            Eigen::Vector3d max_bb = (center + Eigen::Vector3d::Constant(radius) + Eigen::Vector3d::Ones()) * res / mesh_size;
+
+            int i_min = std::max(0, static_cast<int>(std::floor(min_bb.x())));
+            int j_min = std::max(0, static_cast<int>(std::floor(min_bb.y())));
+            int k_min = std::max(0, static_cast<int>(std::floor(min_bb.z())));
+
+            int i_max = std::min(res - 1, static_cast<int>(std::ceil(max_bb.x())));
+            int j_max = std::min(res - 1, static_cast<int>(std::ceil(max_bb.y())));
+            int k_max = std::min(res - 1, static_cast<int>(std::ceil(max_bb.z())));
+
+            for (int i = i_min; i <= i_max; ++i) {
+                for (int j = j_min; j <= j_max; ++j) {
+                    for (int k = k_min; k <= k_max; ++k) {
+                        int index = i * res * res + j * res + k;
+                        Eigen::Vector3d p(i * step - 1.0, j * step - 1.0, k * step - 1.0);
+                        double d = (p - center).norm() - radius;
+                        S(index) = std::min(S(index), d);
+                    }
+                }
+            }
+        }
+
         clock_t end = clock();
         double time = double (end - start) / CLOCKS_PER_SEC;
         std::cout << "grid time : " << time << " seconds" << std::endl;
