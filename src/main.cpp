@@ -41,6 +41,11 @@
 #include <igl/readOBJ.h>
 #include <igl/biharmonic_coordinates.h>
 #include <igl/point_mesh_squared_distance.h>
+#include <chrono>
+
+#include <igl/barycentric_coordinates.h>
+#include <igl/cotmatrix.h>
+#include <Eigen/Sparse>
 
 
 // typedef CGAL::Nef_polyhedron_3<K> Nef_polyhedron;
@@ -74,6 +79,8 @@ struct PointHash {
         return h1 ^ (h2 << 1) ^ (h3 << 2);  // Combine the hash values for x, y, and z
     }
 };
+
+
 
 // Convert Point3D to Eigen::Vector3d
 Eigen::Vector3d toEigen(const Point3D &p) {
@@ -229,6 +236,186 @@ bool read_obj(const std::string& filename, std::vector<Point>& points, std::vect
     return true;
 }
 
+double distance(const Point3D& p1, const Point3D& p2) {
+    return std::sqrt((p1.x - p2.x) * (p1.x - p2.x) +
+                     (p1.y - p2.y) * (p1.y - p2.y) +
+                     (p1.z - p2.z) * (p1.z - p2.z));
+}
+
+double findShortestDistance(const std::vector<Point3D>& points) {
+    double min_dist = std::numeric_limits<double>::max();
+
+    for (size_t i = 0; i < points.size(); ++i) {
+        for (size_t j = i + 1; j < points.size(); ++j) {
+            double d = distance(points[i], points[j]);
+            if (d < min_dist) {
+                min_dist = d;
+            }
+        }
+    }
+
+    return min_dist;
+}
+
+
+void sparseLSsolve(Eigen::SparseMatrix<double>& A, Eigen::MatrixXd& b, Eigen::MatrixXd& X, bool factorize) {
+    static Eigen::MatrixXd previousSolution;
+    static bool firstSolving = true;
+
+    std::cout << "Rows in matrix : " << A.rows() << std::endl;
+    #ifndef LSCG
+        static Eigen::SparseQR<Eigen::SparseMatrix<double>, Eigen::COLAMDOrdering<int>> solver;
+        // Solve the constraints system with least-squares
+        clock_t start = clock();
+        if (factorize) {
+            A.makeCompressed();
+            solver.compute(A);
+        }
+        clock_t end = clock();
+        double time = double (end - start) / CLOCKS_PER_SEC;
+        std::cout << "Factorization time : " << time << " seconds" << std::endl;
+
+        start = clock();
+        X = solver.solve(b);
+        end = clock();
+        time = double (end - start) / CLOCKS_PER_SEC;
+        std::cout << "Solving time : " << time << " seconds" << std::endl;
+        std::cout << std::endl;
+
+    #else
+        LeastSquaresConjugateGradient<SparseMatrix<double>> solver;
+
+        clock_t start = clock();
+        solver.compute(A);
+        clock_t end = clock();
+        double time = double (end - start) / CLOCKS_PER_SEC;
+        std::cout << "Preconditioning time : " << time << " seconds" << std::endl;
+
+        // solver.setTolerance(0.0001);
+        solver.setTolerance(0.001);
+        // solver.setMaxIterations( 100);
+
+        start = clock();
+        // firstSolving = true;
+        if (firstSolving) {
+            printf("=!=!=!=!=!=!=!=!=!=!=!=!= RECALCUL DEPUIS DEBUT\n");
+            X = solver.solve(b);
+            firstSolving = false;
+            // firstSolving = true;
+            // std::cout << X << std::endl;
+        }
+        previousSolution = X;
+        end = clock();
+        time = double (end - start) / CLOCKS_PER_SEC;
+        std::cout << "time for solving : " << time << " seconds" << std::endl;
+
+        std::cout << "Number of iterations for solving : " << solver.iterations() << std::endl;
+        std::cout << std::endl;
+    #endif
+}
+
+
+
+void sparseVerticalConcat(
+    Eigen::SparseMatrix<double> M1,
+    Eigen::SparseMatrix<double> M2,
+    Eigen::SparseMatrix<double>& M) {
+
+    if (M1.cols() != M2.cols()) {
+        std::cerr << "Concatenated matrices must have the same number of columns."
+        << std::endl;
+        return;
+    }
+
+    // Sparse matrix concatenation tip taken from 
+    // https://stackoverflow.com/questions/41756428/concatenate-sparse-matrix-eigen
+    M = Eigen::SparseMatrix<double>(M1.rows() + M2.rows(), M1.cols());
+    // Create a list of triplets storing non zero coordinates of the matrix A
+    std::vector<Eigen::Triplet<double>> triplets;
+    triplets.reserve(M1.nonZeros() + M2.nonZeros());
+
+    // Fill with M1 part
+    for (int k = 0; k < M1.outerSize(); ++k) {
+        for (Eigen::SparseMatrix<double>::InnerIterator it(M1, k); it; ++it) {
+            triplets.push_back(Eigen::Triplet<double>(it.row(), it.col(), it.value()));
+        }
+    }
+    // Fill with M2 part
+    for (int k = 0; k < M2.outerSize(); ++k) {
+        for (Eigen::SparseMatrix<double>::InnerIterator it(M2, k); it; ++it) {
+            triplets.push_back(Eigen::Triplet<double>(M1.rows() + it.row(), it.col(), it.value()));
+        }
+    }
+    M.setFromTriplets(triplets.begin(), triplets.end());
+}
+
+void computeFromOctahedronLapAndBary(double w, const Eigen::MatrixXd& inputPts,
+                                      const Eigen::MatrixXd& VP,
+                                      const Eigen::MatrixXi& FP,
+                                      Eigen::MatrixXd& Vcl) {
+    // Step 1: Project input points onto the mesh
+    Eigen::VectorXd sqrD;
+    Eigen::VectorXi I;
+    Eigen::MatrixXd C;
+    igl::point_mesh_squared_distance(inputPts, VP, FP, sqrD, I, C);
+
+    const int n = inputPts.rows();
+    const int n_vertices = VP.rows();
+
+    // Step 2: Build barycentric constraint matrix
+    std::vector<Eigen::Triplet<double>> triplets;
+    triplets.reserve(n * 3); // Each point contributes 3 non-zero entries
+    Eigen::MatrixXd bc = inputPts; // Our positional constraints
+
+    for (int i = 0; i < n; ++i) {
+        const int face_idx = I[i];
+        const Eigen::RowVector3i face = FP.row(face_idx);
+    
+        // Get triangle vertex positions
+        Eigen::RowVector3d A = VP.row(face(0));
+        Eigen::RowVector3d B = VP.row(face(1));
+        Eigen::RowVector3d C_vert = VP.row(face(2));
+    
+        Eigen::RowVector3d p = C.row(i); // Closest point on the triangle
+    
+        // Compute barycentric coordinates
+        Eigen::RowVector3d bary_coords;
+        igl::barycentric_coordinates(p, A, B, C_vert, bary_coords);
+    
+        // Optionally normalize if numerical instability arises
+        bary_coords /= bary_coords.sum();
+    
+        // Fill constraint matrix triplets
+        for (int j = 0; j < 3; ++j) {
+            triplets.emplace_back(i, face(j), bary_coords(j));
+        }
+    }
+    
+
+    // Build sparse barycentric constraint matrix
+    Eigen::SparseMatrix<double> Ac(n, n_vertices);
+    Ac.setFromTriplets(triplets.begin(), triplets.end());
+    Ac.makeCompressed();
+
+    // Step 3: Compute cotangent Laplacian
+    Eigen::SparseMatrix<double> L;
+    igl::cotmatrix(VP, FP, L);
+
+    // Debug output
+    std::cout << "Barycentric constraint matrix: " << Ac.rows() << "x" << Ac.cols() << std::endl;
+    std::cout << "Laplacian matrix: " << L.rows() << "x" << L.cols() << std::endl;
+
+    // Step 4: Build and solve linear system
+    Eigen::SparseMatrix<double> Acl_w;
+    sparseVerticalConcat(sqrt(1.0/w) * Ac, L, Acl_w);
+
+    Eigen::MatrixXd bcl_w(bc.rows() + L.rows(), 3);
+    bcl_w << sqrt(1.0/w) * bc,
+             Eigen::MatrixXd::Zero(L.rows(), 3);
+
+    // Solve the linear system
+    sparseLSsolve(Acl_w, bcl_w, Vcl, true);
+}
 
 int main(int argc, char** argv) {
     if (argc < 3) {
@@ -250,6 +437,7 @@ int main(int argc, char** argv) {
     std::string output_file = obj_file.substr(0, obj_file.find_last_of(".")) + "_circumspheres.obj";
     std::string filtered = obj_file.substr(0, obj_file.find_last_of(".")) + "_filtered.obj";
     std::string deformed = obj_file.substr(0, obj_file.find_last_of(".")) + "_final.obj";
+    std::string voxel_mesh = obj_file.substr(0, obj_file.find_last_of(".")) + "_voxel.obj";
 
     if(res>10)
     {
@@ -288,10 +476,29 @@ int main(int argc, char** argv) {
             spheres.emplace_back(Point(outCenters[i].x, outCenters[i].y, outCenters[i].z), outRadii[i]);
         }
 
-        
-        // save_spheres_to_obj(spheres, output_file);
+        // std::unordered_set<Voxel, VoxelHash> voxel_grid;
 
-        
+        // // Timer start for voxelization
+        // float voxel_size = 2*findShortestDistance(input_points);
+        // std::cout << "Voxel size: " << voxel_size << std::endl;
+        // auto t1 = std::chrono::high_resolution_clock::now();
+        // voxelize_spheres(spheres, voxel_size, voxel_grid);
+        // auto t2 = std::chrono::high_resolution_clock::now();
+        // std::cout << "Voxelization time: " 
+        //         << std::chrono::duration<double>(t2 - t1).count() 
+        //         << " seconds" << std::endl;
+
+        // auto t3 = std::chrono::high_resolution_clock::now();
+        // extract_and_save_boundary_faces(voxel_grid, voxel_size, voxel_mesh);
+        // auto t4 = std::chrono::high_resolution_clock::now();
+        // std::cout << "bpondary time: " 
+        //         << std::chrono::duration<double>(t4 - t3).count() 
+        //         << " seconds" << std::endl;
+
+        // return 0;
+
+
+        clock_t start = clock();
         Eigen::VectorXd S(res * res * res);
         Eigen::MatrixXd GV(res * res * res, 3);
         float mesh_size = 6.0;
@@ -307,9 +514,15 @@ int main(int argc, char** argv) {
                 }
             }
         }
-
+        clock_t end = clock();
+        double time = double (end - start) / CLOCKS_PER_SEC;
+        std::cout << "grid time : " << time << " seconds" << std::endl;
+        start = clock();
         // Extract mesh using marching cubes
         igl::copyleft::marching_cubes(S, GV, res, res, res, V, F);
+        end = clock();
+        time = double (end - start) / CLOCKS_PER_SEC;
+        std::cout << "marching time : " << time << " seconds" << std::endl;
 
         // Save the result
         igl::writeOBJ(output_file, V, F);
@@ -391,12 +604,14 @@ int main(int argc, char** argv) {
     Eigen::MatrixXd V_new = W ;
 
     // Step 5: Save the deformed mesh
+
+    computeFromOctahedronLapAndBary(1.0, filte_v, V, F, V_new);
     if (!igl::writeOBJ(deformed, V_new, F)) {
         std::cerr << "Failed to save deformed mesh!" << std::endl;
         return -1;
     }
 
-    std::cout << "Deformation complete! Saved as 'deformed_mesh.obj'" << std::endl;
+    std::cout << "Deformation complete! Saved as 'deformed_mesh.obj'"<<deformed << std::endl;
 
     return 0;
 }
