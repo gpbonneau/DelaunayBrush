@@ -58,7 +58,7 @@ void export_vertices_to_ply(const std::unordered_set<Point>& unique_vertices, co
 // Main DLL function to compute circumspheres
 extern "C" DLL_EXPORT int computeCircumspheres(
     const Point3D* points, const Point3D* normals, int numPoints,
-    Point3D* outCenters, double* outRadii, int maxOutputSize) {
+    Point3D* outCenters, double* outRadii, int maxOutputSize,std::string filename) {
 
     if (numPoints <= 0 || !points || !normals || !outCenters || !outRadii) {
         return 0;
@@ -121,7 +121,7 @@ extern "C" DLL_EXPORT int computeCircumspheres(
         
     }
     
-    export_vertices_to_ply(unique_vertices, "circumsphere_vertices.ply");
+    export_vertices_to_ply(unique_vertices, filename);
     
     return count;
 }

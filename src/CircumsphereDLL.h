@@ -16,7 +16,7 @@ struct Point3D {
 extern "C" {
     DLL_EXPORT int computeCircumspheres(
         const Point3D* points, const Point3D* normals, int numPoints,
-        Point3D* outCenters, double* outRadii, int maxOutputSize);
+        Point3D* outCenters, double* outRadii, int maxOutputSize, std::string filename);
 }
 
 #endif // CIRCUMSPHERE_DLL_H

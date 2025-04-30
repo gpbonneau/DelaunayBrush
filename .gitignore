@@ -63,3 +63,12 @@ Thumbs.db
 *.obj
 *.json
 *.png
+
+data/*
+flowrep/*
+Surfacebrush/*
+*/.DS_Store
+*.mtl
+*.obj
+*.txt
+*.DS_Store

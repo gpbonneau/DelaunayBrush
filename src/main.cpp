@@ -34,6 +34,7 @@
 
 #include <igl/writeOBJ.h>   
 #include <igl/readPLY.h>
+#include <igl/loop.h>
 
 #include <set>
 #include <stdexcept>
@@ -46,14 +47,88 @@
 #include <igl/barycentric_coordinates.h>
 #include <igl/cotmatrix.h>
 #include <Eigen/Sparse>
+#include <CGAL/Surface_mesh.h>
+#include <CGAL/Exact_predicates_inexact_constructions_kernel.h>
+#include <CGAL/Polygon_mesh_processing/remesh.h>
+#include <CGAL/boost/graph/IO/polygon_mesh_io.h>
 
+namespace PMP = CGAL::Polygon_mesh_processing;
+typedef CGAL::Exact_predicates_inexact_constructions_kernel Kernel;
+typedef Kernel::Point_3 Point;
+typedef CGAL::Surface_mesh<Point> SurfaceMesh;
+
+void uniform_remesh(
+    Eigen::MatrixXd& V,
+    Eigen::MatrixXi& F,
+    double target_edge_length,
+    int iterations = 3,
+    int max_vertices = 5000)
+{
+    // Convert Eigen to CGAL
+    SurfaceMesh mesh;
+    std::vector<SurfaceMesh::Vertex_index> vtx_indices;
+    for (int i = 0; i < V.rows(); ++i)
+        vtx_indices.push_back(mesh.add_vertex(Point(V(i, 0), V(i, 1), V(i, 2))));
+
+    for (int i = 0; i < F.rows(); ++i)
+        mesh.add_face(vtx_indices[F(i, 0)], vtx_indices[F(i, 1)], vtx_indices[F(i, 2)]);
+
+    // Iterative remeshing with a vertex count cap
+    for (int i = 0; i < iterations; ++i) {
+        PMP::isotropic_remeshing(
+            faces(mesh),
+            target_edge_length,
+            mesh,
+            PMP::parameters::number_of_iterations(1).protect_constraints(false)
+        );
+
+        if (mesh.number_of_vertices() >= max_vertices) {
+            std::cout << "Reached vertex limit (" << mesh.number_of_vertices() << "), stopping remeshing early.\n";
+            break;
+        }
+    }
+
+    // Convert back to Eigen
+    V.resize(mesh.number_of_vertices(), 3);
+    std::map<SurfaceMesh::Vertex_index, int> vi_map;
+    int vi = 0;
+    for (auto v : mesh.vertices()) {
+        Point p = mesh.point(v);
+        V.row(vi) = Eigen::RowVector3d(p.x(), p.y(), p.z());
+        vi_map[v] = vi++;
+    }
+
+    F.resize(mesh.number_of_faces(), 3);
+    int fi = 0;
+    for (auto f : mesh.faces()) {
+        int j = 0;
+        for (auto v : vertices_around_face(mesh.halfedge(f), mesh))
+            F(fi, j++) = vi_map[v];
+        fi++;
+    }
+}
+
+
+void saveSpheresToFile(const std::vector<std::pair<Eigen::RowVector3d, double>>& spheres, const std::string& filename) {
+    std::ofstream outFile(filename);
+    if (!outFile.is_open()) {
+        std::cerr << "Error: Could not open file for writing: " << filename << std::endl;
+        return;
+    }
+
+    for (const auto& [center, radius] : spheres) {
+        outFile << center.x() << " " << center.y() << " " << center.z() << " " << radius << "\n";
+    }
+
+    outFile.close();
+}
 
 // typedef CGAL::Nef_polyhedron_3<K> Nef_polyhedron;
 
 typedef std::tuple<int, int, int> Voxel;
 struct VoxelHash {
-    std::size_t operator()(const Voxel& v) const {
-        auto [x, y, z] = v;
+    std::size_t operator()(const Voxel& mcV) const {
+        auto [x, y, z] = mcV;
         return std::hash<int>()(x) ^ (std::hash<int>()(y) << 1) ^ (std::hash<int>()(z) << 2);
     }
 };
@@ -80,6 +155,70 @@ struct PointHash {
     }
 };
 
+
+
+#include <igl/dual_contouring.h>
+
+ void dualContourSpheres( const std::vector<std::pair<Eigen::RowVector3d,double>>& spheres,
+                    Eigen::MatrixXd&  V,          // ← vertices
+                    Eigen::MatrixXi&  F,          // ← quads (or triangles)
+                    bool              triangles   = false, // false→quads
+                    int               grid_res    = 128)    // nx=ny=nz
+{
+    using Row3d = Eigen::RowVector3d;
+
+    // ------------------------------------------------------------
+    // 1.  Signed‑distance of union of spheres
+    // ------------------------------------------------------------
+    auto f = [&](const Row3d& x)->double
+    {
+        double d = std::numeric_limits<double>::infinity();
+        for(const auto& s : spheres)
+        d = std::min(d, (x-s.first).norm() - s.second);
+        return d;
+    };
+
+    // Finite‑difference gradient (normalised)
+    auto f_grad = [&](const Row3d& x)->Row3d
+    {
+        const double eps = 1e-6;
+        Row3d g;
+        for(int c=0;c<3;++c)
+        {
+        Row3d e = Row3d::Zero(); e(c)=eps;
+        g(c) = (f(x+e) - f(x-e)) / (2*eps);
+        }
+        return g.normalized();
+    };
+
+    // ------------------------------------------------------------
+    // 2.  Bounding box (+ 5 % padding)
+    // ------------------------------------------------------------
+    Row3d bb_min( 1e30, 1e30, 1e30),
+            bb_max(-1e30,-1e30,-1e30);
+    for(const auto& s : spheres){
+        // Option A: work in Array domain
+bb_min = bb_min.array().min(s.first.array() - s.second).matrix();
+bb_max = bb_max.array().max(s.first.array() + s.second).matrix();
+
+    }
+    double pad = 0.05 * (bb_max - bb_min).norm();
+    bb_min.array() -= pad;  bb_max.array() += pad;
+
+    // ------------------------------------------------------------
+    // 3.  Run dual contouring
+    // ------------------------------------------------------------
+    bool constrained = false;   // unconstrained QEF
+    bool root_find   = true;    // Newton refinement
+    igl::dual_contouring(
+        f, f_grad,
+        bb_min, bb_max,
+        grid_res, grid_res, grid_res,
+        constrained,
+        triangles,
+        root_find,
+        V, F);
+}
 
 
 // Convert Point3D to Eigen::Vector3d
@@ -181,7 +320,7 @@ void voxelize_spheres(const std::vector<std::pair<Point, double>>& spheres, doub
     for (const auto& vertex : face) {
     if (point_index.find(vertex) == point_index.end()) {
     point_index[vertex] = index++;
-    out << "v " << CGAL::to_double(vertex.x()) << " "
+    out << "mcV " << CGAL::to_double(vertex.x()) << " "
     << CGAL::to_double(vertex.y()) << " "
     << CGAL::to_double(vertex.z()) << "\n";
     }
@@ -189,7 +328,7 @@ void voxelize_spheres(const std::vector<std::pair<Point, double>>& spheres, doub
     }
 
     for (const auto& face : faces) {
-    out << "f " << point_index[face[0]] << " "
+    out << "mcF " << point_index[face[0]] << " "
     << point_index[face[1]] << " "
     << point_index[face[2]] << "\n";
     }
@@ -200,12 +339,15 @@ void voxelize_spheres(const std::vector<std::pair<Point, double>>& spheres, doub
 // Function to generate a single sphere mesh
 
 // Function to read vertices and normals from an OBJ file
-bool read_obj(const std::string& filename, std::vector<Point>& points, std::vector<Vector>& normals) {
+bool read_obj(const std::string& filename, Eigen::MatrixXd& points, Eigen::MatrixXd& normals) {
     std::ifstream file(filename);
     if (!file.is_open()) {
         std::cerr << "Failed to open file: " << filename << std::endl;
         return false;
     }
+
+    std::vector<Eigen::Vector3d> temp_points;
+    std::vector<Eigen::Vector3d> temp_normals;
 
     std::string line;
     while (std::getline(file, line)) {
@@ -214,28 +356,36 @@ bool read_obj(const std::string& filename, std::vector<Point>& points, std::vect
         iss >> type;
 
         if (type == "v") {
-            // Read vertex
             double x, y, z;
             iss >> x >> y >> z;
-            points.emplace_back(x, y, z);
+            temp_points.emplace_back(x, y, z);
         } else if (type == "vn") {
-            // Read normal
             double nx, ny, nz;
             iss >> nx >> ny >> nz;
-            normals.emplace_back(-1*nx, -1*ny, -1*nz);
+            // temp_normals.emplace_back(nx, ny, nz);
+            temp_normals.emplace_back(-1*nx, -1*ny, -1*nz);
         }
     }
 
     file.close();
 
-    if (points.size() != normals.size()) {
+    if (temp_points.size() != temp_normals.size()) {
         std::cerr << "Mismatch between the number of vertices and normals in the OBJ file." << std::endl;
         return false;
     }
 
+    // Resize matrices to 3 x N
+    size_t N = temp_points.size();
+    points.resize(N, 3);
+    normals.resize(N, 3);
+
+    for (size_t i = 0; i < N; ++i) {
+        points.row(i) = temp_points[i];
+        normals.row(i) = temp_normals[i];
+    }
+
     return true;
 }
-
 double distance(const Point3D& p1, const Point3D& p2) {
     return std::sqrt((p1.x - p2.x) * (p1.x - p2.x) +
                      (p1.y - p2.y) * (p1.y - p2.y) +
@@ -418,28 +568,29 @@ void computeFromOctahedronLapAndBary(double w, const Eigen::MatrixXd& inputPts,
 }
 
 int main(int argc, char** argv) {
-    if (argc < 3) {
-        std::cerr << "Usage: " << argv[0] << " <input.obj>" << std::endl;
-        return 1;
+    double remsh_factor = 1;
+    if (argc >= 4) {
+        remsh_factor = std::stod(argv[3]);
     }
 
-    std::vector<Point> points;
-    std::vector<Vector> normals;
+    Eigen::MatrixXd points;
+    Eigen::MatrixXd normals;
 
     std::string obj_file = argv[1];
     int res=std::stoi(argv[2]);
 
 
-    Eigen::MatrixXd V;
-    Eigen::MatrixXi F;
+    Eigen::MatrixXd mcV,dcV;
+    Eigen::MatrixXi mcF,dcF;
 
     // Save results
-    std::string output_file = obj_file.substr(0, obj_file.find_last_of(".")) + "_circumspheres.obj";
-    std::string filtered = obj_file.substr(0, obj_file.find_last_of(".")) + "_filtered.obj";
-    std::string deformed = obj_file.substr(0, obj_file.find_last_of(".")) + "_final.obj";
-    std::string voxel_mesh = obj_file.substr(0, obj_file.find_last_of(".")) + "_voxel.obj";
-
-    if(res>10)
+    std::string output_file = obj_file.substr(0, obj_file.find_last_of(".")) + "_marching.obj";
+    std::string dual_contour = obj_file.substr(0, obj_file.find_last_of(".")) + "_dual_contouring.obj";
+    std::string sphere_file = obj_file.substr(0, obj_file.find_last_of(".")) + "_circumspheres.txt";
+    std::string filtered = obj_file.substr(0, obj_file.find_last_of(".")) + "_filtered.ply";
+    std::string final_mc = obj_file.substr(0, obj_file.find_last_of(".")) + "_final_mc.obj";
+    std::string final_dc = obj_file.substr(0, obj_file.find_last_of(".")) + "_final_dc.obj";
+    double  voxel_size ;
     {
         if (!read_obj(obj_file, points, normals)) {
             std::cerr << "Failed to read OBJ file: " << obj_file << std::endl;
@@ -449,16 +600,16 @@ int main(int argc, char** argv) {
         std::cout << "Read " << points.size() << " vertices and normals " << normals.size() << std::endl;
 
         // Convert to Point3D format for DLL
-        std::vector<Point3D> input_points(points.size());
-        std::vector<Point3D> input_normals(normals.size());
+        std::vector<Point3D> input_points(points.rows());
+        std::vector<Point3D> input_normals(normals.rows());
 
-        for (size_t i = 0; i < points.size(); ++i) {
-            input_points[i] = {CGAL::to_double(points[i].x()), CGAL::to_double(points[i].y()), CGAL::to_double(points[i].z())};
-            input_normals[i] = {CGAL::to_double(normals[i].x()), CGAL::to_double(normals[i].y()), CGAL::to_double(normals[i].z())};
+        for (size_t i = 0; i < points.rows(); ++i) {
+            input_points[i] = {CGAL::to_double(points(i, 0)), CGAL::to_double(points(i, 1)), CGAL::to_double(points(i, 2))};      
+            input_normals[i] = {CGAL::to_double(normals(i, 0)), CGAL::to_double(normals(i, 1)), CGAL::to_double(normals(i, 2))};
         }
 
         // Allocate output arrays
-        int maxOutputSize = 10000;  // Adjust as needed
+        int maxOutputSize = 90000;  // Adjust as needed
         std::vector<Point3D> outCenters(maxOutputSize);
         std::vector<double> outRadii(maxOutputSize);
 
@@ -466,20 +617,22 @@ int main(int argc, char** argv) {
         int num_spheres = computeCircumspheres(
             input_points.data(), input_normals.data(),
             static_cast<int>(input_points.size()),
-            outCenters.data(), outRadii.data(), maxOutputSize);
+            outCenters.data(), outRadii.data(), maxOutputSize,filtered);
 
         std::cout << "Computed " << num_spheres << " valid circumspheres\n";
 
         // Store results in a vector
-        std::vector<std::pair<Point, double>> spheres;
+        std::vector<std::pair<Eigen::RowVector3d, double>> spheres;
         for (int i = 0; i < num_spheres; ++i) {
-            spheres.emplace_back(Point(outCenters[i].x, outCenters[i].y, outCenters[i].z), outRadii[i]);
+            spheres.emplace_back(Eigen::RowVector3d(outCenters[i].x, outCenters[i].y, outCenters[i].z), outRadii[i]);
         }
 
         // std::unordered_set<Voxel, VoxelHash> voxel_grid;
 
         // // Timer start for voxelization
-        // float voxel_size = 2*findShortestDistance(input_points);
+        // voxel_size = 2*findShortestDistance(input_points);
+        saveSpheresToFile(spheres, sphere_file);
+
         // std::cout << "Voxel size: " << voxel_size << std::endl;
         // auto t1 = std::chrono::high_resolution_clock::now();
         // voxelize_spheres(spheres, voxel_size, voxel_grid);
@@ -498,23 +651,41 @@ int main(int argc, char** argv) {
         // return 0;
 
         clock_t start = clock();
-        float voxel_size = findShortestDistance(input_points);
-        Eigen::VectorXd S = Eigen::VectorXd::Constant(res * res * res, std::numeric_limits<double>::max());
-        Eigen::MatrixXd GV(res * res * res, 3);
-        double mesh_size = 6.0;
+        // float voxel_size = findShortestDistance(input_points);
+        // Compute bounding box
+        Eigen::Vector3d min_corner = points.rowwise().minCoeff();
+        Eigen::Vector3d max_corner = points.rowwise().maxCoeff();
+
+        // Compute diagonal length of the bounding box (optional, for scale)
+        Eigen::Vector3d diag = max_corner - min_corner;
+        double mesh_size = 6*diag.norm();  // or diag.norm(), depending on your goal
+
+        voxel_size = diag.norm() / static_cast<double>(res);
+
+        // Add padding (optional)
+        double padding = 0.3 * mesh_size;  // 10% padding  
+        min_corner -= Eigen::Vector3d::Constant(padding);
+        max_corner += Eigen::Vector3d::Constant(padding);
+
+        // Recompute step and resolution info
         double step = mesh_size / static_cast<double>(res);
         int N = res * res * res;
 
-        // Precompute voxel positions
+        // Allocate
+        Eigen::VectorXd S = Eigen::VectorXd::Constant(N, std::numeric_limits<double>::max());
+        Eigen::MatrixXd GV(N, 3);
+
+        // Fill voxel grid positions
         for (int i = 0; i < res; ++i) {
             for (int j = 0; j < res; ++j) {
                 for (int k = 0; k < res; ++k) {
                     int index = i * res * res + j * res + k;
-                    Eigen::Vector3d p(i * step - 1.0, j * step - 1.0, k * step - 1.0);
+                    Eigen::Vector3d p = min_corner + Eigen::Vector3d(i, j, k) * step;
                     GV.row(index) = p;
                 }
             }
         }
+
 
         // Per-sphere iteration
         for (int s = 0; s < outCenters.size(); ++s) {
@@ -522,8 +693,8 @@ int main(int argc, char** argv) {
 
             double radius = outRadii[s];
 
-            Eigen::Vector3d min_bb = (center - Eigen::Vector3d::Constant(radius) + Eigen::Vector3d::Ones()) * res / mesh_size;
-            Eigen::Vector3d max_bb = (center + Eigen::Vector3d::Constant(radius) + Eigen::Vector3d::Ones()) * res / mesh_size;
+            Eigen::Vector3d min_bb = (center - Eigen::Vector3d::Constant(radius) - min_corner) / step;
+            Eigen::Vector3d max_bb = (center + Eigen::Vector3d::Constant(radius) - min_corner) / step;
 
             int i_min = std::max(0, static_cast<int>(std::floor(min_bb.x())));
             int j_min = std::max(0, static_cast<int>(std::floor(min_bb.y())));
@@ -537,12 +708,13 @@ int main(int argc, char** argv) {
                 for (int j = j_min; j <= j_max; ++j) {
                     for (int k = k_min; k <= k_max; ++k) {
                         int index = i * res * res + j * res + k;
-                        Eigen::Vector3d p(i * step - 1.0, j * step - 1.0, k * step - 1.0);
+                        Eigen::Vector3d p = min_corner + Eigen::Vector3d(i, j, k) * step;
                         double d = (p - center).norm() - radius;
                         S(index) = std::min(S(index), d);
                     }
                 }
             }
+
         }
 
         clock_t end = clock();
@@ -550,13 +722,21 @@ int main(int argc, char** argv) {
         std::cout << "grid time : " << time << " seconds" << std::endl;
         start = clock();
         // Extract mesh using marching cubes
-        igl::copyleft::marching_cubes(S, GV, res, res, res, V, F);
+        igl::copyleft::marching_cubes(S, GV, res, res, res, mcV, mcF);
         end = clock();
         time = double (end - start) / CLOCKS_PER_SEC;
         std::cout << "marching time : " << time << " seconds" << std::endl;
 
+        // start = clock();
+        // // Extract mesh using marching cubes
+        // dualContourSpheres(spheres, dcV, dcF, true, res);
+        // end = clock();
+        // time = double (end - start) / CLOCKS_PER_SEC;
+        // std::cout << "dual contouring time : " << time << " seconds" << std::endl;
+        // igl::writeOBJ(dual_contour, dcV, dcF);
+
         // Save the result
-        igl::writeOBJ(output_file, V, F);
+        igl::writeOBJ(output_file, mcV, mcF);
 
         std::cout << "Saved circumspheres to " << output_file << "\n";
 
@@ -566,83 +746,94 @@ int main(int argc, char** argv) {
     Eigen::MatrixXi filter_f;
     if(res<10)
     {   std::cout << output_file << std::endl;
-        igl::readOBJ(output_file, V, F);
-        igl::readOBJ(obj_file, filte_v, filter_f);
-        deformed = obj_file.substr(0, obj_file.find_last_of(".")) + "_final2.obj";
+        igl::readOBJ(output_file, mcV, mcF);
+        igl::readOBJ(filtered, filte_v, filter_f);
+        // final = obj_file.substr(0, obj_file.find_last_of(".")) + "_final2.obj";
     }
     else
     {
-        igl::readPLY("circumsphere_vertices.ply", filte_v, filter_f);
+        igl::readPLY(filtered, filte_v, filter_f);
     }
+    std::cout << "Read circumspheres: " << mcV.rows() << " vertices and " << mcF.rows() << " faces" << std::endl;
+    // igl::loop(mcV,mcF,mcV,mcF);
+    
+    uniform_remesh(mcV, mcF, remsh_factor*voxel_size); // adjust edge length to your threshold
 
-    Eigen::VectorXi I;
-    Eigen::MatrixXd C, sqrD;
-    std::cout << "Closest vertex: " << F.rows() << std::endl;
-    igl::point_mesh_squared_distance(filte_v, V, F, sqrD, I, C);
 
-    std::set<int> used_indices;
-    std::vector<int> unique_indices;
-    std::vector<Eigen::RowVector3d> unique_positions;
+    // Eigen::VectorXi I;
+    // Eigen::MatrixXd C, sqrD;
+    // std::cout << "Closest vertex: " << mcF.rows() << std::endl;
+    // igl::point_mesh_squared_distance(filte_v, mcV, mcF, sqrD, I, C);
 
-    for (int i = 0; i < filte_v.rows(); ++i) {
-        int face_idx = I(i);
-        Eigen::RowVector3d point = filte_v.row(i);
+    // std::set<int> used_indices;
+    // std::vector<int> unique_indices;
+    // std::vector<Eigen::RowVector3d> unique_positions;
 
-        // Get vertex indices of the closest triangle
-        int v0 = F(face_idx, 0);
-        int v1 = F(face_idx, 1);
-        int v2 = F(face_idx, 2);
+    // for (int i = 0; i < filte_v.rows(); ++i) {
+    //     int face_idx = I(i);
+    //     Eigen::RowVector3d point = filte_v.row(i);
 
-        // Find closest vertex among the 3
-        std::vector<int> verts = {v0, v1, v2};
-        int closest_vid = -1;
-        double min_dist = std::numeric_limits<double>::max();
+    //     // Get vertex indices of the closest triangle
+    //     int v0 = mcF(face_idx, 0);
+    //     int v1 = mcF(face_idx, 1);
+    //     int v2 = mcF(face_idx, 2);
 
-        for (int vid : verts) {
-            double dist = (point - V.row(vid)).squaredNorm();
-            if (dist < min_dist) {
-                min_dist = dist;
-                closest_vid = vid;
+    //     // Find closest vertex among the 3
+    //     std::vector<int> verts = {v0, v1, v2};
+    //     int closest_vid = -1;
+    //     double min_dist = std::numeric_limits<double>::max();
+
+    //     for (int vid : verts) {
+    //         double dist = (point - mcV.row(vid)).squaredNorm();
+    //         if (dist < min_dist) {
+    //             min_dist = dist;
+    //             closest_vid = vid;
                 
-            }
+    //         }
 
-        }
+    //     }
 
-        // Skip if already used
-        if (used_indices.count(closest_vid)) continue;
+    //     // Skip if already used
+    //     if (used_indices.count(closest_vid)) continue;
 
-        used_indices.insert(closest_vid);
-        unique_indices.push_back(closest_vid);
-        unique_positions.push_back(point);
-    }
-    std::cout << "Unique indices: " << unique_indices.size() << std::endl;
+    //     used_indices.insert(closest_vid);
+    //     unique_indices.push_back(closest_vid);
+    //     unique_positions.push_back(point);
+    // }
+    // std::cout << "Unique indices: " << unique_indices.size() << std::endl;
 
-    // Convert to Eigen matrices
-    Eigen::VectorXi b(unique_indices.size());
-    Eigen::MatrixXd bc(unique_positions.size(), 3);
-    std::cout << "Unique indices: " << unique_indices.size() << std::endl;
-    for (int i = 0; i < unique_indices.size(); ++i) {
-        b(i) = unique_indices[i];
-        bc.row(i) = V.row(unique_indices[i]);
-    }
+    // // Convert to Eigen matrices
+    // Eigen::VectorXi b(unique_indices.size());
+    // Eigen::MatrixXd bc(unique_positions.size(), 3);
+    // std::cout << "Unique indices: " << unique_indices.size() << std::endl;
+    // for (int i = 0; i < unique_indices.size(); ++i) {
+    //     b(i) = unique_indices[i];
+    //     bc.row(i) = mcV.row(unique_indices[i]);
+    // }
 
     // Compute weights
-    Eigen::MatrixXd W;
-    igl::harmonic(V, F, b, bc, 2, W);
+    // Eigen::MatrixXd W;
+    // igl::harmonic(mcV, mcF, b, bc, 2, W);
 
 
     // Compute new vertex positions
-    Eigen::MatrixXd V_new = W ;
+    // Eigen::MatrixXd V_new = W ;
 
     // Step 5: Save the deformed mesh
-
-    computeFromOctahedronLapAndBary(1.0, filte_v, V, F, V_new);
-    if (!igl::writeOBJ(deformed, V_new, F)) {
+    Eigen::MatrixXd mcV_new,dcV_new;
+    computeFromOctahedronLapAndBary(1.0, filte_v, mcV, mcF, mcV_new);
+    // computeFromOctahedronLapAndBary(1.0, filte_v, dcV, dcF, dcV_new);
+    // if (!igl::writeOBJ(final_dc, dcV_new, dcF)) {
+    //     std::cerr << "Failed to save deformed mesh!" << std::endl;
+    //     return -1;
+    // }
+    if (!igl::writeOBJ(final_mc, mcV_new, mcF)) {
         std::cerr << "Failed to save deformed mesh!" << std::endl;
         return -1;
     }
 
-    std::cout << "Deformation complete! Saved as 'deformed_mesh.obj'"<<deformed << std::endl;
+
+    std::cout << "Deformation complete! Saved as 'deformed_mesh.obj'"<<final_mc<< std::endl;
 
     return 0;
 }
