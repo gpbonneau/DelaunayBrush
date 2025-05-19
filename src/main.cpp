@@ -65,6 +65,9 @@ void uniform_remesh(
     int max_vertices = 5000)
 {
     // Convert Eigen to CGAL
+    clock_t start, stop;
+    start = clock();
+
     SurfaceMesh mesh;
     std::vector<SurfaceMesh::Vertex_index> vtx_indices;
     for (int i = 0; i < V.rows(); ++i)
@@ -72,8 +75,14 @@ void uniform_remesh(
 
     for (int i = 0; i < F.rows(); ++i)
         mesh.add_face(vtx_indices[F(i, 0)], vtx_indices[F(i, 1)], vtx_indices[F(i, 2)]);
+    stop = clock();
+
+    double time = double (stop - start) / CLOCKS_PER_SEC;
+
+    std::cout << "time for converting mesh to CGAL : " <<  time << " seconds" << std::endl;
 
     // Iterative remeshing with a vertex count cap
+    start = clock();
     for (int i = 0; i < iterations; ++i) {
         PMP::isotropic_remeshing(
             faces(mesh),
@@ -87,8 +96,14 @@ void uniform_remesh(
             break;
         }
     }
+    stop = clock();
+    time = double (stop - start) / CLOCKS_PER_SEC;
+    std::cout << "time for remeshing : " <<  time << " seconds" << std::endl;
+
+
 
     // Convert back to Eigen
+    start = clock();
     V.resize(mesh.number_of_vertices(), 3);
     std::map<SurfaceMesh::Vertex_index, int> vi_map;
     int vi = 0;
@@ -106,6 +121,11 @@ void uniform_remesh(
             F(fi, j++) = vi_map[v];
         fi++;
     }
+    stop = clock();
+    time = double (stop - start) / CLOCKS_PER_SEC;
+    std::cout << "time for converting mesh back from CGAL : " << time << " seconds" << std::endl;
+
+
 }
 
 
@@ -518,6 +538,7 @@ void sparseLSsolve(Eigen::SparseMatrix<double>& A, Eigen::MatrixXd& b, Eigen::Ma
     static bool firstSolving = true;
 
     std::cout << "Rows in matrix : " << A.rows() << std::endl;
+    #define LSCG
     #ifndef LSCG
         static Eigen::SparseQR<Eigen::SparseMatrix<double>, Eigen::COLAMDOrdering<int>> solver;
         // Solve the constraints system with least-squares
@@ -538,7 +559,7 @@ void sparseLSsolve(Eigen::SparseMatrix<double>& A, Eigen::MatrixXd& b, Eigen::Ma
         std::cout << std::endl;
 
     #else
-        LeastSquaresConjugateGradient<SparseMatrix<double>> solver;
+        Eigen::LeastSquaresConjugateGradient<Eigen::SparseMatrix<double>> solver;
 
         clock_t start = clock();
         solver.compute(A);
@@ -551,10 +572,11 @@ void sparseLSsolve(Eigen::SparseMatrix<double>& A, Eigen::MatrixXd& b, Eigen::Ma
         // solver.setMaxIterations( 100);
 
         start = clock();
-        // firstSolving = true;
+        firstSolving = true;
         if (firstSolving) {
             printf("=!=!=!=!=!=!=!=!=!=!=!=!= RECALCUL DEPUIS DEBUT\n");
             X = solver.solve(b);
+            // X = solver.solveWithGuess( b, previousSolution);
             firstSolving = false;
             // firstSolving = true;
             // std::cout << X << std::endl;
@@ -725,7 +747,7 @@ int main(int argc, char** argv) {
         std::vector<Point3D> outCenters(maxOutputSize);
         std::vector<double> outRadii(maxOutputSize);
 
-        clock_t startt = clock();
+        clock_t start = clock();
         // Extract mesh using marching cubes
         
         int num_spheres = computeCircumspheres(
@@ -733,13 +755,13 @@ int main(int argc, char** argv) {
             static_cast<int>(input_points.size()),
             outCenters.data(), outRadii.data(), maxOutputSize,filtered);
 
-        clock_t endd = clock();
-        double timee = double (endd - startt) / CLOCKS_PER_SEC;
-        total_time += timee;
+        clock_t stop = clock();
+        double time = double (stop - start) / CLOCKS_PER_SEC;
+        total_time += time;
             // Call the DLL function
 
         std::cout << "Computed " << num_spheres << " valid circumspheres\n";
-        outfile << "Proxy time: " << timee << " seconds" << std::endl;
+        outfile << "Proxy time: " << time << " seconds" << std::endl;
         // outfile.close();
         // Store results in a vector
         std::vector<std::pair<Eigen::RowVector3d, double>> spheres;
@@ -751,8 +773,13 @@ int main(int argc, char** argv) {
 
         // // Timer start for voxelization
         // voxel_size = 2*findShortestDistance(input_points);
+        start = clock();
         saveSpheresToFile(spheres, sphere_file);
         save_combined_spheres(spheres, sphere_file_obj);
+        stop = clock();
+        time = double (stop - start) / CLOCKS_PER_SEC;
+        std::cout << "time for saving spheres : " <<  time << " seconds" << std::endl;
+
         // std::cout << "Saved circumspheres to " << sphere_file << std::endl;
 
         // std::cout << "Voxel size: " << voxel_size << std::endl;
@@ -772,7 +799,7 @@ int main(int argc, char** argv) {
 
         // return 0;
 
-        clock_t start = clock();
+        start = clock();
         // float voxel_size = findShortestDistance(input_points);
         // Compute bounding box
         Eigen::Vector3d min_corner = points.rowwise().minCoeff();
@@ -839,8 +866,8 @@ int main(int argc, char** argv) {
 
         }
 
-        clock_t end = clock();
-        double time = double (end - start) / CLOCKS_PER_SEC;
+        stop = clock();
+        time = double (stop - start) / CLOCKS_PER_SEC;
         total_time += time;
         std::cout << "grid time : " << time << " seconds" << std::endl;
         outfile << "Grid time: " << time << " seconds" << std::endl;
@@ -848,8 +875,8 @@ int main(int argc, char** argv) {
         // Extract mesh using marching cubes
         igl::copyleft::marching_cubes(S, GV, res, res, res, mcV, mcF);
         
-        end = clock();
-        time = double (end - start) / CLOCKS_PER_SEC;
+        stop = clock();
+        time = double (stop - start) / CLOCKS_PER_SEC;
         total_time += time;
         outfile << "Marching time: " << time << " seconds" << std::endl;
         std::cout << "marching time : " << time << " seconds" << std::endl;
