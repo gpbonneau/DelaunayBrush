@@ -109,6 +109,111 @@ void uniform_remesh(
 }
 
 
+void generate_sphere_mesh(
+    double radius, int resolution,
+    Eigen::MatrixXd& V, Eigen::MatrixXi& F)
+{
+    std::vector<Eigen::RowVector3d> vertices;
+    std::vector<Eigen::RowVector3i> faces;
+
+    // Create vertices
+    for (int i = 0; i <= resolution; ++i)
+    {
+        double theta = M_PI * i / resolution; // Angle from top to bottom
+        for (int j = 0; j <= resolution; ++j)
+        {
+            double phi = 2 * M_PI * j / resolution; // Angle around the sphere
+            double x = radius * sin(theta) * cos(phi);
+            double y = radius * sin(theta) * sin(phi);
+            double z = radius * cos(theta);
+            vertices.emplace_back(x, y, z);
+        }
+    }
+
+    // Create faces
+    for (int i = 0; i < resolution; ++i)
+    {
+        for (int j = 0; j < resolution; ++j)
+        {
+            int v0 = i * (resolution + 1) + j;
+            int v1 = v0 + 1;
+            int v2 = v0 + resolution + 1;
+            int v3 = v2 + 1;
+
+            faces.emplace_back(v2, v1, v0);
+            faces.emplace_back(v2, v3, v1);
+        }
+    }
+
+    // Convert to Eigen matrices
+    V.resize(vertices.size(), 3);
+    F.resize(faces.size(), 3);
+
+    for (size_t i = 0; i < vertices.size(); ++i)
+        V.row(i) = vertices[i];
+
+    for (size_t i = 0; i < faces.size(); ++i)
+        F.row(i) = faces[i];
+}
+
+
+void save_combined_spheres(
+    const std::vector<std::pair<Eigen::RowVector3d, double>>& circumspheres, // List of circumspheres (center, radius)
+    const std::string& output_file)
+{
+    int resolution = 20;  // Sphere resolution
+    Eigen::MatrixXd V_base;
+    Eigen::MatrixXi F_base;
+    generate_sphere_mesh(1.0, resolution, V_base, F_base); // Generate unit sphere
+
+    std::vector<Eigen::MatrixXd> vertices_list;
+    std::vector<Eigen::MatrixXi> faces_list;
+    int vertex_offset = 0;
+
+    // Iterate through all circumspheres
+    for (size_t i = 0; i < circumspheres.size(); ++i) {
+        const Eigen::RowVector3d& center = circumspheres[i].first;
+        double radius = circumspheres[i].second;
+
+        // Scale and translate the base sphere
+        Eigen::MatrixXd V_scaled = V_base * radius; 
+        Eigen::MatrixXd V_translated = V_scaled.rowwise() + center;
+
+        // Adjust face indices
+        Eigen::MatrixXi F_translated = F_base.array() + vertex_offset;
+
+
+        // Store the results
+        vertices_list.push_back(V_translated);
+        faces_list.push_back(F_translated);
+        vertex_offset += V_translated.rows();
+    }
+
+
+    // Combine all vertices and faces into final matrices
+    int total_vertices = 0;
+    int total_faces = 0;
+
+    for (size_t i = 0; i < vertices_list.size(); ++i) {
+        total_vertices += vertices_list[i].rows();
+        total_faces += faces_list[i].rows();
+    }
+
+    Eigen::MatrixXd V_final(total_vertices, 3);
+    Eigen::MatrixXi F_final(total_faces, 3);
+
+    int v_offset = 0, f_offset = 0;
+    for (size_t i = 0; i < vertices_list.size(); ++i) {
+        V_final.block(v_offset, 0, vertices_list[i].rows(), 3) = vertices_list[i];
+        F_final.block(f_offset, 0, faces_list[i].rows(), 3) = faces_list[i];
+        v_offset += vertices_list[i].rows();
+        f_offset += faces_list[i].rows();
+    }
+
+    // Save the final mesh to an OBJ file
+    igl::writeOBJ(output_file, V_final, F_final);
+}
+
 void saveSpheresToFile(const std::vector<std::pair<Eigen::RowVector3d, double>>& spheres, const std::string& filename) {
     std::ofstream outFile(filename);
     if (!outFile.is_open()) {
@@ -587,10 +692,17 @@ int main(int argc, char** argv) {
     std::string output_file = obj_file.substr(0, obj_file.find_last_of(".")) + "_marching.obj";
     std::string dual_contour = obj_file.substr(0, obj_file.find_last_of(".")) + "_dual_contouring.obj";
     std::string sphere_file = obj_file.substr(0, obj_file.find_last_of(".")) + "_circumspheres.txt";
+    std::string sphere_file_obj = obj_file.substr(0, obj_file.find_last_of(".")) + "_circumspheres.obj";
     std::string filtered = obj_file.substr(0, obj_file.find_last_of(".")) + "_filtered.ply";
     std::string final_mc = obj_file.substr(0, obj_file.find_last_of(".")) + "_final_mc.obj";
     std::string final_dc = obj_file.substr(0, obj_file.find_last_of(".")) + "_final_dc.obj";
+    std::string timing = obj_file.substr(0, obj_file.find_last_of(".")) + "timing.txt";
+    std::string uniorm_mesh = obj_file.substr(0, obj_file.find_last_of(".")) + "_uniform.obj";
+
+    std::ofstream outfile(timing, std::ios::app); // open in append mode
+
     double  voxel_size ;
+    double total_time = 0.0;
     {
         if (!read_obj(obj_file, points, normals)) {
             std::cerr << "Failed to read OBJ file: " << obj_file << std::endl;
@@ -613,14 +725,22 @@ int main(int argc, char** argv) {
         std::vector<Point3D> outCenters(maxOutputSize);
         std::vector<double> outRadii(maxOutputSize);
 
-        // Call the DLL function
+        clock_t startt = clock();
+        // Extract mesh using marching cubes
+        
         int num_spheres = computeCircumspheres(
             input_points.data(), input_normals.data(),
             static_cast<int>(input_points.size()),
             outCenters.data(), outRadii.data(), maxOutputSize,filtered);
 
-        std::cout << "Computed " << num_spheres << " valid circumspheres\n";
+        clock_t endd = clock();
+        double timee = double (endd - startt) / CLOCKS_PER_SEC;
+        total_time += timee;
+            // Call the DLL function
 
+        std::cout << "Computed " << num_spheres << " valid circumspheres\n";
+        outfile << "Proxy time: " << timee << " seconds" << std::endl;
+        // outfile.close();
         // Store results in a vector
         std::vector<std::pair<Eigen::RowVector3d, double>> spheres;
         for (int i = 0; i < num_spheres; ++i) {
@@ -632,6 +752,8 @@ int main(int argc, char** argv) {
         // // Timer start for voxelization
         // voxel_size = 2*findShortestDistance(input_points);
         saveSpheresToFile(spheres, sphere_file);
+        save_combined_spheres(spheres, sphere_file_obj);
+        // std::cout << "Saved circumspheres to " << sphere_file << std::endl;
 
         // std::cout << "Voxel size: " << voxel_size << std::endl;
         // auto t1 = std::chrono::high_resolution_clock::now();
@@ -658,12 +780,12 @@ int main(int argc, char** argv) {
 
         // Compute diagonal length of the bounding box (optional, for scale)
         Eigen::Vector3d diag = max_corner - min_corner;
-        double mesh_size = 6*diag.norm();  // or diag.norm(), depending on your goal
+        double mesh_size = 10*diag.norm();  // or diag.norm(), depending on your goal
 
         voxel_size = diag.norm() / static_cast<double>(res);
 
         // Add padding (optional)
-        double padding = 0.3 * mesh_size;  // 10% padding  
+        double padding =  0.3*mesh_size;  // 10% padding  
         min_corner -= Eigen::Vector3d::Constant(padding);
         max_corner += Eigen::Vector3d::Constant(padding);
 
@@ -719,12 +841,17 @@ int main(int argc, char** argv) {
 
         clock_t end = clock();
         double time = double (end - start) / CLOCKS_PER_SEC;
+        total_time += time;
         std::cout << "grid time : " << time << " seconds" << std::endl;
+        outfile << "Grid time: " << time << " seconds" << std::endl;
         start = clock();
         // Extract mesh using marching cubes
         igl::copyleft::marching_cubes(S, GV, res, res, res, mcV, mcF);
+        
         end = clock();
         time = double (end - start) / CLOCKS_PER_SEC;
+        total_time += time;
+        outfile << "Marching time: " << time << " seconds" << std::endl;
         std::cout << "marching time : " << time << " seconds" << std::endl;
 
         // start = clock();
@@ -756,9 +883,17 @@ int main(int argc, char** argv) {
     }
     std::cout << "Read circumspheres: " << mcV.rows() << " vertices and " << mcF.rows() << " faces" << std::endl;
     // igl::loop(mcV,mcF,mcV,mcF);
-    
+    clock_t st = clock();
     uniform_remesh(mcV, mcF, remsh_factor*voxel_size); // adjust edge length to your threshold
-
+    
+    clock_t en = clock();
+    double utime = double (en - st) / CLOCKS_PER_SEC;
+    total_time += utime;
+    outfile << "Uniform mesh time: " << utime << " seconds" << std::endl;
+    if(!igl::writeOBJ(uniorm_mesh, mcV, mcF)) {
+        std::cerr << "Failed to save deformed mesh!" << std::endl;
+        return -1;
+    }
 
     // Eigen::VectorXi I;
     // Eigen::MatrixXd C, sqrD;
@@ -821,12 +956,22 @@ int main(int argc, char** argv) {
 
     // Step 5: Save the deformed mesh
     Eigen::MatrixXd mcV_new,dcV_new;
+
+    clock_t start = clock();
     computeFromOctahedronLapAndBary(1.0, filte_v, mcV, mcF, mcV_new);
     // computeFromOctahedronLapAndBary(1.0, filte_v, dcV, dcF, dcV_new);
     // if (!igl::writeOBJ(final_dc, dcV_new, dcF)) {
     //     std::cerr << "Failed to save deformed mesh!" << std::endl;
     //     return -1;
     // }
+    // Extract mesh using marching cubes
+    clock_t end = clock();
+    double time = double (end - start) / CLOCKS_PER_SEC;
+    total_time += time;
+    outfile << "Smoothing time: " << time << " seconds" << std::endl;
+    outfile << "Total time: " << total_time << " seconds" << std::endl;
+    outfile.close();
+
     if (!igl::writeOBJ(final_mc, mcV_new, mcF)) {
         std::cerr << "Failed to save deformed mesh!" << std::endl;
         return -1;

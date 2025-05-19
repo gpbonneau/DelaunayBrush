@@ -103,7 +103,7 @@ extern "C" DLL_EXPORT int computeCircumspheres(
             int vertex_idx = it->vertex(i)->info();
             Vector to_v = it->vertex(i)->point() - circumcenter;
             double angle = compute_angle(to_v, cgal_normals[vertex_idx]);
-            if (angle > 0.9) {
+            if (angle >= 1.0) {
                 all_valid = false;
                 break;
             }
