@@ -575,8 +575,8 @@ void sparseLSsolve(Eigen::SparseMatrix<double>& A, Eigen::MatrixXd& b, Eigen::Ma
         firstSolving = true;
         if (firstSolving) {
             printf("=!=!=!=!=!=!=!=!=!=!=!=!= RECALCUL DEPUIS DEBUT\n");
-            X = solver.solve(b);
-            // X = solver.solveWithGuess( b, previousSolution);
+            // X = solver.solve(b);
+            X = solver.solveWithGuess( b, X);
             firstSolving = false;
             // firstSolving = true;
             // std::cout << X << std::endl;
@@ -634,11 +634,16 @@ void computeFromOctahedronLapAndBary(double w, const Eigen::MatrixXd& inputPts,
     Eigen::VectorXd sqrD;
     Eigen::VectorXi I;
     Eigen::MatrixXd C;
+    clock_t start = clock();
     igl::point_mesh_squared_distance(inputPts, VP, FP, sqrD, I, C);
+    clock_t stop = clock();
+    double time = double (stop - start) / CLOCKS_PER_SEC;
+    std::cout << "time for projecting points on proxy : " <<  time << " seconds" << std::endl;
 
     const int n = inputPts.rows();
     const int n_vertices = VP.rows();
 
+    start = clock();
     // Step 2: Build barycentric constraint matrix
     std::vector<Eigen::Triplet<double>> triplets;
     triplets.reserve(n * 3); // Each point contributes 3 non-zero entries
@@ -678,6 +683,7 @@ void computeFromOctahedronLapAndBary(double w, const Eigen::MatrixXd& inputPts,
     Eigen::SparseMatrix<double> L;
     igl::cotmatrix(VP, FP, L);
 
+
     // Debug output
     std::cout << "Barycentric constraint matrix: " << Ac.rows() << "x" << Ac.cols() << std::endl;
     std::cout << "Laplacian matrix: " << L.rows() << "x" << L.cols() << std::endl;
@@ -689,6 +695,10 @@ void computeFromOctahedronLapAndBary(double w, const Eigen::MatrixXd& inputPts,
     Eigen::MatrixXd bcl_w(bc.rows() + L.rows(), 3);
     bcl_w << sqrt(1.0/w) * bc,
              Eigen::MatrixXd::Zero(L.rows(), 3);
+
+    stop = clock();
+    time = double (stop - start) / CLOCKS_PER_SEC;
+    std::cout << "time for computing all barycentric coordinates, cotangent matrix and all required matrices : " <<  time << " seconds" << std::endl;
 
     // Solve the linear system
     sparseLSsolve(Acl_w, bcl_w, Vcl, true);
@@ -748,7 +758,7 @@ int main(int argc, char** argv) {
         std::vector<double> outRadii(maxOutputSize);
 
         clock_t start = clock();
-        // Extract mesh using marching cubes
+        // FILTERING SPHERES
         
         int num_spheres = computeCircumspheres(
             input_points.data(), input_normals.data(),
@@ -761,6 +771,8 @@ int main(int argc, char** argv) {
             // Call the DLL function
 
         std::cout << "Computed " << num_spheres << " valid circumspheres\n";
+        std::cout << "time for filtering spheres : " <<  time << " seconds" << std::endl;
+
         outfile << "Proxy time: " << time << " seconds" << std::endl;
         // outfile.close();
         // Store results in a vector
@@ -773,12 +785,14 @@ int main(int argc, char** argv) {
 
         // // Timer start for voxelization
         // voxel_size = 2*findShortestDistance(input_points);
-        start = clock();
-        saveSpheresToFile(spheres, sphere_file);
-        save_combined_spheres(spheres, sphere_file_obj);
-        stop = clock();
-        time = double (stop - start) / CLOCKS_PER_SEC;
-        std::cout << "time for saving spheres : " <<  time << " seconds" << std::endl;
+        if (0) {
+            start = clock();
+            saveSpheresToFile(spheres, sphere_file);
+            save_combined_spheres(spheres, sphere_file_obj);
+            stop = clock();
+            time = double (stop - start) / CLOCKS_PER_SEC;
+            std::cout << "time for saving spheres : " <<  time << " seconds" << std::endl;
+        }
 
         // std::cout << "Saved circumspheres to " << sphere_file << std::endl;
 
@@ -890,9 +904,13 @@ int main(int argc, char** argv) {
         // igl::writeOBJ(dual_contour, dcV, dcF);
 
         // Save the result
+        start = clock();
         igl::writeOBJ(output_file, mcV, mcF);
+        stop = clock();
+        time = double (stop - start) / CLOCKS_PER_SEC;
 
         std::cout << "Saved circumspheres to " << output_file << "\n";
+        std::cout << "time for saving circumspheres: " << time << " seconds" << std::endl;
 
 }
 
@@ -916,6 +934,7 @@ int main(int argc, char** argv) {
     clock_t en = clock();
     double utime = double (en - st) / CLOCKS_PER_SEC;
     total_time += utime;
+    std::cout << "Uniform mesh time: " << utime << " seconds" << std::endl;
     outfile << "Uniform mesh time: " << utime << " seconds" << std::endl;
     if(!igl::writeOBJ(uniorm_mesh, mcV, mcF)) {
         std::cerr << "Failed to save deformed mesh!" << std::endl;
@@ -983,6 +1002,7 @@ int main(int argc, char** argv) {
 
     // Step 5: Save the deformed mesh
     Eigen::MatrixXd mcV_new,dcV_new;
+    mcV_new = mcV; // COPY PROXY MESH VERTICES IN THE TO-BE-COMPUTED SMOOTH SURFACE VERTICES mcV_new
 
     clock_t start = clock();
     computeFromOctahedronLapAndBary(1.0, filte_v, mcV, mcF, mcV_new);
@@ -995,9 +1015,16 @@ int main(int argc, char** argv) {
     clock_t end = clock();
     double time = double (end - start) / CLOCKS_PER_SEC;
     total_time += time;
+    std::cout << "Smoothing time: " << time << " seconds" << std::endl;
     outfile << "Smoothing time: " << time << " seconds" << std::endl;
     outfile << "Total time: " << total_time << " seconds" << std::endl;
     outfile.close();
+    std::cout << "Total computing time: " << total_time << " seconds" << std::endl;
+
+    // Invert face orientation by swapping two indices in each face
+    for (int i = 0; i < mcF.rows(); ++i) {
+        std::swap(mcF(i, 0), mcF(i, 1));  // Flip orientation
+    }
 
     if (!igl::writeOBJ(final_mc, mcV_new, mcF)) {
         std::cerr << "Failed to save deformed mesh!" << std::endl;
