@@ -116,6 +116,8 @@
         "stop_token": "cpp",
         "text_encoding": "cpp",
         "thread": "cpp",
-        "typeindex": "cpp"
+        "typeindex": "cpp",
+        "dense": "cpp",
+        "sparse": "cpp"
     }
 }

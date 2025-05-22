@@ -40,7 +40,8 @@
 #include <stdexcept>
 
 #include <igl/readOBJ.h>
-#include <igl/biharmonic_coordinates.h>
+// #include <igl/biharmonic_coordinates.h>
+#include <igl/cotmatrix.h>
 #include <igl/point_mesh_squared_distance.h>
 #include <chrono>
 
@@ -52,10 +53,92 @@
 #include <CGAL/Polygon_mesh_processing/remesh.h>
 #include <CGAL/boost/graph/IO/polygon_mesh_io.h>
 
+#include "polyscope/messages.h"
+#include "polyscope/point_cloud.h"
+#include "polyscope/surface_mesh.h"
+#include "polyscope/polyscope.h"
+
+#define TINYOBJLOADER_IMPLEMENTATION
+#include "tiny_obj_loader.h"
+
 namespace PMP = CGAL::Polygon_mesh_processing;
 typedef CGAL::Exact_predicates_inexact_constructions_kernel Kernel;
 typedef Kernel::Point_3 Point;
 typedef CGAL::Surface_mesh<Point> SurfaceMesh;
+
+// Track state statically outside of your callback (or bind like a lambda)
+int myVal = 10;
+
+void callSomeOtherFunction() {
+    printf("coucou function!");
+    fflush(stdout);
+}
+
+void myCallback() { // gets executed per-frame
+  // Update content in the scene
+//   polyscope::registerPointCloud("this frame point", my_points);
+
+  // Build a UI element to edit a parameter, which will 
+  // appear in the onscreen panel
+  ImGui::InputInt("my val", &myVal); 
+
+  if (ImGui::Button("run subroutine")) {
+    callSomeOtherFunction();
+  }
+}
+
+
+void read_strokes( std::string &fileName,  std::vector<std::array<double, 3>> &vertices, std::vector<std::array<size_t, 3>> &faces, int &nStrokeMax ) {
+    tinyobj::attrib_t attrib;
+    std::vector<tinyobj::shape_t> shapes;
+    std::vector<tinyobj::material_t> materials;
+    std::string warn, err;
+
+
+    bool ret = tinyobj::LoadObj(&attrib, &shapes, &materials, &warn, &err, fileName.c_str());
+
+    std::cout << "Loaded OBJ file: " << fileName << "\n";
+
+    // for (size_t i = 0; i < shapes.size(); ++i) {
+    //     const tinyobj::shape_t& shape = shapes[i];
+    //     std::cout << "Shape [" << i << "] Name: " << shape.name << "\n";
+    //     std::cout << "  Number of faces: " << shape.mesh.num_face_vertices.size() << "\n";
+    // }
+
+    // Load all vertex positions
+    // std::vector<std::array<double, 3>> vertices;
+    for (size_t i = 0; i < attrib.vertices.size(); i += 3) {
+        vertices.push_back({
+            attrib.vertices[i + 0],
+            attrib.vertices[i + 1],
+            attrib.vertices[i + 2]
+        });
+    }
+
+
+    // Collect faces from first N shapes
+    // std::vector<std::array<size_t, 3>> faces;
+    for (int s = 0; s < std::min(nStrokeMax, (int)shapes.size()); ++s) {
+        const auto& shape = shapes[s];
+        size_t index_offset = 0;
+
+        for (size_t f = 0; f < shape.mesh.num_face_vertices.size(); ++f) {
+            int fv = shape.mesh.num_face_vertices[f];
+            if (fv != 3) {
+                index_offset += fv;
+                continue; // only handle triangles
+            }
+
+            std::array<size_t, 3> face;
+            for (size_t v = 0; v < 3; ++v) {
+                face[v] = shape.mesh.indices[index_offset + v].vertex_index;
+            }
+            faces.push_back(face);
+            index_offset += 3;
+        }
+    } 
+}
+
 
 void uniform_remesh(
     Eigen::MatrixXd& V,
@@ -100,8 +183,6 @@ void uniform_remesh(
     time = double (stop - start) / CLOCKS_PER_SEC;
     std::cout << "time for remeshing : " <<  time << " seconds" << std::endl;
 
-
-
     // Convert back to Eigen
     start = clock();
     V.resize(mesh.number_of_vertices(), 3);
@@ -127,7 +208,6 @@ void uniform_remesh(
 
 
 }
-
 
 void generate_sphere_mesh(
     double radius, int resolution,
@@ -175,7 +255,6 @@ void generate_sphere_mesh(
     for (size_t i = 0; i < faces.size(); ++i)
         F.row(i) = faces[i];
 }
-
 
 void save_combined_spheres(
     const std::vector<std::pair<Eigen::RowVector3d, double>>& circumspheres, // List of circumspheres (center, radius)
@@ -464,7 +543,7 @@ void voxelize_spheres(const std::vector<std::pair<Point, double>>& spheres, doub
 // Function to generate a single sphere mesh
 
 // Function to read vertices and normals from an OBJ file
-bool read_obj(const std::string& filename, Eigen::MatrixXd& points, Eigen::MatrixXd& normals) {
+bool read_obj(const std::string& filename, Eigen::MatrixXd& points, Eigen::MatrixXd& normals, int nStrokeMax) {
     std::ifstream file(filename);
     if (!file.is_open()) {
         std::cerr << "Failed to open file: " << filename << std::endl;
@@ -475,6 +554,7 @@ bool read_obj(const std::string& filename, Eigen::MatrixXd& points, Eigen::Matri
     std::vector<Eigen::Vector3d> temp_normals;
 
     std::string line;
+    int nStroke = -1;
     while (std::getline(file, line)) {
         std::istringstream iss(line);
         std::string type;
@@ -489,10 +569,16 @@ bool read_obj(const std::string& filename, Eigen::MatrixXd& points, Eigen::Matri
             iss >> nx >> ny >> nz;
             // temp_normals.emplace_back(nx, ny, nz);
             temp_normals.emplace_back(-1*nx, -1*ny, -1*nz);
+        } else if (type == "g") {
+            // printf("new stroke\n");
+            nStroke++;
+            if (nStroke == nStrokeMax) {break;}
         }
     }
 
     file.close();
+
+    std::cout << temp_points.size() << std::endl;
 
     if (temp_points.size() != temp_normals.size()) {
         std::cerr << "Mismatch between the number of vertices and normals in the OBJ file." << std::endl;
@@ -508,6 +594,8 @@ bool read_obj(const std::string& filename, Eigen::MatrixXd& points, Eigen::Matri
         points.row(i) = temp_points[i];
         normals.row(i) = temp_normals[i];
     }
+
+    std::cout << points.size() << std::endl;
 
     return true;
 }
@@ -533,7 +621,7 @@ double findShortestDistance(const std::vector<Point3D>& points) {
 }
 
 
-void sparseLSsolve(Eigen::SparseMatrix<double>& A, Eigen::MatrixXd& b, Eigen::MatrixXd& X, bool factorize) {
+void sparseLSsolve(Eigen::SparseMatrix<double>& A, Eigen::MatrixXd& b, Eigen::MatrixXd& X, bool factorize, double tolerance) {
     static Eigen::MatrixXd previousSolution;
     static bool firstSolving = true;
 
@@ -567,8 +655,8 @@ void sparseLSsolve(Eigen::SparseMatrix<double>& A, Eigen::MatrixXd& b, Eigen::Ma
         double time = double (end - start) / CLOCKS_PER_SEC;
         std::cout << "Preconditioning time : " << time << " seconds" << std::endl;
 
-        // solver.setTolerance(0.0001);
-        solver.setTolerance(0.001);
+        solver.setTolerance( tolerance);
+        // solver.setTolerance(0.001);
         // solver.setMaxIterations( 100);
 
         start = clock();
@@ -629,7 +717,7 @@ void sparseVerticalConcat(
 void computeFromOctahedronLapAndBary(double w, const Eigen::MatrixXd& inputPts,
                                       const Eigen::MatrixXd& VP,
                                       const Eigen::MatrixXi& FP,
-                                      Eigen::MatrixXd& Vcl) {
+                                      Eigen::MatrixXd& Vcl, double tolerance) {
     // Step 1: Project input points onto the mesh
     Eigen::VectorXd sqrD;
     Eigen::VectorXi I;
@@ -701,27 +789,26 @@ void computeFromOctahedronLapAndBary(double w, const Eigen::MatrixXd& inputPts,
     std::cout << "time for computing all barycentric coordinates, cotangent matrix and all required matrices : " <<  time << " seconds" << std::endl;
 
     // Solve the linear system
-    sparseLSsolve(Acl_w, bcl_w, Vcl, true);
+    sparseLSsolve(Acl_w, bcl_w, Vcl, true, tolerance);
 }
 
 int main(int argc, char** argv) {
-    double remsh_factor = 1;
-    if (argc >= 4) {
-        remsh_factor = std::stod(argv[3]);
-    }
+    double remsh_factor = std::stod(argv[3]);
+    int nStrokeMax = std::stoi(argv[4]);
 
-    Eigen::MatrixXd points;
-    Eigen::MatrixXd normals;
+
+
 
     std::string obj_file = argv[1];
     int res=std::stoi(argv[2]);
 
+    double tolerance = std::stod(argv[5]);
 
-    Eigen::MatrixXd mcV,dcV;
-    Eigen::MatrixXi mcF,dcF;
+
 
     // Save results
     std::string output_file = obj_file.substr(0, obj_file.find_last_of(".")) + "_marching.obj";
+    std::string stroke_file = obj_file.substr(0, obj_file.find_last_of("_")) + "_strokes.obj";
     std::string dual_contour = obj_file.substr(0, obj_file.find_last_of(".")) + "_dual_contouring.obj";
     std::string sphere_file = obj_file.substr(0, obj_file.find_last_of(".")) + "_circumspheres.txt";
     std::string sphere_file_obj = obj_file.substr(0, obj_file.find_last_of(".")) + "_circumspheres.obj";
@@ -735,13 +822,24 @@ int main(int argc, char** argv) {
 
     double  voxel_size ;
     double total_time = 0.0;
-    {
-        if (!read_obj(obj_file, points, normals)) {
+
+        
+    // {
+        Eigen::MatrixXd points;
+        Eigen::MatrixXd normals;
+
+        if (!read_obj(obj_file, points, normals, nStrokeMax)) {
             std::cerr << "Failed to read OBJ file: " << obj_file << std::endl;
             return 1;
         }
 
+
+        Eigen::MatrixXd mcV;
+        Eigen::MatrixXi mcF;
+
         std::cout << "Read " << points.size() << " vertices and normals " << normals.size() << std::endl;
+
+        std::cout << "number of rows in point:" << points.rows() << std::endl;
 
         // Convert to Point3D format for DLL
         std::vector<Point3D> input_points(points.rows());
@@ -764,6 +862,9 @@ int main(int argc, char** argv) {
             input_points.data(), input_normals.data(),
             static_cast<int>(input_points.size()),
             outCenters.data(), outRadii.data(), maxOutputSize,filtered);
+        
+        outCenters.resize( num_spheres);
+        outRadii.resize( num_spheres);
 
         clock_t stop = clock();
         double time = double (stop - start) / CLOCKS_PER_SEC;
@@ -776,42 +877,26 @@ int main(int argc, char** argv) {
         outfile << "Proxy time: " << time << " seconds" << std::endl;
         // outfile.close();
         // Store results in a vector
-        std::vector<std::pair<Eigen::RowVector3d, double>> spheres;
-        for (int i = 0; i < num_spheres; ++i) {
-            spheres.emplace_back(Eigen::RowVector3d(outCenters[i].x, outCenters[i].y, outCenters[i].z), outRadii[i]);
-        }
+
 
         // std::unordered_set<Voxel, VoxelHash> voxel_grid;
 
         // // Timer start for voxelization
         // voxel_size = 2*findShortestDistance(input_points);
         if (0) {
+            std::vector<std::pair<Eigen::RowVector3d, double>> spheres;
+            for (int i = 0; i < num_spheres; ++i) {
+                // std::cout << outCenters[i].x << " "  << outCenters[i].y << " "  << outCenters[i].z << " " << outRadii[i] << std::endl;
+                spheres.emplace_back(Eigen::RowVector3d(outCenters[i].x, outCenters[i].y, outCenters[i].z), outRadii[i]);
+            }
             start = clock();
             saveSpheresToFile(spheres, sphere_file);
             save_combined_spheres(spheres, sphere_file_obj);
             stop = clock();
             time = double (stop - start) / CLOCKS_PER_SEC;
             std::cout << "time for saving spheres : " <<  time << " seconds" << std::endl;
+            // std::cout << "Saved circumspheres to " << sphere_file << std::endl;
         }
-
-        // std::cout << "Saved circumspheres to " << sphere_file << std::endl;
-
-        // std::cout << "Voxel size: " << voxel_size << std::endl;
-        // auto t1 = std::chrono::high_resolution_clock::now();
-        // voxelize_spheres(spheres, voxel_size, voxel_grid);
-        // auto t2 = std::chrono::high_resolution_clock::now();
-        // std::cout << "Voxelization time: " 
-        //         << std::chrono::duration<double>(t2 - t1).count() 
-        //         << " seconds" << std::endl;
-
-        // auto t3 = std::chrono::high_resolution_clock::now();
-        // extract_and_save_boundary_faces(voxel_grid, voxel_size, voxel_mesh);
-        // auto t4 = std::chrono::high_resolution_clock::now();
-        // std::cout << "bpondary time: " 
-        //         << std::chrono::duration<double>(t4 - t3).count() 
-        //         << " seconds" << std::endl;
-
-        // return 0;
 
         start = clock();
         // float voxel_size = findShortestDistance(input_points);
@@ -821,7 +906,10 @@ int main(int argc, char** argv) {
 
         // Compute diagonal length of the bounding box (optional, for scale)
         Eigen::Vector3d diag = max_corner - min_corner;
+
+
         double mesh_size = 10*diag.norm();  // or diag.norm(), depending on your goal
+        // double mesh_size = diag.norm();  // or diag.norm(), depending on your goal
 
         voxel_size = diag.norm() / static_cast<double>(res);
 
@@ -887,6 +975,7 @@ int main(int argc, char** argv) {
         outfile << "Grid time: " << time << " seconds" << std::endl;
         start = clock();
         // Extract mesh using marching cubes
+        // Here initialization of the values of mcV and mcF
         igl::copyleft::marching_cubes(S, GV, res, res, res, mcV, mcF);
         
         stop = clock();
@@ -903,7 +992,7 @@ int main(int argc, char** argv) {
         // std::cout << "dual contouring time : " << time << " seconds" << std::endl;
         // igl::writeOBJ(dual_contour, dcV, dcF);
 
-        // Save the result
+        // Save the marching cube mesh
         start = clock();
         igl::writeOBJ(output_file, mcV, mcF);
         stop = clock();
@@ -912,124 +1001,105 @@ int main(int argc, char** argv) {
         std::cout << "Saved circumspheres to " << output_file << "\n";
         std::cout << "time for saving circumspheres: " << time << " seconds" << std::endl;
 
-}
+// }
+        std::cout << "Marching cube mesh size: " << mcV.rows() << " vertices and " << mcF.rows() << " faces" << std::endl;
 
-    Eigen::MatrixXd filte_v;
-    Eigen::MatrixXi filter_f;
-    if(res<10)
-    {   std::cout << output_file << std::endl;
-        igl::readOBJ(output_file, mcV, mcF);
-        igl::readOBJ(filtered, filte_v, filter_f);
-        // final = obj_file.substr(0, obj_file.find_last_of(".")) + "_final2.obj";
-    }
-    else
-    {
-        igl::readPLY(filtered, filte_v, filter_f);
-    }
-    std::cout << "Read circumspheres: " << mcV.rows() << " vertices and " << mcF.rows() << " faces" << std::endl;
-    // igl::loop(mcV,mcF,mcV,mcF);
-    clock_t st = clock();
-    uniform_remesh(mcV, mcF, remsh_factor*voxel_size); // adjust edge length to your threshold
-    
-    clock_t en = clock();
-    double utime = double (en - st) / CLOCKS_PER_SEC;
-    total_time += utime;
-    std::cout << "Uniform mesh time: " << utime << " seconds" << std::endl;
-    outfile << "Uniform mesh time: " << utime << " seconds" << std::endl;
-    if(!igl::writeOBJ(uniorm_mesh, mcV, mcF)) {
-        std::cerr << "Failed to save deformed mesh!" << std::endl;
-        return -1;
-    }
+        Eigen::MatrixXd filte_v;
+        Eigen::MatrixXi filter_f;
+        start = clock();
+        std::cout << "res = " << res << std::endl;
+        if(res<10)
+        {   std::cout << output_file << std::endl;
+            igl::readOBJ(output_file, mcV, mcF);
+            igl::readOBJ(filtered, filte_v, filter_f);
+            // final = obj_file.substr(0, obj_file.find_last_of(".")) + "_final2.obj";
+        }
+        else
+        {
+            std::cout << "read ply file of filtered input points " << filtered << std::endl;
+            igl::readPLY(filtered, filte_v, filter_f);
+        }
+        stop = clock();
+        time = double (stop - start) / CLOCKS_PER_SEC;
+        std::cout << "time for reading filtered points: " << time << " seconds" << std::endl;
+        // igl::loop(mcV,mcF,mcV,mcF);
+        clock_t st = clock();
+        // uniform_remesh(mcV, mcF, remsh_factor*voxel_size); // adjust edge length to your threshold
+        uniform_remesh(mcV, mcF, remsh_factor/diag.norm()/100.); // adjust edge length to your threshold
+        
+        clock_t en = clock();
+        double utime = double (en - st) / CLOCKS_PER_SEC;
+        total_time += utime;
+        std::cout << "Uniform mesh time: " << utime << " seconds" << std::endl;
+        outfile << "Uniform mesh time: " << utime << " seconds" << std::endl;
+        if(!igl::writeOBJ(uniorm_mesh, mcV, mcF)) {
+            std::cerr << "Failed to save deformed mesh!" << std::endl;
+            return -1;
+        }
 
-    // Eigen::VectorXi I;
-    // Eigen::MatrixXd C, sqrD;
-    // std::cout << "Closest vertex: " << mcF.rows() << std::endl;
-    // igl::point_mesh_squared_distance(filte_v, mcV, mcF, sqrD, I, C);
+        // Step 5: Save the deformed mesh
+        Eigen::MatrixXd mcV_new,dcV_new;
+        mcV_new = mcV; // COPY PROXY MESH VERTICES IN THE TO-BE-COMPUTED SMOOTH SURFACE VERTICES mcV_new
 
-    // std::set<int> used_indices;
-    // std::vector<int> unique_indices;
-    // std::vector<Eigen::RowVector3d> unique_positions;
+        start = clock();
+        computeFromOctahedronLapAndBary(1.0, filte_v, mcV, mcF, mcV_new, tolerance);
+        // computeFromOctahedronLapAndBary(1.0, filte_v, dcV, dcF, dcV_new, tolerance);
+        // if (!igl::writeOBJ(final_dc, dcV_new, dcF)) {
+        //     std::cerr << "Failed to save deformed mesh!" << std::endl;
+        //     return -1;
+        // }
+        // Extract mesh using marching cubes
+        stop = clock();
+        time = double (stop - start) / CLOCKS_PER_SEC;
+        total_time += time;
+        std::cout << "Smoothing time: " << time << " seconds" << std::endl;
+        outfile << "Smoothing time: " << time << " seconds" << std::endl;
+        outfile << "Total time: " << total_time << " seconds" << std::endl;
+        outfile.close();
+        std::cout << "Total computing time: " << total_time << " seconds" << std::endl;
 
-    // for (int i = 0; i < filte_v.rows(); ++i) {
-    //     int face_idx = I(i);
-    //     Eigen::RowVector3d point = filte_v.row(i);
+        // Invert face orientation by swapping two indices in each face
+        for (int i = 0; i < mcF.rows(); ++i) {
+            std::swap(mcF(i, 0), mcF(i, 1));  // Flip orientation
+        }
 
-    //     // Get vertex indices of the closest triangle
-    //     int v0 = mcF(face_idx, 0);
-    //     int v1 = mcF(face_idx, 1);
-    //     int v2 = mcF(face_idx, 2);
+        if (!igl::writeOBJ(final_mc, mcV_new, mcF)) {
+            std::cerr << "Failed to save deformed mesh!" << std::endl;
+            return -1;
+        }
 
-    //     // Find closest vertex among the 3
-    //     std::vector<int> verts = {v0, v1, v2};
-    //     int closest_vid = -1;
-    //     double min_dist = std::numeric_limits<double>::max();
+        exit(1); // NO VISUALIZATION
 
-    //     for (int vid : verts) {
-    //         double dist = (point - mcV.row(vid)).squaredNorm();
-    //         if (dist < min_dist) {
-    //             min_dist = dist;
-    //             closest_vid = vid;
-                
-    //         }
+        std::vector<std::array<double, 3>> strokeV;
+        std::vector<std::array<size_t, 3>> strokeF;
+        read_strokes( stroke_file, strokeV, strokeF, nStrokeMax);
+        // igl::readOBJ(stroke_file, strokeV, strokeF);
 
-    //     }
+        // Initialize polyscope
+        polyscope::options::groundPlaneMode = polyscope::GroundPlaneMode::None;
+        polyscope::options::ssaaFactor = 2;
+        polyscope::init();
+        // Register the mesh with Polyscope
+        polyscope::view::setNavigateStyle(polyscope::NavigateStyle::Free);
 
-    //     // Skip if already used
-    //     if (used_indices.count(closest_vid)) continue;
+        auto* sculptedMesh = polyscope::registerSurfaceMesh("Sculpted surface", mcV_new, mcF);
+        // sculptedMesh->setTransparency(0.5);
+        sculptedMesh->setEdgeWidth(0.35);          // Set edge thickness
+        sculptedMesh->setEdgeColor(glm::vec3{1.0, 1.0, 1.0}); 
+        auto* strokeMesh = polyscope::registerSurfaceMesh("Strokes", strokeV, strokeF);
+        strokeMesh->setSurfaceColor(glm::vec3{0.9, 0.1, 0.1}); 
+        strokeMesh->setMaterial("wax");
 
-    //     used_indices.insert(closest_vid);
-    //     unique_indices.push_back(closest_vid);
-    //     unique_positions.push_back(point);
-    // }
-    // std::cout << "Unique indices: " << unique_indices.size() << std::endl;
+        // polyscope::PointCloud* proxySphere = polyscope::registerPointCloud("voronoi balls", outCenters);
+        // proxySphere->addScalarQuantity("radii", outRadii)->setEnabled(false);
+        // proxySphere->setPointColor(glm::vec3{0.34f, 0.48f, 0.79f});
+        // proxySphere->setPointRadiusQuantity("radii", false);
 
-    // // Convert to Eigen matrices
-    // Eigen::VectorXi b(unique_indices.size());
-    // Eigen::MatrixXd bc(unique_positions.size(), 3);
-    // std::cout << "Unique indices: " << unique_indices.size() << std::endl;
-    // for (int i = 0; i < unique_indices.size(); ++i) {
-    //     b(i) = unique_indices[i];
-    //     bc.row(i) = mcV.row(unique_indices[i]);
-    // }
-
-    // Compute weights
-    // Eigen::MatrixXd W;
-    // igl::harmonic(mcV, mcF, b, bc, 2, W);
+        // Show the gui
+        polyscope::state::userCallback = myCallback; // specify the callback
+        polyscope::show();
 
 
-    // Compute new vertex positions
-    // Eigen::MatrixXd V_new = W ;
-
-    // Step 5: Save the deformed mesh
-    Eigen::MatrixXd mcV_new,dcV_new;
-    mcV_new = mcV; // COPY PROXY MESH VERTICES IN THE TO-BE-COMPUTED SMOOTH SURFACE VERTICES mcV_new
-
-    clock_t start = clock();
-    computeFromOctahedronLapAndBary(1.0, filte_v, mcV, mcF, mcV_new);
-    // computeFromOctahedronLapAndBary(1.0, filte_v, dcV, dcF, dcV_new);
-    // if (!igl::writeOBJ(final_dc, dcV_new, dcF)) {
-    //     std::cerr << "Failed to save deformed mesh!" << std::endl;
-    //     return -1;
-    // }
-    // Extract mesh using marching cubes
-    clock_t end = clock();
-    double time = double (end - start) / CLOCKS_PER_SEC;
-    total_time += time;
-    std::cout << "Smoothing time: " << time << " seconds" << std::endl;
-    outfile << "Smoothing time: " << time << " seconds" << std::endl;
-    outfile << "Total time: " << total_time << " seconds" << std::endl;
-    outfile.close();
-    std::cout << "Total computing time: " << total_time << " seconds" << std::endl;
-
-    // Invert face orientation by swapping two indices in each face
-    for (int i = 0; i < mcF.rows(); ++i) {
-        std::swap(mcF(i, 0), mcF(i, 1));  // Flip orientation
-    }
-
-    if (!igl::writeOBJ(final_mc, mcV_new, mcF)) {
-        std::cerr << "Failed to save deformed mesh!" << std::endl;
-        return -1;
-    }
 
 
     std::cout << "Deformation complete! Saved as 'deformed_mesh.obj'"<<final_mc<< std::endl;

@@ -1,6 +1,26 @@
 # This is a generic CMake setup for CGP library use
 cmake_minimum_required(VERSION 3.8) 
 
+message("FETCHING AND COMPILING POLYSCOPE")
+include(FetchContent)
+FetchContent_Declare(
+   polyscope
+   GIT_REPOSITORY https://github.com/nmwsharp/polyscope.git
+   GIT_TAG        master
+)
+
+FetchContent_MakeAvailable(polyscope)
+message("DONE INSTALLING POLYSCOPE")
+
+message("FETCHING AND COMPILING tinyobjloader")
+FetchContent_Declare(
+  tinyobjloader
+  GIT_REPOSITORY https://github.com/tinyobjloader/tinyobjloader.git
+  GIT_TAG        release  # Use the stable release branch
+)
+FetchContent_MakeAvailable(tinyobjloader)
+message("DONE INSTALLING tinyobjloader")
+
 # Relative path to the CGP library
 # => You may need to adapt this directory to your relative path in the case you move your directory
 # set(PATH_TO_CGP "cgp/library/" CACHE PATH "Relative path to CGP library location") 
@@ -45,10 +65,15 @@ include_directories("src")
 
 list(PREPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 # Libigl
+option(LIBIGL_WITH_EIGEN "Use Eigen" ON)
+option(LIBIGL_WITH_HARMONIC "Use harmonic solver" ON)
+
 include(libigl)
 
-# Enable the target igl::glfw
-igl_include(glfw)
+# do NOT enable the target igl::glfw
+# igl_include(glfw)
+# igl_include(stb)
+# igl_include(harmonic)
 find_package(CGAL REQUIRED)
 
 
@@ -73,6 +98,7 @@ add_definitions(-DCGP_OPENGL_3_3)   # for OpenGL 3.3
 #  @src_files_cgp: all files of the cgp library
 #  @src_files_third_party: all third party libraries compiled with the project
 add_executable(example  src/main.cpp src/circumsphereDLL.cpp )
+add_executable(debugIGL  src/debugIGL.cpp)
 
 # set(OpenMP_C_FLAGS "-fopenmp")
 # set(OpenMP_CXX_FLAGS "-fopenmp")
@@ -110,7 +136,8 @@ if(MSVC)
     source_group(TREE ${CMAKE_SOURCE_DIR} FILES ${src_files})  #Allow to explore source directories as a tree in Visual Studio
 endif()
 
-target_link_libraries(${PROJECT_NAME}  igl::glfw)
+target_link_libraries(${PROJECT_NAME}  igl::core polyscope tinyobjloader)
+target_link_libraries(debugIGL  igl::core polyscope tinyobjloader)
 target_link_libraries(example PUBLIC ${OpenCV_LIBS} )  
 
 target_link_libraries(example  CGAL::CGAL)
